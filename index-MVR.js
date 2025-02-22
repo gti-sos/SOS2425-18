@@ -1,5 +1,3 @@
-// index-MVR.js
-
 // Inicialización del array con los datos de ejemplo (cada registro en una sola línea)
 let data = [
     { laboral_authority: "S.T. ALICANTE", request_date: "22/11/2024", request_month: 11, request_year: 2024, fm_resolution_date: "", cnae_description: "Transporte de mercancías por carretera", municipality_code: 14, company_municipality: "Alacant/Alicante", province_code: 3, company_province: "Alicante/Alacant", work_center_locality: "Alicante/Alacant", fm_dana_type: "INDIRECTA", force_majeure_cause: "S", economic_cause: "N", sector: "SERVICIOS", total_work_sus: 1, total_work_red: 0, men_work_sus: 1, women_work_sus: 0, total_with_suspended_workers: 0, total_with_reduced_workers: 0, with_suspended_male_workers: 0, with_suspended_female_workers: 0 },
