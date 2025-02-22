@@ -1,7 +1,4 @@
 // index-MVR.js
-// Aplicación en Node.js para calcular la media de "total_work_sus"
-// para las filas que comparten un determinado valor en el campo "company_province".
-// Autor: MVR
 
 // Inicialización del array con los datos de ejemplo (cada registro en una sola línea)
 let data = [
