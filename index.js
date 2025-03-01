@@ -1,6 +1,7 @@
 //CONSTANTES DE DESPLIEGUE
 const express= require("express");
 const path= require("path");
+const fs = require('fs');
 
 const app= express();
 const PORT= process.env.PORT || 3000;
@@ -26,7 +27,7 @@ app.get("/cool", (request, response) =>{
 
 //  MADC
 app.get("/samples/MADC", (request, response) => {
-    const MADC= require(`${PATH_ABS}/samples/MADC/index-MADC.js`);
+    const content = fs.readFileSync(path.join(PATH_ABS, 'samples', 'MADC', 'index-MADC.js'), 'utf8');
     response.send(`<!DOCTYPE html>
         <html lang="en">
         <head>
@@ -37,6 +38,11 @@ app.get("/samples/MADC", (request, response) => {
         <body>
             <h1>INDEX-MADC</h1>
             <p id="res">${MADC}</p>    
+            <script>
+                ${content}
+                // Mostrar el resultado en el HTML
+                document.getElementById('resultado').innerText = avg;
+            </script>
         </body>
         </html>`);
 });
