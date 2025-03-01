@@ -23,7 +23,7 @@ app.get("/cool", (request, response) =>{
 });
 
 //  MADC
-app.use("/samples/MADC", express.static(ROOT_PATH+"/samples/index-MADC.js"));
+app.get("/samples/MADC", resp => resp.sendFile(`${ROOT_PATH}+/samples/index-MADC.js`));
 
 //  GBD
 
