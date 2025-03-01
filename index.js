@@ -25,8 +25,8 @@ app.get("/cool", (request, response) =>{
 });
 
 //  MADC
+const MADC= require(`${PATH_ABS}/index-MADC.js`);
 app.get("/samples/MADC", (request, response) => {
-    const MADC= require(`${PATH_ABS}/index-MADC.js`);
     response.send(`${MADC}`);
 });
 
