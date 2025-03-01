@@ -1,7 +1,6 @@
 {
   "name": "sos2425-18",
   "version": "1.0.0",
-  "type": "module",
   "description": "A project based on analyzing grants and subsidies from the Generalitat Valenciana, employment contracts by municipality, gender, age, and sector, and temporary employment regulation files (ERTE)",
   "main": "index.js",
   "scripts": {
