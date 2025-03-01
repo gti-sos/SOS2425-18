@@ -27,7 +27,6 @@ app.get("/cool", (request, response) =>{
 //  MADC
 app.get("/samples/MADC", (request, response) => {
     const MADC= require(`${PATH_ABS}/samples/MADC/index-MADC.js`);
-    const texto= String(MADC);
     response.send(`<!DOCTYPE html>
         <html lang="en">
         <head>
@@ -37,7 +36,7 @@ app.get("/samples/MADC", (request, response) => {
         </head>
         <body>
             <h1>INDEX-MADC</h1>
-            <p id="res">${texto}</p>    
+            <p id="res">${MADC}</p>    
         </body>
         </html>`);
 });
