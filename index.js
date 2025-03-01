@@ -26,7 +26,8 @@ app.get("/cool", (request, response) =>{
 
 //  MADC
 app.get("/samples/MADC", (request, response) => {
-    response.sendFile(process.cwd()+`/samples/index-MADC.js`);
+    const MADC= require(process.cwd()+`/samples/index-MADC.js`);
+    response.send(MADC());
 });
 
 //  GBD
