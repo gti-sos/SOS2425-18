@@ -5,6 +5,7 @@ const path= require("path");
 const app= express();
 const PORT= process.env.PORT || 3000;
 const PROYECTNAME= `SOS2425-18`;
+const PATH_ABS= __dirname;
 
 //CONSTANTES VARIAS
 const cool= require("cool-ascii-faces");
@@ -25,7 +26,7 @@ app.get("/cool", (request, response) =>{
 
 //  MADC
 app.get("/samples/MADC", (request, response) => {
-    response.sendFile(`./samples/index-MADC.js`);
+    response.sendFile(process.cwd()+`/samples/index-MADC.js`);
 });
 
 //  GBD
