@@ -25,8 +25,22 @@ app.get("/cool", (request, response) =>{
 });
 
 //  MADC
-//const MADC= require(`${PATH_ABS}/index-MADC.js`);
-app.use("/samples/MADC", express.static(`${PATH_ABS}/samples/MADC`));
+app.get("/samples/MADC", (request, response) => {
+    const MADC= require(`${PATH_ABS}/index-MADC.js`);
+    const texto= String(MADC);
+    response.send(`<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>INDEX-MADC</title>
+        </head>
+        <body>
+            <h1>INDEX-MADC</h1>
+            <p id="res">${texto}</p>    
+        </body>
+        </html>`);
+});
 
 //  GBD
 
