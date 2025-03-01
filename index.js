@@ -1,7 +1,5 @@
 //CONSTANTES DE DESPLIEGUE Y DEPENDENCIAS GENERALES
 const express= require("express");
-const path= require("path");
-const fs = require('fs');
 
 const app= express();
 const PORT= process.env.PORT || 3000;
@@ -10,6 +8,8 @@ const PATH_ABS= __dirname;
 
 //CONSTANTES VARIAS
 const cool= require("cool-ascii-faces");
+//const path= require("path");
+//const fs = require('fs');
 
 app.listen(PORT, ()=>{
     console.log(`Proyect ${PROYECTNAME} correctly deployed and running at port ${PORT}`);
