@@ -19,7 +19,7 @@ app.get("/cool", (request, response) =>{
 });
 
 app.get("/", (request, response) =>{
-    console.log("Hola mundo!!!");
+    response.send("HOLA MUNDO!!!");
 });
 
 //  MADC
