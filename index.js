@@ -40,7 +40,7 @@ app.get("/samples/MADC", (request, response) => {
         </head>
         <body>
             <h1>INDEX-MADC</h1>
-            <p id="res">La media del monto de ayuda/subvención concedida para el municipio de ${mun} es de ${avg}€</p>    
+            <p id="res">La media del monto de ayuda/subvención concedida para el municipio de ${mun} es de ${avg.toFixed(2)}€</p>    
         </body>
         </html>`);
 });
