@@ -1,12 +1,10 @@
 //CONSTANTES DE DESPLIEGUE
 const express= require("express");
 const path= require("path");
-const fs = require('fs');
 
 const app= express();
 const PORT= process.env.PORT || 3000;
 const PROYECTNAME= `SOS2425-18`;
-const ROOT_PATH= __dirname;
 
 //CONSTANTES VARIAS
 const cool= require("cool-ascii-faces");
@@ -26,11 +24,8 @@ app.get("/cool", (request, response) =>{
 });
 
 //  MADC
-app.get("/samples/MADC", resp => {
-    const filePath = path.join(__dirname, "samples", "index-MADC.js");
-    const fileContent = fs.readFileSync(filePath, 'utf8');
-    resp.set('Content-Type', 'application/javascript');
-    resp.send(fileContent);
+app.get("/samples/MADC", (request, response) => {
+    response.sendFile(`./samples/index-MADC.js`);
 });
 
 //  GBD
