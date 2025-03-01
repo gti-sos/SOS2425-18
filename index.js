@@ -14,19 +14,19 @@ app.listen(PORT, ()=>{
 
 //PETICIONES A URL DINAMICAS
 //  COOL-ASCII-FACES
-app.get("/cool", (request, response) =>{
-    response.send(cool());
-});
-
 app.get("/", (request, response) =>{
     response.send("HOLA MUNDO!!!");
 });
 
+app.get("/cool", (request, response) =>{
+    response.send(cool());
+});
+
 //  MADC
-app.use("/samples/MADC", express.static(ROOT_PATH+"/samples/MADC"));
+app.use("/samples/MADC", express.static(ROOT_PATH+"/samples/index-MADC.js"));
 
-//GBD
+//  GBD
 
-//MVR
+//  MVR
 
 
