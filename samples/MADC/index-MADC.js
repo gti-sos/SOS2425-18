@@ -45,5 +45,5 @@ let avg= `La media del monto de ayuda/subvencion concedida para el municipio de 
 function avgByMunNameRes(){
     console.log(avg);
 }
-avgByMunNameRes(); 
-export {avg};
+avgByMunNameRes();
+export{aidExampleDataCSV, CAMPOS, aidExampleArray, avgByMunName};
