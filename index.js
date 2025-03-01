@@ -18,7 +18,15 @@ app.get("/cool", (request, response) =>{
     response.send(cool());
 });
 
+app.get("/", (request, response) =>{
+    console.log("Hola mundo!!!");
+});
+
 //  MADC
 app.use("/samples/MADC", express.static(ROOT_PATH+"/samples/MADC"));
+
+//GBD
+
+//MVR
 
 
