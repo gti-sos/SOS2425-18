@@ -13,22 +13,26 @@ let datos = [
   { year: 2024, month: 12, prov_cod: 3, prov_name: "Alicante/Alacant", mun_cod: 31, mun_name: "Benidorm", sec_cod: "S", sec_descr: "SERVICIOS", grp_cod: 5, grp_descr: "Trabajadores de los servicios de restauración, personales, protección y vendedores", gend_cod: "H", gend_descr: "Hombre", age_range: "<25", num_contracts: 102 }
 ];
   
-function mediaPorProvincia(provincia)
-{
+function mediaPorProvincia(provincia) {
   let sumaContratos = 0;
   let cantidad = 0;
 
-  let filtro = datos.filter(item => item.prov_name == provincia);
+  let filtro = datos.filter(item => item.prov_name === provincia);
 
   filtro.forEach(item => {
-    sumaContratos += item.num_contracts;
-    cantidad++;
-  })
+      sumaContratos += item.num_contracts;
+      cantidad++;
+  });
 
-  let media = cantidad > 0 ? (sumaContratos/cantidad).toFixed(2) : 0;
-  return media;
+  return cantidad > 0 ? (sumaContratos / cantidad).toFixed(2) : "0.00";
 }
 
-mediaPorProvincia("Alicante/Alacant")
+const mun = "Alicante/Alacant";
+function avgByMunNameRes() {
+  let media = mediaPorProvincia(mun);
+  console.log(`La media de los contratos en la provincia de ${mun} es de: ${media}€`);
+}
 
-module.export = {mediaPorProvincia};
+avgByMunNameRes();
+
+module.exports = { mediaPorProvincia };
