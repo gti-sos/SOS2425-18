@@ -47,11 +47,12 @@ app.get("/samples/MADC", (request, response) => {
 
 //  GBD
 
-const GBD= require("./samples/GBD/index-GBD.js");
-app.get("/samples/GBD", (request, response) => {
+const GBD = require("./samples/GBD/index-GBD.js");
 
-    const prov = 'Alicante/Alacant';
-    const media = GBD.mediaPorProvincia(prov)
+app.get("/samples/GBD", (request, response) => {
+    const prov = "Alicante/Alacant";
+    const media = parseFloat(GBD.mediaPorProvincia(prov));
+
     response.send(`<!DOCTYPE html>
         <html lang="en">
         <head>
