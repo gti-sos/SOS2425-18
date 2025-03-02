@@ -29,11 +29,11 @@ function mediaPorProvincia(provincia)
 
   console.log("Suma de contratos:", sumaContratos); 
   console.log("Cantidad de registros:", cantidad);  
-  console.log(`La media de los contratos en la provincia de Alicante es: ${media}`);
+  console.log("La media de los contratos en la provincia de Alicante es:", media);
 
   return media;
 }
 
 mediaPorProvincia("Alicante/Alacant")
 
-export{datos,mediaPorProvincia}
+module.export = {mediaPorProvincia};
