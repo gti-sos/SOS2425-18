@@ -28,8 +28,9 @@ let data = [
   let average = sum / totalWorkSusValues.length;
   
   // Mostrar el resultado
+  let res = `El promedio de total_work_sus para la provincia ${selectedProvince} es: ${average}`
   function avgByPrueb(){
-    console.log(`El promedio de total_work_sus para la provincia ${selectedProvince} es: ${average}`);
+    return res;
   }
   avgByPrueb();
   module.exports = {average, avgByPrueb};
