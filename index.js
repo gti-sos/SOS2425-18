@@ -82,7 +82,7 @@ app.get("/samples/MVR", (request, response) => {
 </head>
 <body>
     <h1>INDEX-MVR</h1>
-    <p id="res">El promedio de total_work_sus para la provincia ${prov} es: ${avg}</p> 
+    <p id="res">${avg}</p> 
 </body>
 </html>`)
 
