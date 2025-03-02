@@ -47,6 +47,25 @@ app.get("/samples/MADC", (request, response) => {
 
 //  GBD
 
+const GBD= require("./samples/GBD/index-GBD.js");
+app.get("/samples/GBD", (request, response) => {
+
+    const prov = 'Alicante/Alacant';
+    const media = GBD.mediaPorProvincia(prov)
+    response.send(`<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>INDEX-GBD</title>
+        </head>
+        <body>
+            <h1>INDEX-GBD</h1>
+            <p id="res">La media de los contratos en la provincia de ${prov} es de: ${media.toFixed(2)}€</p>    
+        </body>
+        </html>`);
+});
+
 //  MVR
 
 
