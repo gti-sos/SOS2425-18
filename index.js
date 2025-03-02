@@ -67,6 +67,25 @@ app.get("/samples/GBD", (request, response) => {
 });
 
 //  MVR
+const MVR= require("./samples/MVR/index-MVR.js");
+app.get("/samples/MVR", (request, response) => {
 
+    const prov = "Castellón/Castelló";
+    const avg = MVR.avgByPrueb(prov);
+    response.send(`<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INDEX-MVR</title>
+    <script src="/samples/MVR/index-MVR.js" type="module"></script>
+</head>
+<body>
+    <h1>INDEX-MVR</h1>
+    <p id="res">El promedio de total_work_sus para la provincia ${prov} es: ${avg}</p> 
+</body>
+</html>`)
+
+});
 
 
