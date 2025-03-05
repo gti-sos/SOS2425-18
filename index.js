@@ -90,4 +90,4 @@ app.get("/samples/MVR", (request, response) => {
 });
 
 // Readme
-app.use("/about", path.resolve(PATH_ABS, "../about/"));
+app.use("/about", express.static(path.resolve(PATH_ABS, "../about/")));
