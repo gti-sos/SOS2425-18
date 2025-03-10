@@ -72,7 +72,7 @@ const MVR= require("./samples/MVR/index-MVR.js");
 app.get("/samples/MVR", (request, response) => {
 
     const prov = "Castellón/Castelló";
-    const avg = MVR.avgByPrueb();
+    const avg = MVR.avgByPrueb(prov);
     response.send(`<!DOCTYPE html>
 <html lang="en">
 <head>
