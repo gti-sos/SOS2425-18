@@ -13,7 +13,7 @@ let data = [
   ];
   
   // Valor geográfico por el cual se filtrarán las filas (puede modificarse según se necesite)
-  let selectedProvince = "Castellón/Castelló";
+  let selectedProvince = "Valencia/València";
   
   // Filtrar el array para obtener solo las filas que tengan el valor seleccionado en "company_province"
   let filteredData = data.filter(item => item.company_province === selectedProvince);
@@ -28,10 +28,9 @@ let data = [
   let average = sum / totalWorkSusValues.length;
   
   // Mostrar el resultado
-  let res = `El promedio de total_work_sus para la provincia ${selectedProvince} es: ${average}`
-  function avgByPrueb(){
-    return res;
+  function avgByPrueb(selectedProvince){
+    return console.log(`El promedio de total_work_sus para la provincia ${selectedProvince} es: ${average}`);
   }
-  avgByPrueb();
+  avgByPrueb(selectedProvince);
   module.exports = {average, avgByPrueb};
   
