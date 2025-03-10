@@ -12,25 +12,24 @@ let data = [
     { laboral_authority: "D.G. TRABAJO", request_date: "04/11/2024", request_month: 11, request_year: 2024, fm_resolution_date: "11/11/2024", cnae_description: "Actividades de las empresas de trabajo temporal", municipality_code: 79, company_municipality: "Madrid", province_code: 28, company_province: "Madrid", work_center_locality: "Aldaia; Almussafes; Gandia", fm_dana_type: "AMBAS", force_majeure_cause: "S", economic_cause: "N", sector: "SERVICIOS", total_work_sus: 79, total_work_red: 0, men_work_sus: 60, women_work_sus: 19, total_with_suspended_workers: 79, total_with_reduced_workers: 0, with_suspended_male_workers: 60, with_suspended_female_workers: 19 }
   ];
   
-  // Valor geográfico por el cual se filtrarán las filas (puede modificarse según se necesite)
-  let selectedProvince = "Valencia/València";
+    // Valor geográfico por el cual se filtrarán las filas (puede modificarse según se necesite)
+    let selectedProvince = "Valencia/València";
   
-  // Filtrar el array para obtener solo las filas que tengan el valor seleccionado en "company_province"
-  let filteredData = data.filter(item => item.company_province === selectedProvince);
   
-  // Extraer los valores numéricos del campo "total_work_sus"
-  let totalWorkSusValues = filteredData.map(item => item.total_work_sus);
-  
-  // Calcular la suma de los valores usando reduce
-  let sum = totalWorkSusValues.reduce((acc, value) => acc + value, 0);
-  
-  // Calcular la media
-  let average = sum / totalWorkSusValues.length;
-  
-  // Mostrar el resultado
   function avgByPrueb(selectedProvince){
-    return console.log(`El promedio de total_work_sus para la provincia ${selectedProvince} es: ${average}`);
+    // Filtrar el array para obtener solo las filas que tengan el valor seleccionado en "company_province"
+    let filteredData = data.filter(item => item.company_province === selectedProvince);
+    
+    // Extraer los valores numéricos del campo "total_work_sus"
+    let totalWorkSusValues = filteredData.map(item => item.total_work_sus);
+    
+    // Calcular la suma de los valores usando reduce
+    let sum = totalWorkSusValues.reduce((acc, value) => acc + value, 0);
+    
+    // Calcular la media
+    let average = sum / totalWorkSusValues.length;
+    return average;
   }
   avgByPrueb(selectedProvince);
-  module.exports = {average, avgByPrueb};
+  module.exports = {avgByPrueb};
   
