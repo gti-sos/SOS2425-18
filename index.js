@@ -94,6 +94,10 @@ app.get(BASE_API+"/contr-mun-stats/loadInitialData",(request, response)=>{
     return response.status(200).json({message: "Datos ya cargados anteriormente", data: contr_mun_stats});
 });
 
+app.get(BASE_API + "/contr-mun-stats", (req, res) => {
+    res.status(200).json(contr_mun_stats);
+});
+
 //  MVR
 const MVR= require("./samples/MVR/index-MVR.js");
 app.get("/samples/MVR", (request, response) => {
