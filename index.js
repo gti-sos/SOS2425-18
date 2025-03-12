@@ -111,7 +111,7 @@ app.get(BASE_API + "/contr-mun-stats", (request, response) => {
 });
 
 app.post(BASE_API + "/contr-mun-stats", (request, response) => {
-    const newData = request.body;
+    const newData = JSON.parse(request.body);
 
     // Validar que los campos obligatorios estén presentes
     if (!newData.year || !newData.month || !newData.prov_cod || !newData.prov_name || 
@@ -138,10 +138,6 @@ app.post(BASE_API + "/contr-mun-stats", (request, response) => {
     contr_mun_stats.push(newData);
     response.status(201).json({ message: "Resource created successfully", data: newData });
 });
-
-
-
-
 
 //  MVR
 const MVR= require("./samples/MVR/index-MVR.js");
