@@ -115,12 +115,20 @@ app.get(BASE_API + "/contr-mun-stats/:mun_cod", (req, res) => {
     return res.status(200).json(result);
 });
 
-// app.post(BASE_API + "/contr-mun-stats", (req, res) => {
-//     const newData = req.body;
+app.post(BASE_API + "/contr-mun-stats", (req, res) => {
+    const newData = req.body;
 
-//     if
+    if(!newData.mun_cod || !newData.num_contracts){
+        return res.status(400).json({ error: "Bad Request" });
+    }
     
-// });
+    if (contr_mun_stats.some(item => item.mun_cod == newData.mun_cod)) {
+        return res.status(409).json({ error: "Conflict" });
+    }
+
+    contr_mun_stats.push(newData);
+    res.status(201).json(newData);
+});
 
 //  MVR
 const MVR= require("./samples/MVR/index-MVR.js");
