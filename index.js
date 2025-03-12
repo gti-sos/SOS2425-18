@@ -1,5 +1,6 @@
 //CONSTANTES DE DESPLIEGUE Y DEPENDENCIAS GENERALES
 const express= require("express");
+const BASE_API = "/api/v1";
 
 const app= express();
 const PORT= process.env.PORT || 3000;
@@ -65,6 +66,28 @@ app.get("/samples/GBD", (request, response) => {
             <p id="res">La media de los contratos en la provincia de ${prov} es de: ${media.toFixed(2)}€</p>    
         </body>
         </html>`);
+});
+
+let contr_mun_stats = [
+    {
+        mun_cod: "40",
+        mun_name: "Castelló de la Plana/Castellón de la Plana",
+        sec_cod: "A"
+    }
+]
+
+app.get(BASE_API+"/contr-mun-stats",(request, response)=>{
+    console.log("New GET to /contr-mun-stats");
+    response.send(JSON.stringify(contr_mun_stats,null,2));
+});
+
+app.post(BASE_API+"/contr-mun-stats",(request, response)=>{
+    console.log("POST to /contr-mun-stats");
+    //console.log(`<${request.body}>`);
+    let new_contr_mun_stats = request.body;
+    contr_mun_stats.push(new_contr_mun_stats);
+
+    response.sendStatus(201);
 });
 
 //  MVR
