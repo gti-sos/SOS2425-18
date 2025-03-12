@@ -99,7 +99,7 @@ app.get(BASE_API + "/contr-mun-stats", (req, res) => {
 });
 
 app.get(BASE_API + "/contr-mun-stats", (req, res) => {
-    let filteredData = contr_mun_stats;
+    let filteredData = contrMunStats;
 
     if (req.query.mun_name) {
         filteredData = filteredData.filter(item => item.mun_name === req.query.mun_name);
@@ -122,7 +122,7 @@ app.get(BASE_API + "/contr-mun-stats/:mun_name/:year", (req, res) => {
     const munName = req.params.mun_name;
     const year = parseInt(req.params.year);
 
-    const result = contr_mun_stats.find(item => item.mun_name === munName && item.year === year);
+    const result = contrMunStats.find(item => item.mun_name === munName && item.year === year);
 
     if (!result) {
         return res.status(404).json({ error: "Not Found" });
@@ -135,37 +135,38 @@ app.post(BASE_API + "/contr-mun-stats", (req, res) => {
     const newData = req.body;
 
     if (!newData.mun_name || !newData.year || !newData.num_contracts) {
-        return res.status(400).json({ error: "Bad Request" });
+        return res.status(400).json({ error: "Bad Request: Missing required fields" });
     }
 
-    if (contr_mun_stats.some(item => item.mun_name === newData.mun_name && item.year === newData.year)) {
-        return res.status(409).json({ error: "Conflict" });
+    // Verificar si ya existe ese contrato
+    if (contrMunStats.some(item => item.mun_name === newData.mun_name && item.year === newData.year)) {
+        return res.status(409).json({ error: "Conflict: Resource already exists" });
     }
 
-    contr_mun_stats.push(newData);
+    contrMunStats.push(newData);
     res.status(201).json({ message: "Resource created successfully", data: newData });
 });
 
 app.put(BASE_API + "/contr-mun-stats/:mun_name/:year", (req, res) => {
     const munName = req.params.mun_name;
     const year = parseInt(req.params.year);
-    const index = contr_mun_stats.findIndex(item => item.mun_name === munName && item.year === year);
+    const index = contrMunStats.findIndex(item => item.mun_name === munName && item.year === year);
 
     if (index === -1) {
         return res.status(404).json({ error: "Not Found" });
     }
 
-    contr_mun_stats[index] = { ...contr_mun_stats[index], ...req.body };
-    res.status(200).json({ message: "Resource updated successfully", data: contr_mun_stats[index] });
+    contrMunStats[index] = { ...contrMunStats[index], ...req.body };
+    res.status(200).json({ message: "Resource updated successfully", data: contrMunStats[index] });
 });
 
 app.delete(BASE_API + "/contr-mun-stats/:mun_name/:year", (req, res) => {
     const munName = req.params.mun_name;
     const year = parseInt(req.params.year);
-    const initialLength = contr_mun_stats.length;
-    contr_mun_stats = contr_mun_stats.filter(item => !(item.mun_name === munName && item.year === year));
+    const initialLength = contrMunStats.length;
+    contrMunStats = contrMunStats.filter(item => !(item.mun_name === munName && item.year === year));
 
-    if (contr_mun_stats.length === initialLength) {
+    if (contrMunStats.length === initialLength) {
         return res.status(404).json({ error: "Not Found" });
     }
 
@@ -173,7 +174,7 @@ app.delete(BASE_API + "/contr-mun-stats/:mun_name/:year", (req, res) => {
 });
 
 app.delete(BASE_API + "/contr-mun-stats", (req, res) => {
-    contr_mun_stats = [];
+    contrMunStats = [];
     res.status(200).json({ message: "All resources deleted successfully" });
 });
 
