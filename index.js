@@ -110,6 +110,26 @@ app.get(BASE_API + "/contr-mun-stats", (request, response) => {
     response.status(200).json(filteredData);
 });
 
+app.post(BASE_API + "/contr-mun-stats", (request, response) => {
+    const newData = request.body;
+
+    // Validar que los campos obligatorios estén presentes
+    if (!newData.mun_name || !newData.year || !newData.num_contracts) {
+        return response.status(400).json({ error: "Bad Request: Missing required fields (mun_name, year, num_contracts)" });
+    }
+
+    // Verificar si ya existe un contrato con el mismo `mun_name` y `year`
+    const exists = contr_mun_stats.some(item => item.mun_name === newData.mun_name && item.year === newData.year);
+    if (exists) {
+        return response.status(409).json({ error: "Conflict: Resource already exists" });
+    }
+
+    // Agregar el nuevo contrato
+    contr_mun_stats.push(newData);
+    response.status(201).json({ message: "Resource created successfully", data: newData });
+});
+
+
 
 //  MVR
 const MVR= require("./samples/MVR/index-MVR.js");
