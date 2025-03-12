@@ -99,7 +99,12 @@ app.get(BASE_API + "/contr-mun-stats", (req, res) => {
 });
 
 app.get(BASE_API + "/contr-mun-stats/:mun_cod", (req, res) => {
-    const mun_cod = parseINT(req.params.mun_cod);
+    const mun_cod = parseInt(req.params.mun_cod);
+
+    if (isNaN(mun_cod)) { 
+        return res.status(400).json({ error: "Bad Request" });
+    }
+
     const result = contr_mun_stats.find(item => item.mun_cod == mun_cod);
 
     if(!result)
@@ -109,6 +114,13 @@ app.get(BASE_API + "/contr-mun-stats/:mun_cod", (req, res) => {
 
     return res.status(200).json(result);
 });
+
+// app.post(BASE_API + "/contr-mun-stats", (req, res) => {
+//     const newData = req.body;
+
+//     if
+    
+// });
 
 //  MVR
 const MVR= require("./samples/MVR/index-MVR.js");
