@@ -112,29 +112,7 @@ app.get(BASE_API + "/contr-mun-stats", (request, response) => {
 
 app.post(BASE_API + "/contr-mun-stats", (request, response) => {
     let newData = JSON.parse(request.body);
-
-    // Validar que los campos obligatorios estén presentes
-    if (!newData.year || !newData.month || !newData.prov_cod || !newData.prov_name || 
-        !newData.mun_cod || !newData.mun_name || !newData.sec_cod || !newData.sec_descr || 
-        !newData.num_contracts) {
-        return response.status(400).json({ 
-            error: "Bad Request: Missing required fields (year, month, prov_cod, prov_name, mun_cod, mun_name, sec_cod, sec_descr, num_contracts)"
-        });
-    }
-
-    // Verificar si ya existe un contrato con el mismo `mun_cod`, `year`, `month` y `sec_cod`
-    const exists = contr_mun_stats.some(item => 
-        item.mun_cod === newData.mun_cod &&
-        item.year === newData.year &&
-        item.month === newData.month &&
-        item.sec_cod === newData.sec_cod
-    );
-
-    if (exists) {
-        return response.status(409).json({ error: "Conflict: Resource already exists" });
-    }
-
-    // Agregar el nuevo contrato
+    
     contr_mun_stats.push(newData);
     response.status(201).json({ message: "Resource created successfully", data: newData });
 });
