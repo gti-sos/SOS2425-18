@@ -111,7 +111,7 @@ app.get(BASE_API + "/contr-mun-stats", (request, response) => {
 });
 
 app.post(BASE_API + "/contr-mun-stats", (request, response) => {
-    const newData = JSON.parse(request.body);
+    let newData = JSON.parse(request.body);
 
     // Validar que los campos obligatorios estén presentes
     if (!newData.year || !newData.month || !newData.prov_cod || !newData.prov_name || 
