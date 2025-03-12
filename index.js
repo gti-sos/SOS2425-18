@@ -95,24 +95,13 @@ app.get(BASE_API+"/contr-mun-stats/loadInitialData",(request, response)=>{
 });
 
 app.get(BASE_API + "/contr-mun-stats", (request, response) => {
-    // Si hay filtros en la query (municipio o año), aplicarlos
-    let filteredData = contr_mun_stats;
 
-    if (request.query.mun_name) {
-        filteredData = filteredData.filter(item => item.mun_name === request.query.mun_name);
-    }
-
-    if (request.query.year) {
-        filteredData = filteredData.filter(item => item.year == request.query.year);
-    }
-
-    // Devolver los datos (filtrados o todos)
-    response.status(200).json(filteredData);
+    response.send(JSON.stringify(contr_mun_stats,null,2));
 });
 
 app.post(BASE_API + "/contr-mun-stats", (request, response) => {
     let newData = JSON.parse(request.body);
-    
+
     contr_mun_stats.push(newData);
     response.status(201).json({ message: "Resource created successfully", data: newData });
 });
