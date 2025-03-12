@@ -3,6 +3,7 @@ const express= require("express");
 const BASE_API = "/api/v1";
 
 const app= express();
+app.use(express.json());
 const PORT= process.env.PORT || 3000;
 const PROYECTNAME= `SOS2425-18`;
 const PATH_ABS= __dirname;
