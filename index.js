@@ -69,26 +69,29 @@ app.get("/samples/GBD", (request, response) => {
         </html>`);
 });
 
-let contr_mun_stats = [
+// contr-mun-stats
+
+let contr_mun_stats = [];
+
+app.get(BASE_API+"/contr-mun-stats/loadInitialData",(request, response)=>{
+    if (contr_mun_stats.length == 0)
     {
-        mun_cod: "40",
-        mun_name: "Castelló de la Plana/Castellón de la Plana",
-        sec_cod: "A"
+        contr_mun_stats = [
+            { year: 2024, month: 11, prov_cod: 12, prov_name: "Castellón/Castelló", mun_cod: 40, mun_name: "Castelló de la Plana/Castellón de la Plana", sec_cod: "A", sec_descr: "Agricultura", num_contracts: 21 },
+            { year: 2024, month: 12, prov_cod: 46, prov_name: "Valencia/València", mun_cod: 250, mun_name: "València", sec_cod: "A", sec_descr: "AGRICULTURA", num_contracts: 561 },
+            { year: 2024, month: 12, prov_cod: 46, prov_name: "Valencia/València", mun_cod: 250, mun_name: "València", sec_cod: "S", sec_descr: "SERVICIOS", num_contracts: 227 },
+            { year: 2024, month: 12, prov_cod: 3, prov_name: "Alicante/Alacant", mun_cod: 76, mun_name: "Guardamar del Segura", sec_cod: "C", sec_descr: "CONSTRUCCIÓN", num_contracts: 2 },
+            { year: 2024, month: 12, prov_cod: 3, prov_name: "Alicante/Alacant", mun_cod: 76, mun_name: "Guardamar del Segura", sec_cod: "I", sec_descr: "INDUSTRIA", num_contracts: 1 },
+            { year: 2024, month: 12, prov_cod: 3, prov_name: "Alicante/Alacant", mun_cod: 119, mun_name: "Sant Joan d'Alacant", sec_cod: "S", sec_descr: "SERVICIOS", num_contracts: 9 },
+            { year: 2024, month: 12, prov_cod: 3, prov_name: "Alicante/Alacant", mun_cod: 902, mun_name: "Pilar de la Horadada", sec_cod: "A", sec_descr: "AGRICULTURA", num_contracts: 11 },
+            { year: 2024, month: 12, prov_cod: 3, prov_name: "Alicante/Alacant", mun_cod: 58, mun_name: "Cox", sec_cod: "S", sec_descr: "SERVICIOS", num_contracts: 16 },
+            { year: 2024, month: 12, prov_cod: 46, prov_name: "Valencia/València", mun_cod: 230, mun_name: "Silla", sec_cod: "S", sec_descr: "SERVICIOS", num_contracts: 10 },
+            { year: 2024, month: 12, prov_cod: 3, prov_name: "Alicante/Alacant", mun_cod: 31, mun_name: "Benidorm", sec_cod: "S", sec_descr: "SERVICIOS", num_contracts: 102 }
+        ];
+
+        return response.status(201).json({message: "Datos cargados correctamente", data: contr_mun_stats});
     }
-]
-
-app.get(BASE_API+"/contr-mun-stats",(request, response)=>{
-    console.log("New GET to /contr-mun-stats");
-    response.send(JSON.stringify(contr_mun_stats,null,2));
-});
-
-app.post(BASE_API+"/contr-mun-stats",(request, response)=>{
-    console.log("POST to /contr-mun-stats");
-    //console.log(`<${request.body}>`);
-    let new_contr_mun_stats = request.body;
-    contr_mun_stats.push(new_contr_mun_stats);
-
-    response.sendStatus(201);
+    return response.status(200).json({message: "Datos ya cargados anteriormente", data: contr_mun_stats});
 });
 
 //  MVR
