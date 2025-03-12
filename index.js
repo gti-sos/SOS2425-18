@@ -98,6 +98,18 @@ app.get(BASE_API + "/contr-mun-stats", (req, res) => {
     res.status(200).json(contr_mun_stats);
 });
 
+app.get(BASE_API + "/contr-mun-stats/:mun_cod", (req, res) => {
+    const mun_cod = parseINT(req.params.mun_cod);
+    const result = contr_mun_stats.find(item => item.mun_cod == mun_cod);
+
+    if(!result)
+    {
+        return res.status(404).json({error: "Not Found"});
+    }
+
+    return res.status(200).json(result);
+});
+
 //  MVR
 const MVR= require("./samples/MVR/index-MVR.js");
 app.get("/samples/MVR", (request, response) => {
