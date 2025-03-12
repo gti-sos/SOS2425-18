@@ -95,7 +95,7 @@ app.get(BASE_API+"/contr-mun-stats/loadInitialData",(request, response)=>{
 });
 
 app.get(BASE_API + "/contr-mun-stats", (req, res) => {
-    let filteredData = contrMunStats;
+    let filteredData = contr_mun_stats;
 
     if (req.query.mun_name) {
         filteredData = filteredData.filter(item => item.mun_name === req.query.mun_name);
@@ -118,7 +118,7 @@ app.get(BASE_API + "/contr-mun-stats/:mun_name/:year", (req, res) => {
     const munName = req.params.mun_name;
     const year = parseInt(req.params.year);
 
-    const result = contrMunStats.find(item => item.mun_name === munName && item.year === year);
+    const result = contr_mun_stats.find(item => item.mun_name === munName && item.year === year);
 
     if (!result) {
         return res.status(404).json({ error: "Not Found" });
@@ -135,34 +135,34 @@ app.post(BASE_API + "/contr-mun-stats", (req, res) => {
     }
 
     // Verificar si ya existe ese contrato
-    if (contrMunStats.some(item => item.mun_name === newData.mun_name && item.year === newData.year)) {
+    if (contr_mun_stats.some(item => item.mun_name === newData.mun_name && item.year === newData.year)) {
         return res.status(409).json({ error: "Conflict: Resource already exists" });
     }
 
-    contrMunStats.push(newData);
+    contr_mun_stats.push(newData);
     res.status(201).json({ message: "Resource created successfully", data: newData });
 });
 
 app.put(BASE_API + "/contr-mun-stats/:mun_name/:year", (req, res) => {
     const munName = req.params.mun_name;
     const year = parseInt(req.params.year);
-    const index = contrMunStats.findIndex(item => item.mun_name === munName && item.year === year);
+    const index = contr_mun_stats.findIndex(item => item.mun_name === munName && item.year === year);
 
     if (index === -1) {
         return res.status(404).json({ error: "Not Found" });
     }
 
-    contrMunStats[index] = { ...contrMunStats[index], ...req.body };
-    res.status(200).json({ message: "Resource updated successfully", data: contrMunStats[index] });
+    contr_mun_stats[index] = { ...contr_mun_stats[index], ...req.body };
+    res.status(200).json({ message: "Resource updated successfully", data: contr_mun_stats[index] });
 });
 
 app.delete(BASE_API + "/contr-mun-stats/:mun_name/:year", (req, res) => {
     const munName = req.params.mun_name;
     const year = parseInt(req.params.year);
-    const initialLength = contrMunStats.length;
-    contrMunStats = contrMunStats.filter(item => !(item.mun_name === munName && item.year === year));
+    const initialLength = contr_mun_stats.length;
+    contr_mun_stats = contr_mun_stats.filter(item => !(item.mun_name === munName && item.year === year));
 
-    if (contrMunStats.length === initialLength) {
+    if (contr_mun_stats.length === initialLength) {
         return res.status(404).json({ error: "Not Found" });
     }
 
@@ -170,7 +170,7 @@ app.delete(BASE_API + "/contr-mun-stats/:mun_name/:year", (req, res) => {
 });
 
 app.delete(BASE_API + "/contr-mun-stats", (req, res) => {
-    contrMunStats = [];
+    contr_mun_stats = [];
     res.status(200).json({ message: "All resources deleted successfully" });
 });
 
