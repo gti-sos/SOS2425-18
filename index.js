@@ -98,85 +98,24 @@ app.get(BASE_API + "/contr-mun-stats", (req, res) => {
     res.status(200).json(contr_mun_stats);
 });
 
-app.get(BASE_API + "/contr-mun-stats", (req, res) => {
-    let filteredData = contrMunStats;
-
-    if (req.query.mun_name) {
-        filteredData = filteredData.filter(item => item.mun_name === req.query.mun_name);
-    }
-    
-    if (req.query.year) {
-        filteredData = filteredData.filter(item => item.year == req.query.year);
-    }
-
-    if (req.query.from && req.query.to) {
-        const fromYear = parseInt(req.query.from);
-        const toYear = parseInt(req.query.to);
-        filteredData = filteredData.filter(item => item.year >= fromYear && item.year <= toYear);
-    }
-
-    res.status(200).json(filteredData);
-});
-
-app.get(BASE_API + "/contr-mun-stats/:mun_name/:year", (req, res) => {
-    const munName = req.params.mun_name;
-    const year = parseInt(req.params.year);
-
-    const result = contrMunStats.find(item => item.mun_name === munName && item.year === year);
-
-    if (!result) {
-        return res.status(404).json({ error: "Not Found" });
-    }
-
-    res.status(200).json(result);
-});
-
 app.post(BASE_API + "/contr-mun-stats", (req, res) => {
     const newData = req.body;
 
+    // Verificar si los datos esenciales están presentes
     if (!newData.mun_name || !newData.year || !newData.num_contracts) {
-        return res.status(400).json({ error: "Bad Request: Missing required fields" });
+        return res.status(400).json({ error: "Bad Request: Missing required fields (mun_name, year, num_contracts)" });
     }
 
-    // Verificar si ya existe ese contrato
+    // Verificar si ya existe un contrato con el mismo municipio y año
     if (contrMunStats.some(item => item.mun_name === newData.mun_name && item.year === newData.year)) {
         return res.status(409).json({ error: "Conflict: Resource already exists" });
     }
 
+    // Agregar el nuevo contrato sin sobrescribir los existentes
     contrMunStats.push(newData);
     res.status(201).json({ message: "Resource created successfully", data: newData });
 });
 
-app.put(BASE_API + "/contr-mun-stats/:mun_name/:year", (req, res) => {
-    const munName = req.params.mun_name;
-    const year = parseInt(req.params.year);
-    const index = contrMunStats.findIndex(item => item.mun_name === munName && item.year === year);
-
-    if (index === -1) {
-        return res.status(404).json({ error: "Not Found" });
-    }
-
-    contrMunStats[index] = { ...contrMunStats[index], ...req.body };
-    res.status(200).json({ message: "Resource updated successfully", data: contrMunStats[index] });
-});
-
-app.delete(BASE_API + "/contr-mun-stats/:mun_name/:year", (req, res) => {
-    const munName = req.params.mun_name;
-    const year = parseInt(req.params.year);
-    const initialLength = contrMunStats.length;
-    contrMunStats = contrMunStats.filter(item => !(item.mun_name === munName && item.year === year));
-
-    if (contrMunStats.length === initialLength) {
-        return res.status(404).json({ error: "Not Found" });
-    }
-
-    res.status(200).json({ message: "Resource deleted successfully" });
-});
-
-app.delete(BASE_API + "/contr-mun-stats", (req, res) => {
-    contrMunStats = [];
-    res.status(200).json({ message: "All resources deleted successfully" });
-});
 
 //  MVR
 const MVR= require("./samples/MVR/index-MVR.js");
