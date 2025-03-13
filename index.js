@@ -66,8 +66,7 @@ app.get(`${BASE_API}/${mainResource}/loadInitialData`, (request, response) => {
 //RETRIEVE
 app.get(BASE_API+mainResource, (request, response) => {
     let statusCode= 200;
-    response.send(MADCinitialData);
-    response.status(statusCode);
+    response.status(statusCode).json(MADCinitialData);
 });
 
 /*app.get(BASE_API+mainResource, (request, response) => {
