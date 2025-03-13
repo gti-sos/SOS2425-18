@@ -53,7 +53,7 @@ const mainResource= "dana-grants-subsidies-stats";
 //loadInitialData
 let MADCinitialData= [];
 
-app.get(BASE_API+mainResource+"/loadInitialData", (request, response) => {
+app.get(`${BASE_API}/${mainResource}/loadInitialData`, (request, response) => {
     let statusCode= 200;
     if(MADCinitialData.length===0){
         MADCinitialData= MADC.aidExampleArray;
