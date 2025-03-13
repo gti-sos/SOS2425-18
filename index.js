@@ -147,13 +147,8 @@ app.get(BASE_API + "/contr-mun-stats", (request, response) => {
 
 app.post(BASE_API + "/contr-mun-stats", (request, response) => {
     let newData = request.body;
-
-    if (!newData || Object.keys(newData).length === 0) {
-        return response.status(400).json({ error: "El cuerpo de la petición está vacío o mal formado." });
-    }
-
     contr_mun_stats.push(newData);
-    response.sendStatus(201).json({ message: "Resource created successfully", data: newData });
+    return response.sendStatus(201).json({ message: "Resource created successfully", data: newData });
 });
 
 //  MVR
