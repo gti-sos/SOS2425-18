@@ -203,7 +203,38 @@ app.put(BASE_API + "/contr-mun-stats/:year/:month/:prov_cod/:mun_cod/:sec_cod", 
     return response.status(200).json({ message: "Recurso actualizado exitosamente", data: contr_mun_stats[index] });
 });
 
+app.delete(BASE_API + "/contr-mun-stats/:year/:month/:prov_cod/:mun_cod/:sec_cod", (request, response) => {
+    const { year, month, prov_cod, mun_cod, sec_cod } = request.params;
 
+    // Convertir a número los valores numéricos para evitar errores
+    const yearNum = Number(year);
+    const monthNum = Number(month);
+    const provCodNum = Number(prov_cod);
+    const munCodNum = Number(mun_cod);
+
+    // Buscar el índice del recurso en el array
+    const index = contr_mun_stats.findIndex(stat =>
+        stat.year === yearNum &&
+        stat.month === monthNum &&
+        stat.prov_cod === provCodNum &&
+        stat.mun_cod === munCodNum &&
+        stat.sec_cod.toLowerCase() === sec_cod.toLowerCase()
+    );
+
+    if (index === -1) {
+        return response.status(404).json({ error: "Recurso no encontrado." });
+    }
+
+    // Eliminar el recurso del array
+    contr_mun_stats.splice(index, 1);
+
+    return response.status(200).json({ message: "Recurso eliminado exitosamente" });
+});
+
+app.delete(BASE_API + "/contr-mun-stats", (request, response) => {
+    contr_mun_stats = [];  // Vaciar el array
+    return response.status(200).json({ message: "Todos los recursos han sido eliminados." });
+});
 
 //  MVR
 const MVR= require("./samples/MVR/index-MVR.js");
