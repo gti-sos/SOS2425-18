@@ -68,7 +68,7 @@ app.get(`${BASE_API}/${MADCmainResource}/loadInitialData`, (request, response) =
 //RETRIEVE
 app.get(`${BASE_API}/${MADCmainResource}`, (request, response) => {
     let statusCode= 200;
-    return response.status(statusCode).json(JSON.stringify(MADCinitialData.toString(), null, 2));
+    return response.status(statusCode).json(MADCinitialData);
 });
 
 app.get(`${BASE_API}/${MADCmainResource}/:munName`, (request, response) => {
