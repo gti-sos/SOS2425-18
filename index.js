@@ -214,7 +214,7 @@ app.put(BASE_API + "/contr-mun-stats/:year/:month/:prov_cod/:mun_cod/:sec_cod", 
 
     // Si no se encuentra, devolver error 404
     if (index === -1) {
-        return response.status(404).json({ error: "Recurso no encontrado." });
+        return response.status(400).json({ error: "Recurso no encontrado." });
     }
 
     // Validar que el cuerpo de la petición no esté vacío
