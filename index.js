@@ -58,9 +58,9 @@ app.get(`${BASE_API}/${mainResource}/loadInitialData`, (request, response) => {
     if(MADCinitialData.length===0){
         MADCinitialData= MADC.aidExampleArray;
         statusCode= 201;
-        response.status(statusCode);
+        response.status(statusCode).json({"message": "has creado bien el array mostro"});
     }
-    response.status(statusCode);
+    response.status(statusCode).json({"message": "ya estaba creado el array"});
 });
 
 //RETRIEVE
