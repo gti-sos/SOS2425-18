@@ -145,6 +145,31 @@ app.get(BASE_API + "/contr-mun-stats", (request, response) => {
     return response.status(200).json(contr_mun_stats);
 });
 
+app.get(BASE_API + "/contr-mun-stats/:year/:month/:prov_cod/:mun_cod/:sec_cod", (request, response) => {
+    const { year, month, prov_cod, mun_cod, sec_cod } = request.params;
+
+    // Convertir valores a número para evitar problemas de tipo
+    const yearNum = Number(year);
+    const monthNum = Number(month);
+    const provCodNum = Number(prov_cod);
+    const munCodNum = Number(mun_cod);
+
+    // Buscar el recurso en el array
+    const resource = contr_mun_stats.find(stat =>
+        stat.year === yearNum &&
+        stat.month === monthNum &&
+        stat.prov_cod === provCodNum &&
+        stat.mun_cod === munCodNum &&
+        stat.sec_cod.toLowerCase() === sec_cod.toLowerCase()
+    );
+
+    if (!resource) {
+        return response.status(404).json({ error: "Recurso no encontrado." });
+    }
+
+    return response.status(200).json(resource);
+});
+
 app.post(BASE_API + "/contr-mun-stats", (request, response) => {
     let newData = request.body;
 
