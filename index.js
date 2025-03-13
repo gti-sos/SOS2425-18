@@ -71,7 +71,7 @@ app.get(`${BASE_API}/${MADCmainResource}`, (request, response) => {
     return response.status(statusCode).json(MADCinitialData);
 });
 
-app.get(`${BASE_API}/${MADCmainResource}/:munName`, (request, response) => {
+/*app.get(`${BASE_API}/${MADCmainResource}/:munName`, (request, response) => {
     let statusCode= 200;
     const {mun}= request.params;
 
@@ -79,7 +79,7 @@ app.get(`${BASE_API}/${MADCmainResource}/:munName`, (request, response) => {
     return response.status(statusCode).json(array);
 });
 
-/*//CREATE
+//CREATE
 app.post(`${BASE_API}/${MADCmainResource}`, (request, response) => {
 });
 
