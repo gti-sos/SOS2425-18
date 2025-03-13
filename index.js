@@ -48,12 +48,12 @@ app.get("/samples/MADC", (request, response) => {
 });
 
 //  F05 - MADC
-const mainResource= "dana-grants-subsidies-stats";
+const MADCmainResource= "dana-grants-subsidies-stats";
 
 //loadInitialData
 let MADCinitialData= [];
 
-app.get(`${BASE_API}/${mainResource}/loadInitialData`, (request, response) => {
+app.get(`${BASE_API}/${MADCmainResource}/loadInitialData`, (request, response) => {
     let statusCode= 200;
     let resp;
     if(MADCinitialData.length===0){
@@ -66,27 +66,32 @@ app.get(`${BASE_API}/${mainResource}/loadInitialData`, (request, response) => {
 });
 
 //RETRIEVE
-app.get(`${BASE_API}/${mainResource}`, (request, response) => {
+app.get(`${BASE_API}/${MADCmainResource}`, (request, response) => {
     let statusCode= 200;
-    return response.status(statusCode).json(MADCinitialData);
+    return response.status(statusCode).json(JSON.stringify(MADCinitialData.toString(), null, 2));
 });
 
-/*app.get(BASE_API+mainResource, (request, response) => {
+app.get(`${BASE_API}/${MADCmainResource}/:munName`, (request, response) => {
+    let statusCode= 200;
+    const {mun}= request.params;
+
+    let array= MADCinitialData.filter(aid=> aid.mun_name===mun);
+    return response.status(statusCode).json(array);
 });
 
-//CREATE
-app.post(BASE_API+mainResource, (request, response) => {
+/*//CREATE
+app.post(`${BASE_API}/${MADCmainResource}`, (request, response) => {
 });
 
 //UPDATE
-app.put(BASE_API+mainResource, (request, response) => {
+app.put(`${BASE_API}/${MADCmainResource}`, (request, response) => {
 });
 
 //DELETE
-app.delete(BASE_API+mainResource, (request, response) => {
+app.delete(`${BASE_API}/${MADCmainResource}`, (request, response) => {
 });
 
-app.delete(BASE_API+mainResource, (request, response) => {
+app.delete(`${BASE_API}/${MADCmainResource}`, (request, response) => {
 });*/
 
 //  GBD
