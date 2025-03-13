@@ -193,6 +193,14 @@ app.post(BASE_API + "/contr-mun-stats", (request, response) => {
     return response.status(201).json({ message: "Recurso creado exitosamente", data: newData });
 });
 
+app.post(BASE_API + "/contr-mun-stats/:year/:month/:prov_cod/:mun_cod/:sec_cod", (request, response) => {
+    return response.status(405).json({ error: "Método no permitido. No puedes crear un recurso en una ruta específica." });
+});
+
+app.put(BASE_API + "/contr-mun-stats", (request, response) => {
+    return response.status(405).json({ error: "Método no permitido. No puedes actualizar toda la colección." });
+});
+
 app.put(BASE_API + "/contr-mun-stats/:year/:month/:prov_cod/:mun_cod/:sec_cod", (request, response) => {
     const { year, month, prov_cod, mun_cod, sec_cod } = request.params;
     let updatedData = request.body;
