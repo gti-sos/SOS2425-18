@@ -143,12 +143,11 @@ app.get(BASE_API+"/contr-mun-stats/loadInitialData",(request, response)=>{
 
 app.get(BASE_API + "/contr-mun-stats", (request, response) => {
 
-    response.send(JSON.stringify(contr_mun_stats,null,2));
+    return response.status(200).json(contr_mun_stats);
 });
 
 app.post(BASE_API + "/contr-mun-stats", (request, response) => {
     const newData = request.body;
-
     contr_mun_stats.push(newData);
     response.status(201).json({ message: "Resource created successfully", data: newData });
 });
