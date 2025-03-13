@@ -47,6 +47,46 @@ app.get("/samples/MADC", (request, response) => {
         </html>`);
 });
 
+//  F05 - MADC
+const mainResource= "dana-grants-subsidies-stats";
+
+//loadInitialData
+let MADCinitialData= [];
+
+app.get(BASE_API+mainResource+"/loadInitialData", (request, response) => {
+    let statusCode= 200;
+    if(MADCinitialData.length===0){
+        MADCinitialData= MADC.aidExampleArray;
+        statusCode= 201;
+        response.status(statusCode);
+    }
+    response.status(statusCode);
+});
+
+//RETRIEVE
+app.get(BASE_API+mainResource, (request, response) => {
+    let statusCode= 200;
+    response.send(MADCinitialData).status(statusCode);
+});
+
+/*app.get(BASE_API+mainResource, (request, response) => {
+});
+
+//CREATE
+app.post(BASE_API+mainResource, (request, response) => {
+});
+
+//UPDATE
+app.put(BASE_API+mainResource, (request, response) => {
+});
+
+//DELETE
+app.delete(BASE_API+mainResource, (request, response) => {
+});
+
+app.delete(BASE_API+mainResource, (request, response) => {
+});*/
+
 //  GBD
 
 const GBD = require("./samples/GBD/index-GBD.js");
