@@ -55,18 +55,20 @@ let MADCinitialData= [];
 
 app.get(`${BASE_API}/${mainResource}/loadInitialData`, (request, response) => {
     let statusCode= 200;
+    let resp;
     if(MADCinitialData.length===0){
         MADCinitialData= MADC.aidExampleArray;
         statusCode= 201;
-        response.status(statusCode).json({"message": "has creado bien el array mostro"});
+        resp= response.status(statusCode).json({"message": "has creado bien el array mostro"});
     }
-    response.status(statusCode).json({"message": "ya estaba creado el array"});
+    resp= response.status(statusCode).json({"message": "ya estaba creado el array"});
+    return resp;
 });
 
 //RETRIEVE
 app.get(BASE_API+mainResource, (request, response) => {
     let statusCode= 200;
-    response.status(statusCode).json(MADCinitialData);
+    return response.status(statusCode).json(MADCinitialData);
 });
 
 /*app.get(BASE_API+mainResource, (request, response) => {
