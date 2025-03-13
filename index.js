@@ -147,9 +147,27 @@ app.get(BASE_API + "/contr-mun-stats", (request, response) => {
 
 app.post(BASE_API + "/contr-mun-stats", (request, response) => {
     let newData = request.body;
+
+    if (!newData || Object.keys(newData).length === 0) {
+        return response.status(400).json({ error: "El cuerpo de la petición está vacío o mal formado." });
+    }
+
+    const exists = contr_mun_stats.some(stat => 
+        stat.year === newData.year &&
+        stat.month === newData.month &&
+        stat.prov_cod === newData.prov_cod &&
+        stat.mun_cod === newData.mun_cod &&
+        stat.sec_cod === newData.sec_cod
+    );
+
+    if (exists) {
+        return response.status(409).json({ error: "El recurso ya existe." });
+    }
+
     contr_mun_stats.push(newData);
-    return response.sendStatus(201).json({ message: "Resource created successfully", data: newData });
+    return response.status(201).json({ message: "Recurso creado exitosamente", data: newData });
 });
+
 
 //  MVR
 const MVR= require("./samples/MVR/index-MVR.js");
