@@ -168,6 +168,42 @@ app.post(BASE_API + "/contr-mun-stats", (request, response) => {
     return response.status(201).json({ message: "Recurso creado exitosamente", data: newData });
 });
 
+app.put(BASE_API + "/contr-mun-stats/:year/:month/:prov_cod/:mun_cod/:sec_cod", (request, response) => {
+    const { year, month, prov_cod, mun_cod, sec_cod } = request.params;
+    let updatedData = request.body;
+
+    // Convertir valores a número para evitar problemas de tipo
+    const yearNum = parseInt(year);
+    const monthNum = parseInt(month);
+    const provCodNum = parseInt(prov_cod);
+    const munCodNum = parseInt(mun_cod);
+
+    // Buscar el índice del recurso en el array
+    const index = contr_mun_stats.findIndex(stat =>
+        stat.year === yearNum &&
+        stat.month === monthNum &&
+        stat.prov_cod === provCodNum &&
+        stat.mun_cod === munCodNum &&
+        stat.sec_cod === sec_cod
+    );
+
+    // Si no se encuentra, devolver error 404
+    if (index === -1) {
+        return response.status(404).json({ error: "Recurso no encontrado." });
+    }
+
+    // Validar que el cuerpo de la petición no esté vacío
+    if (!updatedData || Object.keys(updatedData).length === 0) {
+        return response.status(400).json({ error: "El cuerpo de la petición está vacío o mal formado." });
+    }
+
+    // Actualizar los datos del recurso encontrado
+    contr_mun_stats[index] = { ...contr_mun_stats[index], ...updatedData };
+
+    return response.status(200).json({ message: "Recurso actualizado exitosamente", data: contr_mun_stats[index] });
+});
+
+
 
 //  MVR
 const MVR= require("./samples/MVR/index-MVR.js");
