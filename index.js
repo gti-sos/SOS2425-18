@@ -75,13 +75,31 @@ app.get(`${BASE_API}/${MADCmainResource}/:munName`, (request, response) => {
     let statusCode= 200;
     const mun= request.params.munName;
     let res;
+    let array=[];
 
     if(typeof mun === "string"){
-        let array= MADCinitialData.filter(aid=> aid.mun_name===mun);
+        array=MADCinitialData.filter(aid=> aid.mun_name===mun);
         res= response.status(statusCode).json(array);
+    }else{
+        res=response.status(statusCode).json(array);
     }
     return res;   
     });
+
+app.get(`${BASE_API}/${MADCmainResource}/:provName`, (request, response) => {
+    let statusCode = 200;
+    const prov = request.params.provName;
+    let res;
+    let array = [];
+
+    if (typeof prov === "string") {
+        array = MADCinitialData.filter(aid => aid.mun_name === prov);
+        res = response.status(statusCode).json(array);
+    } else {
+        res = response.status(statusCode).json(array);
+    }
+    return res;
+});
 /*
 //CREATE
 app.post(`${BASE_API}/${MADCmainResource}`, (request, response) => {
