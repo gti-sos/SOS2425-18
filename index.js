@@ -71,14 +71,18 @@ app.get(`${BASE_API}/${MADCmainResource}`, (request, response) => {
     return response.status(statusCode).json(MADCinitialData);
 });
 
-/*app.get(`${BASE_API}/${MADCmainResource}/:munName`, (request, response) => {
+app.get(`${BASE_API}/${MADCmainResource}/:munName`, (request, response) => {
     let statusCode= 200;
-    const {mun}= request.params;
+    const mun= request.params.munName;
+    let res;
 
-    let array= MADCinitialData.filter(aid=> aid.mun_name===mun);
-    return response.status(statusCode).json(array);
-});
-
+    if(typeof mun === "string"){
+        let array= MADCinitialData.filter(aid=> aid.mun_name===mun);
+        res= response.status(statusCode).json(array);
+    }
+    return res;   
+    });
+/*
 //CREATE
 app.post(`${BASE_API}/${MADCmainResource}`, (request, response) => {
 });
