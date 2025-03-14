@@ -100,7 +100,7 @@ app.get(`${BASE_API}/${MADCmainResource}/:munName/:month/:benefId`, (request, re
         typeof benefId === "string"){
         array=MADCinitialData.filter(aid=> aid.mun_name===mun &&
             aid.month===month &&
-            aid.benefId===month);
+            aid.benef_id===benefId);
         res= response.status(statusCode).json(array);
     }else{
         res=response.status(statusCode).json(array);
