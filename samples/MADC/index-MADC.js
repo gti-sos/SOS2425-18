@@ -26,8 +26,10 @@ aidExampleArray= aidExampleArray.map(line => {
     let obj={};
     for(let i=0; i<line.length; i++){
         let elem= line[i] ? line[i].trim().replace(/"/g, '') : null;
-        if(elem.includes("/")){
-            elem= (i==(line.length-1))? elem.split("/").at(1): elem.split("/").at(0);
+        if(elem!==null){
+            if(elem.includes("/")){
+                elem= (i==(line.length-1))? elem.split("/").at(1): elem.split("/").at(0);
+            }   
         }
         obj[CAMPOS[i]] = (elem === '' || elem===null) ? null : elem;
     }
