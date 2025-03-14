@@ -26,10 +26,7 @@ aidExampleArray= aidExampleArray.map(line => {
     let obj={};
     for(let i=0; i<line.length; i++){
         let elem= line[i] ? line[i].trim().replace(/"/g, '') : null;
-        if(elem==""){
-            elem= null;
-        }
-        obj[CAMPOS[i]] = elem === '' ? null : elem;
+        obj[CAMPOS[i]] = (elem === '' || elem===null) ? null : elem;
     }
     return obj; 
 });
