@@ -89,14 +89,14 @@ app.get(`${BASE_API}/${MADCmainResource}/:munName`, (request, response) => {
 app.get(`${BASE_API}/${MADCmainResource}/:munName/:month/:benefId`, (request, response) => {
     let statusCode= 200;
     const mun= request.params.munName;
-    const month= Number(request.params.month);
+    const month= request.params.month;
     const benefId= request.params.benefId;
 
     let res;
     let array=[];
 
     if(typeof mun === "string" &&
-        typeof month === "number" &&
+        typeof month === "string" &&
         typeof benefId === "string"){
         array=MADCinitialData.filter(aid=> aid.mun_name===mun &&
             aid.month===month &&
