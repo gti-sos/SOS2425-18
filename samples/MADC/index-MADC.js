@@ -46,4 +46,4 @@ function avgByMunNameRes(){
     console.log(avg);
 }
 avgByMunNameRes();
-export{aidExampleDataCSV, CAMPOS, aidExampleArray, avgByMunName};
+module.exports = {aidExampleDataCSV, CAMPOS, aidExampleArray, avgByMunName};

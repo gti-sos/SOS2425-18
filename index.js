@@ -1,21 +1,14 @@
 //CONSTANTES DE DESPLIEGUE Y DEPENDENCIAS GENERALES
 const express= require("express");
-const BASE_API = "/api/v1";
-
 const app= express();
-app.use(express.json());
 const PORT= process.env.PORT || 3000;
 const PROYECTNAME= `SOS2425-18`;
-const PATH_ABS= __dirname;
-
-//CONSTANTES VARIAS
 const cool= require("cool-ascii-faces");
-const path= require("path");
-//const fs = require('fs');
 
-app.listen(PORT, ()=>{
-    console.log(`Proyect ${PROYECTNAME} correctly deployed and running at port ${PORT}`);
-});
+const BASE_API = "/api/v1";
+app.use("/", express.static("./public"));
+app.use(express.json());
+
 
 //PETICIONES A URL DINAMICAS
 //  COOL-ASCII-FACES
@@ -27,7 +20,7 @@ app.get("/cool", (request, response) =>{
     response.send(cool());
 });
 
-//  MADC
+// MADC
 const MADC= require("./samples/MADC/index-MADC.js");
 app.get("/samples/MADC", (request, response) => {
 
@@ -291,5 +284,106 @@ app.get("/samples/MVR", (request, response) => {
 
 });
 
+const MVRMainResource = "/dana-erte-stats";
+
+let dataMVR = [];
+
+// GET base de datos actual. 
+app.get(BASE_API + MVRMainResource, (request, response)=> {
+    response.send(`La base de datos actual es: ${JSON.stringify(dataMVR)}`);
+    });
+
+// GET cargar la base de datos inicial.
+app.get(BASE_API + MVRMainResource + "/loadInitialData", (request, response)=> {
+    let statusCode = 201;
+    console.log("Llamando al GET")
+    if (dataMVR.length === 0){
+        dataMVR = MVR.data;
+        console.log("Array creado");
+    }
+    console.log("Array ya creado");
+    response.send(JSON.stringify(dataMVR));
+})
+
+
+//POST
+app.post(BASE_API + MVRMainResource + "/loadInitialData",(request, response) => {
+    console.log("Llamando al POST to /loadInitialData");
+    //console.log(`<${request.body}>`)
+    let newData = request.body;
+    
+    dataMVR.push(newData);
+    response.sendStatus(201);
+
+});
+
+// DELETE la base de datos
+app.delete(BASE_API + MVRMainResource, (request, response) => {
+    console.log("Eliminando la base de datos...");
+    dataMVR = [];
+    return response.status(200).json({ message: `La base de datos ha sido eliminada.`, dataMVR});
+});
+
+
+// DELETE un municipio en concreto. 
+app.delete(BASE_API + MVRMainResource + "/:municipality", (request, response) => {
+    const { municipality } = request.params;
+    const initialLength = dataMVR.length;
+    console.log(`Llamando a DELETE para eliminar ${municipality} de la base de datos...`, request.params);
+
+
+    dataMVR = dataMVR.filter(item => item.company_municipality.toLowerCase() !== municipality.toLowerCase());
+    if (dataMVR.length === initialLength) {
+        return response.status(404).json({ error: `El municipio '${municipality}' no fue encontrado.` });
+    }
+
+    response.status(200).json({ message: `El municipio '${municipality}' ha sido eliminado correctamente`,data: dataMVR });
+});
+
+// GET un municipio en concreto
+app.get(BASE_API + MVRMainResource + "/:municipality", (request, response)=> {
+    const { municipality } = request.params;
+    const initialLength = dataMVR.length;
+    console.log(`Llamando a GET para obtener todos los datos de ${municipality}...`)
+
+
+    filteredData = dataMVR.filter(item => item.company_municipality.toLowerCase() === municipality.toLowerCase());
+    if (filteredData.length === initialLength) {
+        return response.status(404).json({ error: `El municipio '${municipality}' no fue encontrado.` });
+    }
+
+    response.status(200).json({ message: `El municipio '${municipality}' fue encontrado en los siguientes datos: `, data: filteredData });
+
+
+});
+
+// PUT que actualice los valores de un municipio concreto
+app.put(BASE_API + MVRMainResource + "/:municipality", (request, response) => {
+    const { municipality } = request.params;
+    const updatedData = request.body; // Datos enviados en la solicitud
+    console.log(`Llamando a PUT para actualizar ${municipality}...`);
+
+    let found = false;
+    dataMVR = dataMVR.map(item => {
+        if (item.company_municipality.toLowerCase() === municipality.toLowerCase()) {
+            found = true;
+            return { ...item, ...updatedData }; // Actualiza solo los campos enviados
+        }
+        return item;
+    });
+
+    if (!found) {
+        return response.status(404).json({ error: `El municipio '${municipality}' no fue encontrado.` });
+    }
+
+    response.status(200).json({ message: `El municipio '${municipality}' ha sido actualizado correctamente`, data: dataMVR });
+});
+
+
 // Readme
 app.use("/about", express.static("./about/"));
+
+// Inicializar el servidor
+app.listen(PORT, ()=>{
+    console.log(`Proyect ${PROYECTNAME} correctly deployed and running at port ${PORT}`);
+});
