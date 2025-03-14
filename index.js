@@ -84,21 +84,28 @@ app.get(`${BASE_API}/${MADCmainResource}/:munName`, (request, response) => {
         res=response.status(statusCode).json(array);
     }
     return res;   
-    });
+});
 
-app.get(`${BASE_API}/${MADCmainResource}/:provName`, (request, response) => {
-    let statusCode = 200;
-    const prov = request.params.provName;
+app.get(`${BASE_API}/${MADCmainResource}/:munName/:month/:benefId`, (request, response) => {
+    let statusCode= 200;
+    const mun= request.params.munName;
+    const month= request.params.month;
+    const benefId= request.params.benefId;
+
     let res;
-    let array = [];
+    let array=[];
 
-    if (typeof prov === "string") {
-        array = MADCinitialData.filter(aid => aid.mun_name === prov);
-        res = response.status(statusCode).json(array);
-    } else {
-        res = response.status(statusCode).json(array);
+    if(typeof mun === "string" &&
+        typeof month === "number" &&
+        typeof benefId === "string"){
+        array=MADCinitialData.filter(aid=> aid.mun_name===mun &&
+            aid.month===String(month) &&
+            aid.benefId===month);
+        res= response.status(statusCode).json(array);
+    }else{
+        res=response.status(statusCode).json(array);
     }
-    return res;
+    return res;   
 });
 /*
 //CREATE
