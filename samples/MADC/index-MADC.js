@@ -49,7 +49,7 @@ function avgByMunName(mun){
     return (total_amt_granted/aidByMunName.length);
 }
 
-const mun= 'Elx/Elche';
+const mun= 'Elche';
 let avg= `La media del monto de ayuda/subvencion concedida para el municipio de ${mun} es de ${avgByMunName(mun).toFixed(2)}€`;
 function avgByMunNameRes(){
     console.log(avg);
