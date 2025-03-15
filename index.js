@@ -119,7 +119,7 @@ app.post(`${BASE_API}/${MADCmainResource}`, (request, response) => {
     let statusCode=201;
     let res;
     let token= true;
-    if(!newData || Object.keys(newData).length===0){
+    if(!newData || Object.keys(newData).length===0 || typeof newData !== "object"){
         statusCode=400;
         res= response.status(statusCode).json({"error": "El cuerpo de la petición está vacío o mal formado", "statusCode": statusCode})
     }else{
