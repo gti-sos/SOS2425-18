@@ -104,11 +104,11 @@ app.get(`${BASE_API}/${MADCmainResource}/:munName/:month/:benefId`, (request, re
     let obj=MADCinitialData.find(aid => aid.mun_name === munName &&
         aid.month === month &&
         aid.benef_id === benefId);
-    if(Object.keys(obj).length!==0){
-        res = response.status(statusCode).json(obj);
-    }else{
+    if(obj===undefined || obj===null){
         statusCode=404;
         res = response.status(statusCode).json({"error": `Recurso no encontrado para {municipio: ${munName}, mes: ${month}, benefId: ${benefId}}`, "statusCode": statusCode});
+    }else{
+        res = response.status(statusCode).json(obj);        
     }
     return res;   
 });
@@ -179,7 +179,8 @@ app.put(`${BASE_API}/${MADCmainResource}/:munName/:month/:benefId`, (request, re
         res = response.status(statusCode).json({ "error": `Recurso no encontrado para {municipio: ${munName}, mes: ${month}, benefId: ${benefId}}`, "statusCode": statusCode });
     } else {
         let aid = MADCinitialData[ind];
-        if (!newData || Object.keys(newData).length === 0) {
+        let dataCorresp= benefId === aid.benef_id;
+        if (!dataCorresp || (!newData || Object.keys(newData).length === 0)) {
             statusCode = 400;
             res = response.status(statusCode).json({ "error": "El cuerpo de la petición está vacío o mal formado", "statusCode": statusCode });
         }else{
