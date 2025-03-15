@@ -75,35 +75,34 @@ app.get(`${BASE_API}/${MADCmainResource}/:munName`, (request, response) => {
     let statusCode= 200;
     const mun= request.params.munName;
     let res;
-    let array=[];
-
-    if(typeof mun === "string"){
-        array=MADCinitialData.filter(aid=> aid.mun_name===mun);
-        res= response.status(statusCode).json(array);
-    }else{
-        res=response.status(statusCode).json(array);
-    }
-    return res;   
+    let array = [];
+    array = MADCinitialData.filter(aid => aid.mun_name === mun);
+    res = response.status(statusCode).json(array);
+    return res;
 });
 
 app.get(`${BASE_API}/${MADCmainResource}/:munName/:month/:benefId`, (request, response) => {
     let statusCode= 200;
-    const mun= request.params.munName;
-    const month= request.params.month;
+    const munName= request.params.munName;
+    const month= parseInt(request.params.month);
     const benefId= request.params.benefId;
 
     let res;
-    let array=[];
+    let obj={};
 
-    if(typeof mun === "string" &&
-        typeof month === "string" &&
+    if(typeof munName === "string" &&
+        typeof month === "number" &&
         typeof benefId === "string"){
-        array=MADCinitialData.filter(aid=> aid.mun_name===mun &&
+        
+        console.log(munName);
+        console.log(month);
+        console.log(benefId);
+        obj= MADCinitialData.find(aid=> aid.mun_name===munName &&
             aid.month===month &&
             aid.benef_id===benefId);
-        res= response.status(statusCode).json(array);
+        res= response.status(statusCode).json(obj);
     }else{
-        res=response.status(statusCode).json(array);
+        res=response.status(statusCode).json(obj);
     }
     return res;   
 });

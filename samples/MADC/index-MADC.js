@@ -10,30 +10,37 @@ let aidExampleDataCSV= `year;month;grant_date;benef_id;benef_name;benef_type;pur
 2024;12;30/12/2024;H54155510;CDAD PROP CLARA CAMPOAMOR 1;PERSONAS JURÍDICAS QUE NO DESARROLLAN ACTIVIDAD ECONÓMICA;Acceso a la vivienda y fomento de la edificación;Secretaria Autonómica de Vivienda;Concurrencia;20217.18;0;0;0;Alicante / Alacant;;;SUBVENCIÓN y ENTREGA DINERARIA SIN CONTRAPRESTACIÓN;PROYECTO ORDEN BASES REGULADORAS CONCESIÓN AYUDAS MEJORA ACCESIBILIDAD A LAS VIVIENDAS PLAN ESTATAL 2022-2025 AÑO 2023;0;5458584;12736696;0;0;Autonómica, Estatal;Alicante/Alacant;Villena
 2024;12;30/12/2024;H03538782;CDAD PROP CALLE LA TORRE, 51 DE ELCHE;PERSONAS JURÍDICAS QUE NO DESARROLLAN ACTIVIDAD ECONÓMICA;Acceso a la vivienda y fomento de la edificación;Secretaria Autonómica de Vivienda;Concurrencia;7814.4;0;0;0;Alicante / Alacant;;;SUBVENCIÓN y ENTREGA DINERARIA SIN CONTRAPRESTACIÓN;PROYECTO ORDEN BASES REGULADORAS CONCESIÓN AYUDAS MEJORA ACCESIBILIDAD A LAS VIVIENDAS PLAN ESTATAL 2022-2025 AÑO 2023;0;5458584;12736696;0;0;Autonómica, Estatal;Alicante/Alacant;Elx/Elche`;
 
-const CAMPOS = [
-    'year', 'month', 'grant_date', 'benef_id', 'benef_name',
-    'benef_type', 'purpose', 'grantor', 'grant_type', 'amt_granted',
-    'amt_paid', 'reimbursed', 'refunded', 'region_name', 'sec_cod',
-    'sec_descr', 'aid_type', 'reg_base', 'fund_local', 'fund_regional',
-    'fund_state', 'fund_eu', 'fund_other', 'fund_type', 'prov_name',
-    'mun_name'
-  ];
+const CAMPOS = {
+    "year": "integer", "month": "integer", "grant_date": "string", 'benef_id': "string",
+    "benef_name": "string", "benef_type": "string", "purpose": "string", "grantor": "string",
+    "grant_type": "string", "amt_granted": "float", "amt_paid": "float", "reimbursed": "float",
+    "refunded": "float", "region_name": "string", "sec_cod": "integer",
+    "sec_descr":"string", "aid_type": "string", "reg_base": "string", "fund_local": "float",
+    "fund_regional": "float", "fund_state": "float", "fund_eu": "float", "fund_other": "float",
+    "fund_type": "string", "prov_name": "string", "mun_name": "string"
+};
 
-let aidExampleArray= aidExampleDataCSV.split(`\n`);
-aidExampleArray= aidExampleArray.map(line => {
-    line= line.split(`;`);
-    //console.log(line);
-    let obj={};
-    for(let i=0; i<line.length; i++){
-        let elem= line[i] ? line[i].trim().replace(/"/g, '') : null;
-        if(elem!==null){
-            if(elem.includes("/")){
-                elem= (i==(line.length-1))? elem.split("/").at(1): elem.split("/").at(0);
-            }   
+
+let aidExampleArray = aidExampleDataCSV.split(`\n`);
+aidExampleArray = aidExampleArray.map(line => {
+    line = line.split(`;`);
+    let obj = {};
+    Object.keys(CAMPOS).forEach((key, i) => {
+        let elem = line[i] ? line[i].trim().replace(/"/g, '') : null;
+        if (elem !== null) {
+            if (CAMPOS[key] === "float") {
+                elem = parseFloat(elem);
+            } else if (CAMPOS[key] === "integer") {
+                elem = parseInt(elem);
+            } else {
+                if(elem.includes("/") && elem.split("/").length<3){
+                    elem = (key==="mun_name") ? elem.split("/").at(1) : elem.split("/").at(0);
+                }
+            }
         }
-        obj[CAMPOS[i]] = (elem === '' || elem===null) ? null : elem;
-    }
-    return obj; 
+        obj[key] = (elem === '' || elem === null) ? null : elem;
+    });
+    return obj;
 });
 
 function avgByMunName(mun){
