@@ -59,25 +59,38 @@ app.get(`${BASE_API}/${MADCmainResource}/loadInitialData`, (request, response) =
     if(MADCinitialData.length===0){
         MADCinitialData= MADC.aidExampleArray;
         statusCode= 201;
-        resp= response.status(statusCode).json({"message": "has creado bien el array mostro"});
+        resp= response.status(statusCode).json({"message": "Inicialización de datos realizada correctamente", "statusCode": statusCode});
     }
-    resp= response.status(statusCode).json({"message": "ya estaba creado el array"});
+    resp= response.status(statusCode).json({"message": "Inicialización de datos consecutiva realizada correctamente", "statusCode": statusCode});
     return resp;
 });
 
 //RETRIEVE
 app.get(`${BASE_API}/${MADCmainResource}`, (request, response) => {
     let statusCode= 200;
-    return response.status(statusCode).json(MADCinitialData);
+    let res;
+    if(MADCinitialData!==0){
+        res= response.status(statusCode).json(MADCinitialData);
+    }else{
+        statusCode=404;
+        res= response.status(statusCode).json({"error": "Recurso no encontrado", "statusCode": statusCode})
+    }
+    return res;
 });
 
 app.get(`${BASE_API}/${MADCmainResource}/:munName`, (request, response) => {
     let statusCode= 200;
     const mun= request.params.munName;
     let res;
-    let array = [];
-    array = MADCinitialData.filter(aid => aid.mun_name === mun);
-    res = response.status(statusCode).json(array);
+    let array = MADCinitialData.filter(aid => aid.mun_name === mun);
+
+    if(array.length!==0){
+        res = response.status(statusCode).json(array);
+    }else{
+        statusCode= 404;
+        res= response.status(statusCode).json({"error": `Recurso no encontrado para el municipio de ${mun} `, "statusCode": statusCode})
+    }
+    
     return res;
 });
 
@@ -88,39 +101,113 @@ app.get(`${BASE_API}/${MADCmainResource}/:munName/:month/:benefId`, (request, re
     const benefId= request.params.benefId;
 
     let res;
-    let obj={};
-
-    if(typeof munName === "string" &&
-        typeof month === "number" &&
-        typeof benefId === "string"){
-        
-        console.log(munName);
-        console.log(month);
-        console.log(benefId);
-        obj= MADCinitialData.find(aid=> aid.mun_name===munName &&
-            aid.month===month &&
-            aid.benef_id===benefId);
-        res= response.status(statusCode).json(obj);
+    let obj=MADCinitialData.find(aid => aid.mun_name === munName &&
+        aid.month === month &&
+        aid.benef_id === benefId);
+    if(Object.keys(obj).length!==0){
+        res = response.status(statusCode).json(obj);
     }else{
-        res=response.status(statusCode).json(obj);
+        statusCode=404;
+        res = response.status(statusCode).json({"error": `Recurso no encontrado para {municipio: ${mun}, mes: ${month}, benefId: ${benefId}}`, "statusCode": statusCode});
     }
     return res;   
 });
-/*
+
 //CREATE
 app.post(`${BASE_API}/${MADCmainResource}`, (request, response) => {
+    const newData= request.body;
+    let statusCode=201;
+    let res;
+    if(!newData || Object.keys(newData).length==0){
+        statusCode=400;
+        res= response.statusCode(statusCode).json({"error": "El cuerpo de la petición está vacío o mal formado", "statusCode": statusCode})
+    }else{
+        let exists= MADCinitialData.some(aid=> aid.mun_name === newData.mun_name &&
+            aid.month === newData.month &&
+            aid.benef_id === newData.benef_id);
+        /*if(exists){
+            statusCode=409;
+            res= response.statusCode(statusCode).json({"error": "El cuerpo de la petición está vacío o mal formado", "statusCode": statusCode})
+        }*/
+        MADCinitialData.push(newData);
+        res= response.statusCode(statusCode);
+    }
+    return res;
+
+});
+
+app.post(`${BASE_API}/${MADCmainResource}/:munName/:month/:benefId`, (request, response) => {
+    let statusCode=405;
+    return response.statusCode(statusCode).json({"error": "Método no permitido. No puedes crear un recurso en una ruta específica" , "statusCode": statusCode});
 });
 
 //UPDATE
 app.put(`${BASE_API}/${MADCmainResource}`, (request, response) => {
+    let statusCode=405;
+    return response.status(statusCode).json({"error": "Método no permitido. No puedes actualizar toda la colección" , "statusCode": statusCode});
+});
+
+app.put(`${BASE_API}/${MADCmainResource}/:munName/:month/:benefId`, (request, response) => {
+    const newData= request.body;
+    let statusCode= 200;
+    const munName= request.params.munName;
+    const month= parseInt(request.params.month);
+    const benefId= request.params.benefId;
+    let MADCInitialDatacopy= MADCinitialData;
+    let res;
+
+    let ind= MADCinitialData.findIndex(aid => aid.mun_name === munName &&
+        aid.month === month &&
+        aid.benefId === benefId);
+
+    if (ind === -1) {
+        statusCode = 404;
+        res = response.status(statusCode).json({ "error": `Recurso no encontrado para {municipio: ${mun}, mes: ${month}, benefId: ${benefId}}`, "statusCode": statusCode });
+    } else {
+        let aid = MADCinitialData[ind];
+        if (!newData || Object.keys(newData).length == 0) {
+            statusCode = 400;
+            res = response.statusCode(statusCode).json({ "error": "El cuerpo de la petición está vacío o mal formado", "statusCode": statusCode });
+        }else{
+            aid = { ...aid, ...newData };
+            MADCinitialData[ind]= aid;
+            let numBenefIdDist= MADCinitialData.filter(aid=> aid.benef_id === benefId).length;
+            if(numBenefIdDist>1){
+                statusCode=409;
+                res= response.statusCode(statusCode).json({ "error": `Conflicto por existencia de varios recursos con mismo benef_id: ${benefId}`, "statusCode": statusCode });
+            }else{
+                res= response.statusCode(statusCode);
+            }    
+        } 
+    }
+    return res;
 });
 
 //DELETE
 app.delete(`${BASE_API}/${MADCmainResource}`, (request, response) => {
+    MADCinitialData=[];
+    let statusCode=204;
+    return response.status(statusCode).json({"message": "Borrado de datos realizado", "statusCode": statusCode});
 });
 
-app.delete(`${BASE_API}/${MADCmainResource}`, (request, response) => {
-});*/
+app.delete(`${BASE_API}/${MADCmainResource}/:munName/:month/:benefId`, (request, response) => {
+    let statusCode=204;
+    const munName= request.params.munName;
+    const month= parseInt(request.params.month);
+    const benefId= request.params.benefId;
+    let res;
+
+    let ind= MADCinitialData.findIndex(aid => aid.mun_name === munName &&
+        aid.month === month &&
+        aid.benefId === benefId);
+
+    if(ind ===-1){
+        statusCode= 404;
+        res= response.status(statusCode).json({"error": `Recurso no encontrado para {municipio: ${mun}, mes: ${month}, benefId: ${benefId}}`});
+    }else{
+        res= response.status(statusCode).json({"message": `Borrado de datos realizado para {municipio: ${mun}, mes: ${month}, benefId: ${benefId}}`, "statusCode": statusCode});
+    }
+});
 
 //  GBD
 
