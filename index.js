@@ -120,7 +120,7 @@ app.post(`${BASE_API}/${MADCmainResource}`, (request, response) => {
     let res;
     if(!newData || Object.keys(newData).length==0){
         statusCode=400;
-        res= response.statusCode(statusCode).json({"error": "El cuerpo de la petición está vacío o mal formado", "statusCode": statusCode})
+        res= response.status(statusCode).json({"error": "El cuerpo de la petición está vacío o mal formado", "statusCode": statusCode})
     }else{
         let exists= MADCinitialData.some(aid=> aid.mun_name === newData.mun_name &&
             aid.month === newData.month &&
@@ -130,7 +130,7 @@ app.post(`${BASE_API}/${MADCmainResource}`, (request, response) => {
             res= response.statusCode(statusCode).json({"error": "El cuerpo de la petición está vacío o mal formado", "statusCode": statusCode})
         }*/
         MADCinitialData.push(newData);
-        res= response.statusCode(statusCode);
+        res= response.status(statusCode);
     }
     return res;
 
@@ -138,7 +138,7 @@ app.post(`${BASE_API}/${MADCmainResource}`, (request, response) => {
 
 app.post(`${BASE_API}/${MADCmainResource}/:munName/:month/:benefId`, (request, response) => {
     let statusCode=405;
-    return response.statusCode(statusCode).json({"error": "Método no permitido. No puedes crear un recurso en una ruta específica" , "statusCode": statusCode});
+    return response.status(statusCode).json({"error": "Método no permitido. No puedes crear un recurso en una ruta específica" , "statusCode": statusCode});
 });
 
 //UPDATE
