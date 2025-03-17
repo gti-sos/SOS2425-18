@@ -522,21 +522,26 @@ app.delete(BASE_API + MVRMainResource + "/:municipality", (request, response) =>
 });
 
 // GET un municipio en concreto
-app.get(BASE_API + MVRMainResource + "/:municipality", (request, response)=> {
+app.get(BASE_API + MVRMainResource + "/:municipality", (request, response) => {
     const { municipality } = request.params;
-    const initialLength = dataMVR.length;
-    console.log(`Llamando a GET para obtener todos los datos de ${municipality}...`)
+    console.log(`Llamando a GET para obtener todos los datos de ${municipality}...`);
 
+    const filteredData = dataMVR.filter(item => 
+        item.company_municipality.toLowerCase() === municipality.toLowerCase()
+    );
 
-    filteredData = dataMVR.filter(item => item.company_municipality.toLowerCase() === municipality.toLowerCase());
-    if (filteredData.length === initialLength) {
-        return response.status(404).json({ error: `El municipio '${municipality}' no fue encontrado.` });
+    if (filteredData.length === 0) {
+        return response.status(404).json({ 
+            error: `El municipio '${municipality}' no fue encontrado.` 
+        });
     }
 
-    response.status(200).json({ message: `El municipio '${municipality}' fue encontrado en los siguientes datos: `, data: filteredData });
-
-
+    return response.status(200).json({ 
+        message: `El municipio '${municipality}' fue encontrado en los siguientes datos:`, 
+        data: filteredData 
+    });
 });
+
 
 // PUT que actualice los valores de un municipio concreto
 app.put(BASE_API + MVRMainResource + "/:municipality", (req, res) => {
