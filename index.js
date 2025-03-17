@@ -287,10 +287,25 @@ app.get("/samples/MVR", (request, response) => {
 const MVRMainResource = "/dana-erte-stats";
 
 let dataMVR = [];
+// Opciones permitidas en el main
+app.all(BASE_API + MVRMainResource, (req, res, next) => {
+    if (!["GET", "POST", "DELETE"].includes(req.method)) {
+        return res.status(405).json({ error: "Method Not Allowed" });
+    }
+    next(); // Si es un método permitido, pasa a la siguiente ruta
+});
+
+// Opciones permitiras en el municipality.
+app.all(BASE_API + MVRMainResource + "/:municipality", (req, res, next) => {
+    if (!["GET", "PUT", "DELETE"].includes(req.method)) {
+        return res.status(405).json({ error: "Method Not Allowed" });
+    }
+    next();
+});
 
 // GET base de datos actual. 
 app.get(BASE_API + MVRMainResource, (request, response)=> {
-    response.send(`La base de datos actual es: ${JSON.stringify(dataMVR)}`);
+    response.status(200).send(`La base de datos actual es: ${JSON.stringify(dataMVR)}`);
     });
 
 // GET cargar la base de datos inicial.
@@ -300,20 +315,34 @@ app.get(BASE_API + MVRMainResource + "/loadInitialData", (request, response)=> {
     if (dataMVR.length === 0){
         dataMVR = MVR.data;
         console.log("Array creado");
+        return response.status(201).json(dataMVR);
     }
     console.log("Array ya creado");
-    response.send(JSON.stringify(dataMVR));
+    return response.status(200).send(JSON.stringify(dataMVR));
 })
 
 
 //POST
-app.post(BASE_API + MVRMainResource + "/loadInitialData",(request, response) => {
+app.post(BASE_API + MVRMainResource, (request, response) => {
     console.log("Llamando al POST to /loadInitialData");
     //console.log(`<${request.body}>`)
     let newData = request.body;
-    
+    if (!newData.company_municipality){
+        return response.status(400).json({
+            error: "Faltan campos obligatorios en el body"
+        });
+    }
+    const exists = dataMVR.some(item => // cumple que el elemento company_municipality se encuentra ya en el DB?
+        item.company_municipality.toLowerCase() === newData.company_municipality.toLowerCase()
+    ); // comparamos el dato municipality nuevo
+    if (exists) { // si ya existe llamaremos al estado 409.
+        return response.status(409).json({
+            error: `El recurso con municipio '${newData.company_municipality}' ya existe.`
+        });
+    }
+    // si todo está bien lo creamos: 
     dataMVR.push(newData);
-    response.sendStatus(201);
+    return response.status(201).json({message: "Recurso creado correctamente", data: newData});
 
 });
 
@@ -334,10 +363,13 @@ app.delete(BASE_API + MVRMainResource + "/:municipality", (request, response) =>
 
     dataMVR = dataMVR.filter(item => item.company_municipality.toLowerCase() !== municipality.toLowerCase());
     if (dataMVR.length === initialLength) {
-        return response.status(404).json({ error: `El municipio '${municipality}' no fue encontrado.` });
+        return response.status(404).json({
+            error: `El municipio '${municipality}' no fue encontrado.` });
     }
 
-    response.status(200).json({ message: `El municipio '${municipality}' ha sido eliminado correctamente`,data: dataMVR });
+    return response.status(200).json({ 
+        message: `El municipio '${municipality}' ha sido eliminado correctamente`,
+        data: dataMVR });
 });
 
 // GET un municipio en concreto
@@ -358,26 +390,32 @@ app.get(BASE_API + MVRMainResource + "/:municipality", (request, response)=> {
 });
 
 // PUT que actualice los valores de un municipio concreto
-app.put(BASE_API + MVRMainResource + "/:municipality", (request, response) => {
-    const { municipality } = request.params;
-    const updatedData = request.body; // Datos enviados en la solicitud
-    console.log(`Llamando a PUT para actualizar ${municipality}...`);
+app.put(BASE_API + MVRMainResource + "/:municipality", (req, res) => {
+    const { municipality } = req.params;
+    const updatedData = req.body;
 
-    let found = false;
-    dataMVR = dataMVR.map(item => {
-        if (item.company_municipality.toLowerCase() === municipality.toLowerCase()) {
-            found = true;
-            return { ...item, ...updatedData }; // Actualiza solo los campos enviados
-        }
-        return item;
-    });
+    // si findIndex no encuentra el elemento que cumple la condición devuelve -1
+    const index = dataMVR.findIndex(item =>
+    item.company_municipality.toLowerCase() === municipality.toLowerCase()
+    );
 
-    if (!found) {
-        return response.status(404).json({ error: `El municipio '${municipality}' no fue encontrado.` });
+    // Si no lo encuentra, devolvemos 404
+    if (index === -1) {
+        return res.status(404).json({
+        error: `El municipio '${municipality}' no fue encontrado.`
+        });
     }
 
-    response.status(200).json({ message: `El municipio '${municipality}' ha sido actualizado correctamente`, data: dataMVR });
-});
+    // Actualizamos el objeto con los nuevos campos
+    dataMVR[index] = { ...dataMVR[index], ...updatedData };
+
+    // Devolvemos 200 con el array completo (o solo el elemento actualizado si prefieres)
+    return res.status(200).json({
+    message: `El municipio '${municipality}' ha sido actualizado correctamente`,
+    data: dataMVR
+    });
+    });
+
 
 
 // Readme
