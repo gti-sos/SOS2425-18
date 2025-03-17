@@ -1,21 +1,14 @@
 //CONSTANTES DE DESPLIEGUE Y DEPENDENCIAS GENERALES
 const express= require("express");
-const BASE_API = "/api/v1";
-
 const app= express();
-app.use(express.json());
 const PORT= process.env.PORT || 3000;
 const PROYECTNAME= `SOS2425-18`;
-const PATH_ABS= __dirname;
-
-//CONSTANTES VARIAS
 const cool= require("cool-ascii-faces");
-const path= require("path");
-//const fs = require('fs');
 
-app.listen(PORT, ()=>{
-    console.log(`Proyect ${PROYECTNAME} correctly deployed and running at port ${PORT}`);
-});
+const BASE_API = "/api/v1";
+app.use("/", express.static("./public"));
+app.use(express.json());
+
 
 //PETICIONES A URL DINAMICAS
 //  COOL-ASCII-FACES
@@ -27,7 +20,7 @@ app.get("/cool", (request, response) =>{
     response.send(cool());
 });
 
-//  MADC
+// MADC
 const MADC= require("./samples/MADC/index-MADC.js");
 app.get("/samples/MADC", (request, response) => {
 
@@ -439,5 +432,144 @@ app.get("/samples/MVR", (request, response) => {
 
 });
 
+const MVRMainResource = "/dana-erte-stats";
+
+let dataMVR = [];
+// Opciones permitidas en el main
+app.all(BASE_API + MVRMainResource, (req, res, next) => {
+    if (!["GET", "POST", "DELETE"].includes(req.method)) {
+        return res.status(405).json({ error: "Method Not Allowed" });
+    }
+    next(); // Si es un método permitido, pasa a la siguiente ruta
+});
+
+// Opciones permitiras en el municipality.
+app.all(BASE_API + MVRMainResource + "/:municipality", (req, res, next) => {
+    if (!["GET", "PUT", "DELETE"].includes(req.method)) {
+        return res.status(405).json({ error: "Method Not Allowed" });
+    }
+    next();
+});
+
+// GET base de datos actual. 
+app.get(BASE_API + MVRMainResource, (request, response)=> {
+    response.status(200).send(`La base de datos actual es: ${JSON.stringify(dataMVR)}`);
+    });
+
+// GET cargar la base de datos inicial.
+app.get(BASE_API + MVRMainResource + "/loadInitialData", (request, response)=> {
+    let statusCode = 201;
+    console.log("Llamando al GET")
+    if (dataMVR.length === 0){
+        dataMVR = MVR.data;
+        console.log("Array creado");
+        return response.status(201).json(dataMVR);
+    }
+    console.log("Array ya creado");
+    return response.status(200).send(JSON.stringify(dataMVR));
+})
+
+
+//POST
+app.post(BASE_API + MVRMainResource, (request, response) => {
+    console.log("Llamando al POST to /loadInitialData");
+    //console.log(`<${request.body}>`)
+    let newData = request.body;
+    if (!newData.company_municipality){
+        return response.status(400).json({
+            error: "Faltan campos obligatorios en el body"
+        });
+    }
+    const exists = dataMVR.some(item => // cumple que el elemento company_municipality se encuentra ya en el DB?
+        item.company_municipality.toLowerCase() === newData.company_municipality.toLowerCase()
+    ); // comparamos el dato municipality nuevo
+    if (exists) { // si ya existe llamaremos al estado 409.
+        return response.status(409).json({
+            error: `El recurso con municipio '${newData.company_municipality}' ya existe.`
+        });
+    }
+    // si todo está bien lo creamos: 
+    dataMVR.push(newData);
+    return response.status(201).json({message: "Recurso creado correctamente", data: newData});
+
+});
+
+// DELETE la base de datos
+app.delete(BASE_API + MVRMainResource, (request, response) => {
+    console.log("Eliminando la base de datos...");
+    dataMVR = [];
+    return response.status(200).json({ message: `La base de datos ha sido eliminada.`, dataMVR});
+});
+
+
+// DELETE un municipio en concreto. 
+app.delete(BASE_API + MVRMainResource + "/:municipality", (request, response) => {
+    const { municipality } = request.params;
+    const initialLength = dataMVR.length;
+    console.log(`Llamando a DELETE para eliminar ${municipality} de la base de datos...`, request.params);
+
+
+    dataMVR = dataMVR.filter(item => item.company_municipality.toLowerCase() !== municipality.toLowerCase());
+    if (dataMVR.length === initialLength) {
+        return response.status(404).json({
+            error: `El municipio '${municipality}' no fue encontrado.` });
+    }
+
+    return response.status(200).json({ 
+        message: `El municipio '${municipality}' ha sido eliminado correctamente`,
+        data: dataMVR });
+});
+
+// GET un municipio en concreto
+app.get(BASE_API + MVRMainResource + "/:municipality", (request, response)=> {
+    const { municipality } = request.params;
+    const initialLength = dataMVR.length;
+    console.log(`Llamando a GET para obtener todos los datos de ${municipality}...`)
+
+
+    filteredData = dataMVR.filter(item => item.company_municipality.toLowerCase() === municipality.toLowerCase());
+    if (filteredData.length === initialLength) {
+        return response.status(404).json({ error: `El municipio '${municipality}' no fue encontrado.` });
+    }
+
+    response.status(200).json({ message: `El municipio '${municipality}' fue encontrado en los siguientes datos: `, data: filteredData });
+
+
+});
+
+// PUT que actualice los valores de un municipio concreto
+app.put(BASE_API + MVRMainResource + "/:municipality", (req, res) => {
+    const { municipality } = req.params;
+    const updatedData = req.body;
+
+    // si findIndex no encuentra el elemento que cumple la condición devuelve -1
+    const index = dataMVR.findIndex(item =>
+    item.company_municipality.toLowerCase() === municipality.toLowerCase()
+    );
+
+    // Si no lo encuentra, devolvemos 404
+    if (index === -1) {
+        return res.status(404).json({
+        error: `El municipio '${municipality}' no fue encontrado.`
+        });
+    }
+
+    // Actualizamos el objeto con los nuevos campos
+    dataMVR[index] = { ...dataMVR[index], ...updatedData };
+
+    // Devolvemos 200 con el array completo (o solo el elemento actualizado si prefieres)
+    return res.status(200).json({
+    message: `El municipio '${municipality}' ha sido actualizado correctamente`,
+    data: dataMVR
+    });
+    });
+
+
+
 // Readme
 app.use("/about", express.static("./about/"));
+
+// Inicializar el servidor
+app.listen(PORT, ()=>{
+    console.log(`Proyect ${PROYECTNAME} correctly deployed and running at port ${PORT}`);
+});

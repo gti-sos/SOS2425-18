@@ -1,17 +1,138 @@
 // Inicialización del array con los datos de ejemplo (cada registro en una sola línea)
 let data = [
-    { laboral_authority: "S.T. ALICANTE", request_date: "22/11/2024", request_month: 11, request_year: 2024, fm_resolution_date: "", cnae_description: "Transporte de mercancías por carretera", municipality_code: 14, company_municipality: "Alacant/Alicante", province_code: 3, company_province: "Alicante/Alacant", work_center_locality: "Alicante/Alacant", fm_dana_type: "INDIRECTA", force_majeure_cause: "S", economic_cause: "N", sector: "SERVICIOS", total_work_sus: 1, total_work_red: 0, men_work_sus: 1, women_work_sus: 0, total_with_suspended_workers: 0, total_with_reduced_workers: 0, with_suspended_male_workers: 0, with_suspended_female_workers: 0 },
-    { laboral_authority: "S.T. ALICANTE", request_date: "09/12/2024", request_month: 12, request_year: 2024, fm_resolution_date: "27/12/2024", cnae_description: "Educación secundaria técnica y profesional", municipality_code: 65, company_municipality: "Elx/Elche", province_code: 3, company_province: "Alicante/Alacant", work_center_locality: "Elche/Elx", fm_dana_type: "INDIRECTA", force_majeure_cause: "S", economic_cause: "N", sector: "SERVICIOS", total_work_sus: 3, total_work_red: 0, men_work_sus: 2, women_work_sus: 1, total_with_suspended_workers: 3, total_with_reduced_workers: 0, with_suspended_male_workers: 2, with_suspended_female_workers: 1 },
-    { laboral_authority: "S.T. CASTELLON", request_date: "14/11/2024", request_month: 11, request_year: 2024, fm_resolution_date: "20/11/2024", cnae_description: "Fabricación de muebles de oficina y de establecimientos comerciales", municipality_code: 27, company_municipality: "Benicarló", province_code: 12, company_province: "Castellón/Castelló", work_center_locality: "Benicarló", fm_dana_type: "INDIRECTA", force_majeure_cause: "S", economic_cause: "N", sector: "INDUSTRIA", total_work_sus: 63, total_work_red: 0, men_work_sus: 52, women_work_sus: 11, total_with_suspended_workers: 63, total_with_reduced_workers: 0, with_suspended_male_workers: 52, with_suspended_female_workers: 11 },
-    { laboral_authority: "S.T. CASTELLON", request_date: "14/11/2024", request_month: 11, request_year: 2024, fm_resolution_date: "20/11/2024", cnae_description: "Fabricación de carrocerías para vehículos de motor, fabricación de remolques y semirremolques", municipality_code: 89, company_municipality: "Peníscola/Peñíscola", province_code: 12, company_province: "Castellón/Castelló", work_center_locality: "Peníscola/Peñíscola", fm_dana_type: "INDIRECTA", force_majeure_cause: "S", economic_cause: "N", sector: "INDUSTRIA", total_work_sus: 87, total_work_red: 0, men_work_sus: 55, women_work_sus: 32, total_with_suspended_workers: 87, total_with_reduced_workers: 0, with_suspended_male_workers: 55, with_suspended_female_workers: 32 },
-    { laboral_authority: "S.T. CASTELLON", request_date: "18/11/2024", request_month: 11, request_year: 2024, fm_resolution_date: "22/11/2024", cnae_description: "Transporte por taxi", municipality_code: 40, company_municipality: "Castelló de la Plana/Castellón de la Plana", province_code: 12, company_province: "Castellón/Castelló", work_center_locality: "Castellón De La Plana", fm_dana_type: "INDIRECTA", force_majeure_cause: "S", economic_cause: "N", sector: "SERVICIOS", total_work_sus: 1, total_work_red: 0, men_work_sus: 1, women_work_sus: 0, total_with_suspended_workers: 1, total_with_reduced_workers: 0, with_suspended_male_workers: 1, with_suspended_female_workers: 0 },
-    { laboral_authority: "S.T. CASTELLON", request_date: "21/11/2024", request_month: 11, request_year: 2024, fm_resolution_date: "03/12/2024", cnae_description: "Transporte de mercancías por carretera", municipality_code: 77, company_municipality: "Moncofa", province_code: 12, company_province: "Castellón/Castelló", work_center_locality: "Moncofa", fm_dana_type: "INDIRECTA", force_majeure_cause: "S", economic_cause: "N", sector: "SERVICIOS", total_work_sus: 2, total_work_red: 0, men_work_sus: 2, women_work_sus: 0, total_with_suspended_workers: 0, total_with_reduced_workers: 0, with_suspended_male_workers: 0, with_suspended_female_workers: 0 },
-    { laboral_authority: "S.T. CASTELLON", request_date: "17/12/2024", request_month: 12, request_year: 2024, fm_resolution_date: "18/12/2024", cnae_description: "Transporte de mercancías por carretera", municipality_code: 77, company_municipality: "Moncofa", province_code: 12, company_province: "Castellón/Castelló", work_center_locality: "Moncofa", fm_dana_type: "INDIRECTA", force_majeure_cause: "S", economic_cause: "N", sector: "SERVICIOS", total_work_sus: 2, total_work_red: 0, men_work_sus: 2, women_work_sus: 0, total_with_suspended_workers: 2, total_with_reduced_workers: 0, with_suspended_male_workers: 2, with_suspended_female_workers: 0 },
-    { laboral_authority: "D.G. TRABAJO", request_date: "31/10/2024", request_month: 10, request_year: 2024, fm_resolution_date: "11/11/2024", cnae_description: "Servicios integrales a edificios e instalaciones", municipality_code: 102, company_municipality: "Quart de Poblet", province_code: 46, company_province: "Valencia/València", work_center_locality: "Aldaia", fm_dana_type: "DIRECTA", force_majeure_cause: "S", economic_cause: "N", sector: "SERVICIOS", total_work_sus: 0, total_work_red: 3, men_work_sus: 0, women_work_sus: 0, total_with_suspended_workers: 0, total_with_reduced_workers: 3, with_suspended_male_workers: 0, with_suspended_female_workers: 0 },
-    { laboral_authority: "D.G. TRABAJO", request_date: "04/11/2024", request_month: 11, request_year: 2024, fm_resolution_date: "11/11/2024", cnae_description: "Fabricación de otros componentes, piezas y accesorios para vehículos de motor", municipality_code: 214, company_municipality: "Riba-roja de Túria", province_code: 46, company_province: "Valencia/València", work_center_locality: "Riba-Roja De Túria", fm_dana_type: "DIRECTA", force_majeure_cause: "S", economic_cause: "N", sector: "INDUSTRIA", total_work_sus: 86, total_work_red: 0, men_work_sus: 53, women_work_sus: 33, total_with_suspended_workers: 86, total_with_reduced_workers: 0, with_suspended_male_workers: 53, with_suspended_female_workers: 33 },
-    { laboral_authority: "D.G. TRABAJO", request_date: "04/11/2024", request_month: 11, request_year: 2024, fm_resolution_date: "11/11/2024", cnae_description: "Actividades de las empresas de trabajo temporal", municipality_code: 79, company_municipality: "Madrid", province_code: 28, company_province: "Madrid", work_center_locality: "Aldaia; Almussafes; Gandia", fm_dana_type: "AMBAS", force_majeure_cause: "S", economic_cause: "N", sector: "SERVICIOS", total_work_sus: 79, total_work_red: 0, men_work_sus: 60, women_work_sus: 19, total_with_suspended_workers: 79, total_with_reduced_workers: 0, with_suspended_male_workers: 60, with_suspended_female_workers: 19 }
-  ];
-  
+  {
+      request_date: "22/11/2024",
+      request_month: 11,
+      request_year: 2024,
+      cnae_descr: "Transporte de mercancías por carretera",
+      company_municipality: "Alicante",
+      company_province: "Alicante",
+      work_center_locality: "Alicante",
+      sector: "SERVICIOS",
+      total_work_sus: 1,
+      men_work_sus: 1,
+      women_work_sus: 0
+  },
+  {
+      request_date: "12/09/2024",
+      request_month: 12,
+      request_year: 2024,
+      cnae_descr: "Educación secundaria técnica y profesional",
+      company_municipality: "Elche",
+      company_province: "Alicante",
+      work_center_locality: "Elche",
+      sector: "SERVICIOS",
+      total_work_sus: 3,
+      men_work_sus: 2,
+      women_work_sus: 1
+  },
+  {
+      request_date: "14/11/2024",
+      request_month: 11,
+      request_year: 2024,
+      cnae_descr: "Fabricación de muebles de oficina y de establecimientos comerciales",
+      company_municipality: "Benicarló",
+      company_province: "Castelló",
+      work_center_locality: "Benicarló",
+      sector: "INDUSTRIA",
+      total_work_sus: 63,
+      men_work_sus: 52,
+      women_work_sus: 11
+  },
+  {
+      request_date: "14/11/2024",
+      request_month: 11,
+      request_year: 2024,
+      cnae_descr: "Fabricación de carrocerías para vehículos de motor, fabricación de remolques y semirremolques",
+      company_municipality: "Peñíscola",
+      company_province: "Castelló",
+      work_center_locality: "Peñíscola",
+      sector: "INDUSTRIA",
+      total_work_sus: 87,
+      men_work_sus: 55,
+      women_work_sus: 32
+  },
+  {
+      request_date: "18/11/2024",
+      request_month: 11,
+      request_year: 2024,
+      cnae_descr: "Transporte por taxi",
+      company_municipality: "Castellón de la Plana",
+      company_province: "Castelló",
+      work_center_locality: "Castellón De La Plana",
+      sector: "SERVICIOS",
+      total_work_sus: 1,
+      men_work_sus: 1,
+      women_work_sus: 0
+  },
+  {
+      request_date: "21/11/2024",
+      request_month: 11,
+      request_year: 2024,
+      cnae_descr: "Transporte de mercancías por carretera",
+      company_municipality: "Moncófar",
+      company_province: "Castelló",
+      work_center_locality: "Moncófar",
+      sector: "SERVICIOS",
+      total_work_sus: 2,
+      men_work_sus: 2,
+      women_work_sus: 0
+  },
+  {
+      request_date: "17/12/2024",
+      request_month: 12,
+      request_year: 2024,
+      cnae_descr: "Transporte de mercancías por carretera",
+      company_municipality: "Moncófar",
+      company_province: "Castelló",
+      work_center_locality: "Moncófar",
+      sector: "SERVICIOS",
+      total_work_sus: 2,
+      men_work_sus: 2,
+      women_work_sus: 0
+  },
+  {
+      request_date: "31/10/2024",
+      request_month: 10,
+      request_year: 2024,
+      cnae_descr: "Servicios integrales a edificios e instalaciones",
+      company_municipality: "Cuart de Poblet",
+      company_province: "Valencia",
+      work_center_locality: "Aldaya",
+      sector: "SERVICIOS",
+      total_work_sus: 0,
+      men_work_sus: 0,
+      women_work_sus: 0
+  },
+  {
+      request_date: "11/04/2024",
+      request_month: 11,
+      request_year: 2024,
+      cnae_descr: "Fabricación de otros componentes, piezas y accesorios para vehículos de motor",
+      company_municipality: "Ribarroja del Turia",
+      company_province: "Valencia",
+      work_center_locality: "Riba-Roja De Túria",
+      sector: "INDUSTRIA",
+      total_work_sus: 86,
+      men_work_sus: 53,
+      women_work_sus: 33
+  },
+  {
+      request_date: "11/04/2024",
+      request_month: 11,
+      request_year: 2024,
+      cnae_descr: "Actividades de las empresas de trabajo temporal",
+      company_municipality: "Madrid",
+      company_province: "Madrid",
+      work_center_locality: "Aldaya; Almussafes; Gandía",
+      sector: "SERVICIOS",
+      total_work_sus: 79,
+      men_work_sus: 60,
+      women_work_sus: 19
+  }
+];
+
+
     // Valor geográfico por el cual se filtrarán las filas (puede modificarse según se necesite)
     let selectedProvince = "Valencia/València";
   
@@ -31,5 +152,5 @@ let data = [
     return average;
   }
   avgByPrueb(selectedProvince);
-  module.exports = {avgByPrueb};
+  module.exports = {avgByPrueb, data};
   
