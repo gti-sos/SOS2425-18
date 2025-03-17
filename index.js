@@ -451,10 +451,7 @@ app.all(BASE_API + MVRMainResource + "/:municipality", (req, res, next) => {
     next();
 });
 
-// GET base de datos actual. 
-app.get(BASE_API + MVRMainResource, (request, response)=> {
-    response.status(200).send(`La base de datos actual es: ${JSON.stringify(dataMVR)}`);
-    });
+
 
 // GET cargar la base de datos inicial.
 app.get(BASE_API + MVRMainResource + "/loadInitialData", (request, response)=> {
@@ -469,6 +466,10 @@ app.get(BASE_API + MVRMainResource + "/loadInitialData", (request, response)=> {
     return response.status(200).send(JSON.stringify(dataMVR));
 })
 
+// GET base de datos actual. 
+app.get(BASE_API + MVRMainResource, (request, response)=> {
+    response.status(200).send(`La base de datos actual es: ${JSON.stringify(dataMVR)}`);
+    });
 
 //POST
 app.post(BASE_API + MVRMainResource, (request, response) => {
