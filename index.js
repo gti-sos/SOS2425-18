@@ -499,10 +499,26 @@ app.post(BASE_API + MVRMainResource, (request, response) => {
         });
     }
 
-    // Validar que se incluya el campo obligatorio 'company_municipality'
-    if (!newData.company_municipality) {
+    // Campos obligatorios según el ejemplo de la base de datos
+    const requiredFields = [
+        "request_date",
+        "request_month",
+        "request_year",
+        "cnae_descr",
+        "company_municipality",
+        "company_province",
+        "work_center_locality",
+        "sector",
+        "total_work_sus",
+        "men_work_sus",
+        "women_work_sus"
+    ];
+
+    // Verificar que todos los campos obligatorios estén presentes
+    const missingFields = requiredFields.filter(field => newData[field] === undefined || newData[field] === null);
+    if (missingFields.length > 0) {
         return response.status(400).json({
-            error: "Faltan campos obligatorios en el body"
+            error: `Faltan campos obligatorios en el body: ${missingFields.join(', ')}`
         });
     }
 
@@ -520,6 +536,7 @@ app.post(BASE_API + MVRMainResource, (request, response) => {
     dataMVR.push(newData);
     return response.status(201).json({ message: "Recurso creado correctamente", data: newData });
 });
+
 
 
 // DELETE la base de datos
