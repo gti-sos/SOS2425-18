@@ -490,26 +490,37 @@ app.get(BASE_API + MVRMainResource, (request, response)=> {
 //POST
 app.post(BASE_API + MVRMainResource, (request, response) => {
     console.log("Llamando al POST to /loadInitialData");
-    //console.log(`<${request.body}>`)
-    let newData = request.body;
-    if (!newData.company_municipality){
+    const newData = request.body;
+
+    // Validar que se haya recibido algún dato en el body
+    if (!newData || Object.keys(newData).length === 0) {
+        return response.status(400).json({
+            error: "No se han recibido datos en el body"
+        });
+    }
+
+    // Validar que se incluya el campo obligatorio 'company_municipality'
+    if (!newData.company_municipality) {
         return response.status(400).json({
             error: "Faltan campos obligatorios en el body"
         });
     }
-    const exists = dataMVR.some(item => // cumple que el elemento company_municipality se encuentra ya en el DB?
+
+    // Comprobar que no exista ya un recurso con el mismo valor de 'company_municipality'
+    const exists = dataMVR.some(item =>
         item.company_municipality.toLowerCase() === newData.company_municipality.toLowerCase()
-    ); // comparamos el dato municipality nuevo
-    if (exists) { // si ya existe llamaremos al estado 409.
+    );
+    if (exists) {
         return response.status(409).json({
             error: `El recurso con municipio '${newData.company_municipality}' ya existe.`
         });
     }
-    // si todo está bien lo creamos: 
-    dataMVR.push(newData);
-    return response.status(201).json({message: "Recurso creado correctamente", data: newData});
 
+    // Si todo es correcto, se añade el nuevo recurso
+    dataMVR.push(newData);
+    return response.status(201).json({ message: "Recurso creado correctamente", data: newData });
 });
+
 
 // DELETE la base de datos
 app.delete(BASE_API + MVRMainResource, (request, response) => {
@@ -564,28 +575,36 @@ app.put(BASE_API + MVRMainResource + "/:municipality", (req, res) => {
     const { municipality } = req.params;
     const updatedData = req.body;
 
-    // si findIndex no encuentra el elemento que cumple la condición devuelve -1
-    const index = dataMVR.findIndex(item =>
-    item.company_municipality.toLowerCase() === municipality.toLowerCase()
-    );
-
-    // Si no lo encuentra, devolvemos 404
-    if (index === -1) {
-        return res.status(404).json({
-        error: `El municipio '${municipality}' no fue encontrado.`
+    // Validar que el body incluya el campo 'company_municipality'
+    // y que coincida (ignorando mayúsculas/minúsculas) con el valor pasado en la URL
+    if (!updatedData.company_municipality || 
+        updatedData.company_municipality.toLowerCase() !== municipality.toLowerCase()) {
+        return res.status(400).json({
+            error: "El ID del recurso en el body no coincide con el de la URL."
         });
     }
 
-    // Actualizamos el objeto con los nuevos campos
+    // Buscar el recurso por su 'company_municipality'
+    const index = dataMVR.findIndex(item =>
+        item.company_municipality.toLowerCase() === municipality.toLowerCase()
+    );
+
+    // Si no se encuentra el recurso, se devuelve un 404
+    if (index === -1) {
+        return res.status(404).json({
+            error: `El municipio '${municipality}' no fue encontrado.`
+        });
+    }
+
+    // Se actualiza el recurso con los nuevos datos
     dataMVR[index] = { ...dataMVR[index], ...updatedData };
 
-    // Devolvemos 200 con el array completo (o solo el elemento actualizado si prefieres)
+    // Se responde con un 200 y se devuelve el recurso actualizado (o el array completo)
     return res.status(200).json({
-    message: `El municipio '${municipality}' ha sido actualizado correctamente`,
-    data: dataMVR
+        message: `El municipio '${municipality}' ha sido actualizado correctamente`,
+        data: dataMVR
     });
-    });
-
+});
 
 
 // Readme
