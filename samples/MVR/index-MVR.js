@@ -134,7 +134,7 @@ let data = [
 
 
     // Valor geográfico por el cual se filtrarán las filas (puede modificarse según se necesite)
-    let selectedProvince = "Valencia/València";
+    let selectedProvince = "Valencia";
   
   
   function avgByPrueb(selectedProvince){

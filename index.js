@@ -414,7 +414,7 @@ app.delete(BASE_API + "/contr-mun-stats", (request, response) => {
 const MVR= require("./samples/MVR/index-MVR.js");
 app.get("/samples/MVR", (request, response) => {
 
-    const prov = "Castellón/Castelló";
+    const prov = "Madrid";
     const avg = MVR.avgByPrueb(prov);
     response.send(`<!DOCTYPE html>
 <html lang="en">
