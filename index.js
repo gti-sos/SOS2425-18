@@ -311,6 +311,22 @@ app.get(BASE_API + "/contr-mun-stats/:year/:month/:prov_cod/:mun_cod/:sec_cod", 
     return response.status(200).json(resource);
 });
 
+app.get(BASE_API + "/contr-mun-stats/:year", (request, response) => {
+    const { year } = request.params;
+
+    const yearNum = Number(year);
+
+    // Filtrar todos los recursos que coincidan con `year`
+    const resources = contr_mun_stats.filter(stat => stat.year === yearNum);
+
+    if (resources.length === 0) {
+        return response.status(404).json({ error: "No se encontraron recursos para el año especificado." });
+    }
+
+    return response.status(200).json(resources);
+});
+
+
 app.post(BASE_API + "/contr-mun-stats", (request, response) => {
     let newData = request.body;
 
