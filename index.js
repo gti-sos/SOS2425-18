@@ -341,19 +341,28 @@ app.get(BASE_API + "/contr-mun-stats/:year/:month/:prov_cod/:mun_cod/:sec_cod", 
     return response.status(200).json(resource);
 });
 
-app.get(BASE_API + "/contr-mun-stats/:year", (request, response) => {
-    const { year } = request.params;
+app.get(BASE_API + "/contr-mun-stats/:mun_name", (request, response) => {
+    const mun_name = decodeURIComponent(request.params.mun_name); // por si viene con %20 o tildes
+    const from = Number(request.query.from);
+    const to = Number(request.query.to);
 
-    const yearNum = Number(year);
+    let filtered = contr_mun_stats.filter(stat =>
+        stat.mun_name.toLowerCase() === mun_name.toLowerCase()
+    );
 
-    // Filtrar todos los recursos que coincidan con `year`
-    const resources = contr_mun_stats.filter(stat => stat.year === yearNum);
-
-    if (resources.length === 0) {
-        return response.status(404).json({ error: "No se encontraron recursos para el año especificado." });
+    if (!isNaN(from)) {
+        filtered = filtered.filter(stat => stat.year >= from);
     }
 
-    return response.status(200).json(resources);
+    if (!isNaN(to)) {
+        filtered = filtered.filter(stat => stat.year <= to);
+    }
+
+    if (filtered.length === 0) {
+        return response.status(404).json({ error: "No se encontraron resultados para los filtros especificados." });
+    }
+
+    return response.status(200).json(filtered);
 });
 
 app.post(BASE_API + "/contr-mun-stats", (request, response) => {
