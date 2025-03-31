@@ -1,3 +1,4 @@
+import dataStore from "nedb";
 const BASE_API = "/api/v1";
 
 //  F05 - MADC
@@ -5,6 +6,20 @@ let MADCinitialData= [];
 
 // F05 - GBD
 let contr_mun_stats = [];
+let db_GBD = new dataStore();
+
+let initialContracts = [
+    { year: 2024, month: 11, prov_cod: 12, prov_name: "Castellón/Castelló", mun_cod: 40, mun_name: "Castelló de la Plana/Castellón de la Plana", sec_cod: "A", sec_descr: "AGRICULTURA", num_contracts: 21 },
+    { year: 2024, month: 12, prov_cod: 46, prov_name: "Valencia/València", mun_cod: 250, mun_name: "València", sec_cod: "A", sec_descr: "AGRICULTURA", num_contracts: 561 },
+    { year: 2024, month: 12, prov_cod: 46, prov_name: "Valencia/València", mun_cod: 250, mun_name: "València", sec_cod: "S", sec_descr: "SERVICIOS", num_contracts: 227 },
+    { year: 2024, month: 12, prov_cod: 3, prov_name: "Alicante/Alacant", mun_cod: 76, mun_name: "Guardamar del Segura", sec_cod: "C", sec_descr: "CONSTRUCCIÓN", num_contracts: 2 },
+    { year: 2024, month: 12, prov_cod: 3, prov_name: "Alicante/Alacant", mun_cod: 76, mun_name: "Guardamar del Segura", sec_cod: "I", sec_descr: "INDUSTRIA", num_contracts: 1 },
+    { year: 2024, month: 12, prov_cod: 3, prov_name: "Alicante/Alacant", mun_cod: 119, mun_name: "Sant Joan d'Alacant", sec_cod: "S", sec_descr: "SERVICIOS", num_contracts: 9 },
+    { year: 2024, month: 12, prov_cod: 3, prov_name: "Alicante/Alacant", mun_cod: 902, mun_name: "Pilar de la Horadada", sec_cod: "A", sec_descr: "AGRICULTURA", num_contracts: 11 },
+    { year: 2024, month: 12, prov_cod: 3, prov_name: "Alicante/Alacant", mun_cod: 58, mun_name: "Cox", sec_cod: "S", sec_descr: "SERVICIOS", num_contracts: 16 },
+    { year: 2024, month: 12, prov_cod: 46, prov_name: "Valencia/València", mun_cod: 230, mun_name: "Silla", sec_cod: "S", sec_descr: "SERVICIOS", num_contracts: 10 },
+    { year: 2024, month: 12, prov_cod: 3, prov_name: "Alicante/Alacant", mun_cod: 31, mun_name: "Benidorm", sec_cod: "S", sec_descr: "SERVICIOS", num_contracts: 102 }
+];
 
 // F05-MVR
 let dataMVR = [];
@@ -206,205 +221,119 @@ function loadBackend(app){
 
     // contr-mun-stats
 
-    app.get(BASE_API+"/contr-mun-stats/loadInitialData",(request, response)=>{
-        if (contr_mun_stats.length == 0)
-        {
-            contr_mun_stats = [
-                { year: 2024, month: 11, prov_cod: 12, prov_name: "Castellón/Castelló", mun_cod: 40, mun_name: "Castelló de la Plana/Castellón de la Plana", sec_cod: "A", sec_descr: "AGRICULTURA", num_contracts: 21 },
-                { year: 2024, month: 12, prov_cod: 46, prov_name: "Valencia/València", mun_cod: 250, mun_name: "València", sec_cod: "A", sec_descr: "AGRICULTURA", num_contracts: 561 },
-                { year: 2024, month: 12, prov_cod: 46, prov_name: "Valencia/València", mun_cod: 250, mun_name: "València", sec_cod: "S", sec_descr: "SERVICIOS", num_contracts: 227 },
-                { year: 2024, month: 12, prov_cod: 3, prov_name: "Alicante/Alacant", mun_cod: 76, mun_name: "Guardamar del Segura", sec_cod: "C", sec_descr: "CONSTRUCCIÓN", num_contracts: 2 },
-                { year: 2024, month: 12, prov_cod: 3, prov_name: "Alicante/Alacant", mun_cod: 76, mun_name: "Guardamar del Segura", sec_cod: "I", sec_descr: "INDUSTRIA", num_contracts: 1 },
-                { year: 2024, month: 12, prov_cod: 3, prov_name: "Alicante/Alacant", mun_cod: 119, mun_name: "Sant Joan d'Alacant", sec_cod: "S", sec_descr: "SERVICIOS", num_contracts: 9 },
-                { year: 2024, month: 12, prov_cod: 3, prov_name: "Alicante/Alacant", mun_cod: 902, mun_name: "Pilar de la Horadada", sec_cod: "A", sec_descr: "AGRICULTURA", num_contracts: 11 },
-                { year: 2024, month: 12, prov_cod: 3, prov_name: "Alicante/Alacant", mun_cod: 58, mun_name: "Cox", sec_cod: "S", sec_descr: "SERVICIOS", num_contracts: 16 },
-                { year: 2024, month: 12, prov_cod: 46, prov_name: "Valencia/València", mun_cod: 230, mun_name: "Silla", sec_cod: "S", sec_descr: "SERVICIOS", num_contracts: 10 },
-                { year: 2024, month: 12, prov_cod: 3, prov_name: "Alicante/Alacant", mun_cod: 31, mun_name: "Benidorm", sec_cod: "S", sec_descr: "SERVICIOS", num_contracts: 102 }
-            ];
-
-            return response.status(201).json({message: "Datos cargados correctamente", data: contr_mun_stats});
-        }
-        return response.status(200).json({message: "Datos ya cargados anteriormente", data: contr_mun_stats});
+    app.get(BASE_API + "/contr-mun-stats/loadInitialData", (req, res) => {
+        db_GBD.find({}, (err, data) => {
+            if (data.length > 0) {
+                return res.status(200).json({ message: "Datos ya cargados anteriormente", data });
+            } else {
+                db_GBD.insert(initialContracts, (err2, newDocs) => {
+                    return res.status(201).json({ message: "Datos cargados correctamente", data: newDocs });
+                });
+            }
+        });
     });
 
-    app.get(BASE_API + "/contr-mun-stats", (request, response) => {
-        const query = request.query;
-        const from = Number(query.from);
-        const to = Number(query.to);
+    app.get(BASE_API + "/contr-mun-stats", (req, res) => {
+        const query = req.query;
+        const dbQuery = {};
 
-        let filtered = contr_mun_stats;
-
-        // Filtrar por from / to si están definidos
-        if (!isNaN(from)) {
-            filtered = filtered.filter(stat => stat.year >= from);
-        }
-        if (!isNaN(to)) {
-            filtered = filtered.filter(stat => stat.year <= to);
-        }
-
-        // Filtrar por otros campos dinámicamente
         for (let key in query) {
-            if (key === "from" || key === "to") continue;
-
-            const value = query[key];
-            filtered = filtered.filter(stat => {
-                const statValue = stat[key];
-                if (statValue === undefined) return false;
-
-                if (typeof statValue === "number") {
-                    return statValue === Number(value);
-                } else {
-                    return statValue.toLowerCase() === value.toLowerCase();
-                }
-            });
+            if (key === 'from' || key === 'to') continue;
+            dbQuery[key] = isNaN(query[key]) ? query[key] : Number(query[key]);
         }
 
-        return response.status(200).json(filtered);
+        if (query.from || query.to) {
+            dbQuery.year = {};
+            if (query.from) dbQuery.year.$gte = Number(query.from);
+            if (query.to) dbQuery.year.$lte = Number(query.to);
+        }
+
+        db_GBD.find(dbQuery, (err, data) => {
+            res.status(200).json(data);
+        });
     });
 
-    app.get(BASE_API + "/contr-mun-stats/:mun_name", (request, response) => {
-        const mun_name = decodeURIComponent(request.params.mun_name); // por si viene con %20 o tildes
-        const from = Number(request.query.from);
-        const to = Number(request.query.to);
+    app.get(BASE_API + "/contr-mun-stats/:year/:month/:prov_cod/:mun_cod/:sec_cod", (req, res) => {
+        const { year, month, prov_cod, mun_cod, sec_cod } = req.params;
 
-        let filtered = contr_mun_stats.filter(stat =>
-            stat.mun_name.toLowerCase() === mun_name.toLowerCase()
-        );
-
-        if (!isNaN(from)) {
-            filtered = filtered.filter(stat => stat.year >= from);
-        }
-
-        if (!isNaN(to)) {
-            filtered = filtered.filter(stat => stat.year <= to);
-        }
-
-        return response.status(200).json(filtered);
+        db_GBD.findOne({
+            year: Number(year),
+            month: Number(month),
+            prov_cod: Number(prov_cod),
+            mun_cod: Number(mun_cod),
+            sec_cod: sec_cod
+        }, (err, doc) => {
+            if (!doc) return res.status(404).json({ error: "Recurso no encontrado." });
+            return res.status(200).json(doc);
+        });
     });
 
-
-    app.get(BASE_API + "/contr-mun-stats/:year/:month/:prov_cod/:mun_cod/:sec_cod", (request, response) => {
-        const { year, month, prov_cod, mun_cod, sec_cod } = request.params;
-
-        // Convertir valores a número para evitar problemas de tipo
-        const yearNum = Number(year);
-        const monthNum = Number(month);
-        const provCodNum = Number(prov_cod);
-        const munCodNum = Number(mun_cod);
-
-        // Buscar el recurso en el array
-        const resource = contr_mun_stats.find(stat =>
-            stat.year === yearNum &&
-            stat.month === monthNum &&
-            stat.prov_cod === provCodNum &&
-            stat.mun_cod === munCodNum &&
-            stat.sec_cod.toLowerCase() === sec_cod.toLowerCase()
-        );
-
-        if (!resource) {
-            return response.status(404).json({ error: "Recurso no encontrado." });
-        }
-
-        return response.status(200).json(resource);
-    });
-
-    app.post(BASE_API + "/contr-mun-stats", (request, response) => {
-        let newData = request.body;
-
+    app.post(BASE_API + "/contr-mun-stats", (req, res) => {
+        const newData = req.body;
         if (!newData || Object.keys(newData).length === 0) {
-            return response.status(400).json({ error: "El cuerpo de la petición está vacío o mal formado." });
+            return res.status(400).json({ error: "El cuerpo de la petición está vacío o mal formado." });
         }
 
-        const exists = contr_mun_stats.some(stat => 
-            stat.year === newData.year &&
-            stat.month === newData.month &&
-            stat.prov_cod === newData.prov_cod &&
-            stat.mun_cod === newData.mun_cod &&
-            stat.sec_cod === newData.sec_cod
-        );
-
-        if (exists) {
-            return response.status(409).json({ error: "El recurso ya existe." });
-        }
-
-        contr_mun_stats.push(newData);
-        return response.status(201).json({ message: "Recurso creado exitosamente", data: newData });
+        db_GBD.findOne({
+            year: newData.year,
+            month: newData.month,
+            prov_cod: newData.prov_cod,
+            mun_cod: newData.mun_cod,
+            sec_cod: newData.sec_cod
+        }, (err, existing) => {
+            if (existing) {
+                return res.status(409).json({ error: "El recurso ya existe." });
+            } else {
+                db_GBD.insert(newData, (err2, inserted) => {
+                    res.status(201).json({ message: "Recurso creado exitosamente", data: inserted });
+                });
+            }
+        });
     });
 
-    app.post(BASE_API + "/contr-mun-stats/:year/:month/:prov_cod/:mun_cod/:sec_cod", (request, response) => {
-        return response.status(405).json({ error: "Método no permitido. No puedes crear un recurso en una ruta específica." });
-    });
+    app.put(BASE_API + "/contr-mun-stats/:year/:month/:prov_cod/:mun_cod/:sec_cod", (req, res) => {
+        const { year, month, prov_cod, mun_cod, sec_cod } = req.params;
+        const updatedData = req.body;
 
-    app.put(BASE_API + "/contr-mun-stats", (request, response) => {
-        return response.status(405).json({ error: "Método no permitido. No puedes actualizar toda la colección." });
-    });
-
-    app.put(BASE_API + "/contr-mun-stats/:year/:month/:prov_cod/:mun_cod/:sec_cod", (request, response) => {
-        const { year, month, prov_cod, mun_cod, sec_cod } = request.params;
-        let updatedData = request.body;
-
-        // Convertir valores a número para evitar problemas de tipo
-        const yearNum = parseInt(year);
-        const monthNum = parseInt(month);
-        const provCodNum = parseInt(prov_cod);
-        const munCodNum = parseInt(mun_cod);
-
-        // Buscar el índice del recurso en el array
-        const index = contr_mun_stats.findIndex(stat =>
-            stat.year === yearNum &&
-            stat.month === monthNum &&
-            stat.prov_cod === provCodNum &&
-            stat.mun_cod === munCodNum &&
-            stat.sec_cod === sec_cod
-        );
-
-        // Si no se encuentra, devolver error 404
-        if (index === -1) {
-            return response.status(400).json({ error: "Recurso no encontrado." });
-        }
-
-        // Validar que el cuerpo de la petición no esté vacío
         if (!updatedData || Object.keys(updatedData).length === 0) {
-            return response.status(400).json({ error: "El cuerpo de la petición está vacío o mal formado." });
+            return res.status(400).json({ error: "El cuerpo de la petición está vacío o mal formado." });
         }
 
-        // Actualizar los datos del recurso encontrado
-        contr_mun_stats[index] = { ...contr_mun_stats[index], ...updatedData };
-
-        return response.status(200).json({ message: "Recurso actualizado exitosamente", data: contr_mun_stats[index] });
+        db_GBD.update({
+            year: Number(year),
+            month: Number(month),
+            prov_cod: Number(prov_cod),
+            mun_cod: Number(mun_cod),
+            sec_cod: sec_cod
+        }, { $set: updatedData }, {}, (err, numReplaced) => {
+            if (numReplaced === 0) {
+                return res.status(404).json({ error: "Recurso no encontrado." });
+            }
+            return res.status(200).json({ message: "Recurso actualizado exitosamente" });
+        });
     });
 
-    app.delete(BASE_API + "/contr-mun-stats/:year/:month/:prov_cod/:mun_cod/:sec_cod", (request, response) => {
-        const { year, month, prov_cod, mun_cod, sec_cod } = request.params;
-
-        // Convertir a número los valores numéricos para evitar errores
-        const yearNum = Number(year);
-        const monthNum = Number(month);
-        const provCodNum = Number(prov_cod);
-        const munCodNum = Number(mun_cod);
-
-        // Buscar el índice del recurso en el array
-        const index = contr_mun_stats.findIndex(stat =>
-            stat.year === yearNum &&
-            stat.month === monthNum &&
-            stat.prov_cod === provCodNum &&
-            stat.mun_cod === munCodNum &&
-            stat.sec_cod.toLowerCase() === sec_cod.toLowerCase()
-        );
-
-        if (index === -1) {
-            return response.status(404).json({ error: "Recurso no encontrado." });
-        }
-
-        // Eliminar el recurso del array
-        contr_mun_stats.splice(index, 1);
-
-        return response.status(200).json({ message: "Recurso eliminado exitosamente" });
+    app.delete(BASE_API + "/contr-mun-stats", (req, res) => {
+        db_GBD.remove({}, { multi: true }, (err, numRemoved) => {
+            res.status(200).json({ message: "Todos los recursos han sido eliminados.", removed: numRemoved });
+        });
     });
 
-    app.delete(BASE_API + "/contr-mun-stats", (request, response) => {
-        contr_mun_stats = [];  // Vaciar el array
-        return response.status(200).json({ message: "Todos los recursos han sido eliminados." });
+    app.delete(BASE_API + "/contr-mun-stats/:year/:month/:prov_cod/:mun_cod/:sec_cod", (req, res) => {
+        const { year, month, prov_cod, mun_cod, sec_cod } = req.params;
+
+        db_GBD.remove({
+            year: Number(year),
+            month: Number(month),
+            prov_cod: Number(prov_cod),
+            mun_cod: Number(mun_cod),
+            sec_cod: sec_cod
+        }, {}, (err, numRemoved) => {
+            if (numRemoved === 0) {
+                return res.status(404).json({ error: "Recurso no encontrado." });
+            }
+            res.status(200).json({ message: "Recurso eliminado exitosamente" });
+        });
     });
 
     //dana-erte-stats
