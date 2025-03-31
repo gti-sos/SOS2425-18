@@ -289,7 +289,7 @@ app.get(BASE_API + "/contr-mun-stats", (request, response) => {
 
     let filtered = contr_mun_stats;
 
-    // Filtrar por rango de años (from / to)
+    // Filtrar por from/to si están definidos
     if (!isNaN(from)) {
         filtered = filtered.filter(stat => stat.year >= from);
     }
@@ -297,7 +297,7 @@ app.get(BASE_API + "/contr-mun-stats", (request, response) => {
         filtered = filtered.filter(stat => stat.year <= to);
     }
 
-    // Filtrar por cualquier otro campo, incluyendo "year" si no es parte de from/to
+    // Filtrar por otros campos (incluyendo year)
     for (let key in query) {
         if (key === "from" || key === "to") continue;
 
@@ -314,16 +314,19 @@ app.get(BASE_API + "/contr-mun-stats", (request, response) => {
         });
     }
 
-    // Formato de respuesta tipo población (opcional)
-    const result = filtered.map(stat => ({
-        town: stat.mun_name,
-        year: stat.year,
-        population: stat.num_contracts
-    }));
+    // Si no hay filtros, devolver todos los campos
+    const isFiltered = Object.keys(query).length > 0;
+
+    const result = isFiltered
+        ? filtered.map(stat => ({
+            town: stat.mun_name,
+            year: stat.year,
+            population: stat.num_contracts
+        }))
+        : filtered;
 
     return response.status(200).json(result);
 });
-
 
 app.get(BASE_API + "/contr-mun-stats/:year/:month/:prov_cod/:mun_cod/:sec_cod", (request, response) => {
     const { year, month, prov_cod, mun_cod, sec_cod } = request.params;
