@@ -317,6 +317,27 @@ app.get(BASE_API + "/contr-mun-stats", (request, response) => {
     return response.status(200).json(filtered);
 });
 
+app.get(BASE_API + "/contr-mun-stats/:mun_name", (request, response) => {
+    const mun_name = decodeURIComponent(request.params.mun_name); // por si viene con %20 o tildes
+    const from = Number(request.query.from);
+    const to = Number(request.query.to);
+
+    let filtered = contr_mun_stats.filter(stat =>
+        stat.mun_name.toLowerCase() === mun_name.toLowerCase()
+    );
+
+    if (!isNaN(from)) {
+        filtered = filtered.filter(stat => stat.year >= from);
+    }
+
+    if (!isNaN(to)) {
+        filtered = filtered.filter(stat => stat.year <= to);
+    }
+
+    return response.status(200).json(filtered);
+});
+
+
 app.get(BASE_API + "/contr-mun-stats/:year/:month/:prov_cod/:mun_cod/:sec_cod", (request, response) => {
     const { year, month, prov_cod, mun_cod, sec_cod } = request.params;
 
@@ -340,30 +361,6 @@ app.get(BASE_API + "/contr-mun-stats/:year/:month/:prov_cod/:mun_cod/:sec_cod", 
     }
 
     return response.status(200).json(resource);
-});
-
-app.get(BASE_API + "/contr-mun-stats/:mun_name", (request, response) => {
-    const mun_name = decodeURIComponent(request.params.mun_name); // por si viene con %20 o tildes
-    const from = Number(request.query.from);
-    const to = Number(request.query.to);
-
-    let filtered = contr_mun_stats.filter(stat =>
-        stat.mun_name.toLowerCase() === mun_name.toLowerCase()
-    );
-
-    if (!isNaN(from)) {
-        filtered = filtered.filter(stat => stat.year >= from);
-    }
-
-    if (!isNaN(to)) {
-        filtered = filtered.filter(stat => stat.year <= to);
-    }
-
-    if (filtered.length === 0) {
-        return response.status(404).json({ error: "No se encontraron resultados para los filtros especificados." });
-    }
-
-    return response.status(200).json(filtered);
 });
 
 app.post(BASE_API + "/contr-mun-stats", (request, response) => {
