@@ -283,7 +283,37 @@ app.get(BASE_API+"/contr-mun-stats/loadInitialData",(request, response)=>{
 });
 
 app.get(BASE_API + "/contr-mun-stats", (request, response) => {
-    return response.status(200).json(contr_mun_stats);
+    const query = request.query;
+
+    // Si no hay query params, devolver todos los datos
+    if (Object.keys(query).length === 0) {
+        return response.status(200).json(contr_mun_stats);
+    }
+
+    // Aplicar filtros según los query params
+    let filtered = contr_mun_stats;
+
+    for (let key in query) {
+        const value = query[key];
+
+        filtered = filtered.filter(stat => {
+            const statValue = stat[key];
+
+            if (statValue === undefined) return false;
+
+            if (typeof statValue === "number") {
+                return statValue === Number(value);
+            } else {
+                return statValue.toLowerCase() === value.toLowerCase();
+            }
+        });
+    }
+
+    if (filtered.length === 0) {
+        return response.status(404).json({ error: "No se encontraron resultados para los filtros especificados." });
+    }
+
+    return response.status(200).json(filtered);
 });
 
 app.get(BASE_API + "/contr-mun-stats/:year/:month/:prov_cod/:mun_cod/:sec_cod", (request, response) => {
@@ -324,42 +354,6 @@ app.get(BASE_API + "/contr-mun-stats/:year", (request, response) => {
     }
 
     return response.status(200).json(resources);
-});
-
-app.get(BASE_API + "/contr-mun-stats", (request, response) => {
-    const query = request.query;
-
-    // Si no hay filtros, devolvemos todos los datos
-    if (Object.keys(query).length === 0) {
-        return response.status(200).json(contr_mun_stats);
-    }
-
-    // Filtrar por los campos especificados en query
-    let filtered = contr_mun_stats;
-
-    for (let key in query) {
-        const value = query[key];
-
-        filtered = filtered.filter(stat => {
-            const statValue = stat[key];
-
-            // Si el campo no existe en el objeto, lo ignoramos
-            if (statValue === undefined) return false;
-
-            // Comparación segura para strings y números
-            if (typeof statValue === "number") {
-                return statValue === Number(value);
-            } else {
-                return statValue.toLowerCase() === value.toLowerCase();
-            }
-        });
-    }
-
-    if (filtered.length === 0) {
-        return response.status(404).json({ error: "No se encontraron resultados para los filtros especificados." });
-    }
-
-    return response.status(200).json(filtered);
 });
 
 app.post(BASE_API + "/contr-mun-stats", (request, response) => {
