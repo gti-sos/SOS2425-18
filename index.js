@@ -283,37 +283,30 @@ app.get(BASE_API+"/contr-mun-stats/loadInitialData",(request, response)=>{
 });
 
 app.get(BASE_API + "/contr-mun-stats", (request, response) => {
-    const query = request.query;
+    const from = Number(request.query.from);
+    const to = Number(request.query.to);
 
-    // Si no hay query params, devolver todos los datos
-    if (Object.keys(query).length === 0) {
+    // Si no se especifica ningún filtro, devolvemos todos los datos completos
+    if (isNaN(from) && isNaN(to)) {
         return response.status(200).json(contr_mun_stats);
     }
 
-    // Aplicar filtros según los query params
-    let filtered = contr_mun_stats;
+    // Filtrar por rango de años si hay from y/o to
+    let filtered = contr_mun_stats.filter(stat => {
+        const year = stat.year;
+        if (!isNaN(from) && year < from) return false;
+        if (!isNaN(to) && year > to) return false;
+        return true;
+    });
 
-    for (let key in query) {
-        const value = query[key];
+    // Formatear respuesta reducida si quieres solo los campos principales
+    const result = filtered.map(stat => ({
+        town: stat.mun_name,
+        year: stat.year,
+        population: stat.num_contracts
+    }));
 
-        filtered = filtered.filter(stat => {
-            const statValue = stat[key];
-
-            if (statValue === undefined) return false;
-
-            if (typeof statValue === "number") {
-                return statValue === Number(value);
-            } else {
-                return statValue.toLowerCase() === value.toLowerCase();
-            }
-        });
-    }
-
-    if (filtered.length === 0) {
-        return response.status(404).json({ error: "No se encontraron resultados para los filtros especificados." });
-    }
-
-    return response.status(200).json(filtered);
+    return response.status(200).json(result);
 });
 
 app.get(BASE_API + "/contr-mun-stats/:year/:month/:prov_cod/:mun_cod/:sec_cod", (request, response) => {
