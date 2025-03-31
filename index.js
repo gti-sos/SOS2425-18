@@ -297,7 +297,7 @@ app.get(BASE_API + "/contr-mun-stats", (request, response) => {
         filtered = filtered.filter(stat => stat.year <= to);
     }
 
-    // Filtrar por otros campos (incluyendo year, prov_cod, etc.)
+    // Filtrar por otros campos dinámicamente
     for (let key in query) {
         if (key === "from" || key === "to") continue;
 
