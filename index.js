@@ -283,23 +283,38 @@ app.get(BASE_API+"/contr-mun-stats/loadInitialData",(request, response)=>{
 });
 
 app.get(BASE_API + "/contr-mun-stats", (request, response) => {
-    const from = Number(request.query.from);
-    const to = Number(request.query.to);
+    const query = request.query;
+    const from = Number(query.from);
+    const to = Number(query.to);
 
-    // Si no se especifica ningún filtro, devolvemos todos los datos completos
-    if (isNaN(from) && isNaN(to)) {
-        return response.status(200).json(contr_mun_stats);
+    let filtered = contr_mun_stats;
+
+    // Filtrar por rango de años (from / to)
+    if (!isNaN(from)) {
+        filtered = filtered.filter(stat => stat.year >= from);
+    }
+    if (!isNaN(to)) {
+        filtered = filtered.filter(stat => stat.year <= to);
     }
 
-    // Filtrar por rango de años si hay from y/o to
-    let filtered = contr_mun_stats.filter(stat => {
-        const year = stat.year;
-        if (!isNaN(from) && year < from) return false;
-        if (!isNaN(to) && year > to) return false;
-        return true;
-    });
+    // Filtrar por cualquier otro campo, incluyendo "year" si no es parte de from/to
+    for (let key in query) {
+        if (key === "from" || key === "to") continue;
 
-    // Formatear respuesta reducida si quieres solo los campos principales
+        const value = query[key];
+        filtered = filtered.filter(stat => {
+            const statValue = stat[key];
+            if (statValue === undefined) return false;
+
+            if (typeof statValue === "number") {
+                return statValue === Number(value);
+            } else {
+                return statValue.toLowerCase() === value.toLowerCase();
+            }
+        });
+    }
+
+    // Formato de respuesta tipo población (opcional)
     const result = filtered.map(stat => ({
         town: stat.mun_name,
         year: stat.year,
@@ -308,6 +323,7 @@ app.get(BASE_API + "/contr-mun-stats", (request, response) => {
 
     return response.status(200).json(result);
 });
+
 
 app.get(BASE_API + "/contr-mun-stats/:year/:month/:prov_cod/:mun_cod/:sec_cod", (request, response) => {
     const { year, month, prov_cod, mun_cod, sec_cod } = request.params;
