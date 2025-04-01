@@ -3,7 +3,7 @@
 import express from "express";
 import { loadBackend } from "./src/back/index.js";
 import { loadBackendMADC } from "./src/back/index-MADC.js";
-
+import { loadBackendGBD } from "./src/back/index-GBD.js";
 
 const app= express();
 const PORT= process.env.PORT || 3000;
@@ -15,6 +15,7 @@ app.use("/", express.static("./public"));
 
 loadBackend(app);
 loadBackendMADC(app);
+loadBackendGBD(app);
 
 // Readme
 app.use("/about", express.static("./about/"));
