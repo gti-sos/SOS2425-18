@@ -33,6 +33,10 @@ function loadBackendGBD(app) {
         });
     });
 
+    app.get(BASE_API+"/contr-mun-stats/docs", (request,response)=>{
+        response.redirect("https://documenter.getpostman.com/view/42117294/2sB2cPjR4S");
+    })
+
     app.get(BASE_API + "/contr-mun-stats", (req, res) => {
         const query = req.query;
         const dbQuery = {};
@@ -166,9 +170,6 @@ function loadBackendGBD(app) {
         });
     });
 
-    app.get(BASE_API+"/contr-mun-stats/docs", (request,response)=>{
-        response.redirect("https://documenter.getpostman.com/view/42117294/2sB2cPjR4S");
-    })
 }
 
 export { loadBackendGBD };
