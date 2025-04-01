@@ -19,7 +19,6 @@ let initialData = [
 ];
 
 function loadBackendGBD(app) {
-    
     app.get(BASE_API + "/contr-mun-stats/loadInitialData", (req, res) => {
         db_GBD.find({}, (err, data) => {
             if (data.length > 0) {
@@ -28,7 +27,7 @@ function loadBackendGBD(app) {
             } else {
                 db_GBD.insert(initialData, (err2, newDocs) => {
                     newDocs.forEach(c => delete c._id);
-                    return res.status(201).json({ message: "Datos cargados correctamente", data: newDocs });
+                    return res.status(201).json({ message: "Datos cargados correctamente", data: newDocs.map(({ _id, ...rest }) => rest) });
                 });
             }
         });
