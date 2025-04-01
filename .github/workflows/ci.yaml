@@ -7,6 +7,6 @@ jobs:
       - name: Checkout code 
         uses: actions/checkout@v4
       - name: Install dependences 
-        uses: npm install
+        run: npm install
       - name: Run tests 
-        uses: npm test-MVR-onl
+        run: npm test-MVR-onl
