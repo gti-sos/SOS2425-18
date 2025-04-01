@@ -7,9 +7,11 @@
   "scripts": {
     "start": "node index.js",
     "test-api-MVR-local": "npx newman run tests/back/api-MVR-test.json -e tests/back/api-env-local.json",
-    "test-api-MVR-Online": "npx newman run tests/back/api-MVR-test.json -e tests/back/api-env-online.json",
+    "test-api-MVR-online": "npx newman run tests/back/api-MVR-test.json -e tests/back/api-env-online.json",
     "test-MVR-local": "start-server-and-test start http://localhost:3000 test-api-MVR-local",
-    "test-MVR": "npm run test-MVR-local"
+    "test-MVR-online": "start-server-and-test start https://sos2425-18.onrender.com test-api-MVR-online",
+    "test-MVR-loc": "npm run test-MVR-local",
+    "test-MVR-onl": "npm run test-MVR-online"
 },
   "repository": {
     "type": "git",
