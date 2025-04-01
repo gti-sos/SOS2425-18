@@ -2,15 +2,23 @@
 //const express= require("express");
 import express from "express";
 import { loadBackend } from "./src/back/index.js";
+import { loadBackendMVR } from "./src/back/index-MVR.js";
 
 const app= express();
 const PORT= process.env.PORT || 3000;
-app.use(express.json());
 const PROYECTNAME= `SOS2425-18`;
 
+
+app.use(express.json());
 app.use("/", express.static("./public"));
 
-loadBackend(app)
+app.get('/', (req, res) => {
+    res.status(200).send('API is up and running!');
+});
+
+loadBackendMVR(app);
+
+loadBackend(app);
 
 // Readme
 app.use("/about", express.static("./about/"));
