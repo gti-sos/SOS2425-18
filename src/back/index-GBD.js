@@ -1,9 +1,11 @@
+// contr-mun-stats con persistencia usando NeDB
+
 import dataStore from "nedb";
 const BASE_API = "/api/v1";
 
-let db_GBD = new dataStore();
+let db_GBD = new dataStore({ filename: './data/contr-mun-stats.db', autoload: true });
 
-let initialContracts = [
+let initialData = [
     { year: 2024, month: 11, prov_cod: 12, prov_name: "Castellón/Castelló", mun_cod: 40, mun_name: "Castelló de la Plana/Castellón de la Plana", sec_cod: "A", sec_descr: "AGRICULTURA", num_contracts: 21 },
     { year: 2024, month: 12, prov_cod: 46, prov_name: "Valencia/València", mun_cod: 250, mun_name: "València", sec_cod: "A", sec_descr: "AGRICULTURA", num_contracts: 561 },
     { year: 2024, month: 12, prov_cod: 46, prov_name: "Valencia/València", mun_cod: 250, mun_name: "València", sec_cod: "S", sec_descr: "SERVICIOS", num_contracts: 227 },
@@ -16,17 +18,23 @@ let initialContracts = [
     { year: 2024, month: 12, prov_cod: 3, prov_name: "Alicante/Alacant", mun_cod: 31, mun_name: "Benidorm", sec_cod: "S", sec_descr: "SERVICIOS", num_contracts: 102 }
 ];
 
-function loadBackendGBD(app){
-    
-    // contr-mun-stats
+function cleanData(data) {
+    return data.map(({ _id, ...rest }) => rest);
+}
 
+function cleanOne(doc) {
+    const { _id, ...rest } = doc;
+    return rest;
+}
+
+function loadBackendGBD(app) {
     app.get(BASE_API + "/contr-mun-stats/loadInitialData", (req, res) => {
         db_GBD.find({}, (err, data) => {
             if (data.length > 0) {
-                return res.status(200).json({ message: "Datos ya cargados anteriormente", data });
+                return res.status(200).json({ message: "Datos ya cargados anteriormente", data: cleanData(data) });
             } else {
-                db_GBD.insert(initialContracts, (err2, newDocs) => {
-                    return res.status(201).json({ message: "Datos cargados correctamente", data: newDocs });
+                db_GBD.insert(initialData, (err2, newDocs) => {
+                    return res.status(201).json({ message: "Datos cargados correctamente", data: cleanData(newDocs) });
                 });
             }
         });
@@ -48,7 +56,25 @@ function loadBackendGBD(app){
         }
 
         db_GBD.find(dbQuery, (err, data) => {
-            res.status(200).json(data);
+            res.status(200).json(cleanData(data));
+        });
+    });
+
+    app.get(BASE_API + "/contr-mun-stats/:mun_name", (req, res) => {
+        const mun_name = decodeURIComponent(req.params.mun_name);
+        const from = Number(req.query.from);
+        const to = Number(req.query.to);
+
+        const query = { mun_name: mun_name };
+
+        if (!isNaN(from) || !isNaN(to)) {
+            query.year = {};
+            if (!isNaN(from)) query.year.$gte = from;
+            if (!isNaN(to)) query.year.$lte = to;
+        }
+
+        db_GBD.find(query, (err, data) => {
+            res.status(200).json(cleanData(data));
         });
     });
 
@@ -63,7 +89,7 @@ function loadBackendGBD(app){
             sec_cod: sec_cod
         }, (err, doc) => {
             if (!doc) return res.status(404).json({ error: "Recurso no encontrado." });
-            return res.status(200).json(doc);
+            return res.status(200).json(cleanOne(doc));
         });
     });
 
@@ -84,7 +110,7 @@ function loadBackendGBD(app){
                 return res.status(409).json({ error: "El recurso ya existe." });
             } else {
                 db_GBD.insert(newData, (err2, inserted) => {
-                    res.status(201).json({ message: "Recurso creado exitosamente", data: inserted });
+                    res.status(201).json({ message: "Recurso creado exitosamente", data: cleanOne(inserted) });
                 });
             }
         });
