@@ -3,7 +3,7 @@
 import dataStore from "nedb";
 const BASE_API = "/api/v1";
 
-let db_GBD = new dataStore({ filename: './data/contr-mun-stats.db', autoload: true });
+let db_GBD = new dataStore();
 
 let initialData = [
     { year: 2024, month: 11, prov_cod: 12, prov_name: "Castellón/Castelló", mun_cod: 40, mun_name: "Castelló de la Plana/Castellón de la Plana", sec_cod: "A", sec_descr: "AGRICULTURA", num_contracts: 21 },
@@ -19,6 +19,7 @@ let initialData = [
 ];
 
 function loadBackendGBD(app) {
+    
     app.get(BASE_API + "/contr-mun-stats/loadInitialData", (req, res) => {
         db_GBD.find({}, (err, data) => {
             if (data.length > 0) {
