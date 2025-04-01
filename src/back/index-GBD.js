@@ -18,23 +18,16 @@ let initialData = [
     { year: 2024, month: 12, prov_cod: 3, prov_name: "Alicante/Alacant", mun_cod: 31, mun_name: "Benidorm", sec_cod: "S", sec_descr: "SERVICIOS", num_contracts: 102 }
 ];
 
-function cleanData(data) {
-    return data.map(({ _id, ...rest }) => rest);
-}
-
-function cleanOne(doc) {
-    const { _id, ...rest } = doc;
-    return rest;
-}
-
 function loadBackendGBD(app) {
     app.get(BASE_API + "/contr-mun-stats/loadInitialData", (req, res) => {
         db_GBD.find({}, (err, data) => {
             if (data.length > 0) {
-                return res.status(200).json({ message: "Datos ya cargados anteriormente", data: cleanData(data) });
+                data.forEach(c => delete c._id);
+                return res.status(200).json({ message: "Datos ya cargados anteriormente", data });
             } else {
                 db_GBD.insert(initialData, (err2, newDocs) => {
-                    return res.status(201).json({ message: "Datos cargados correctamente", data: cleanData(newDocs) });
+                    newDocs.forEach(c => delete c._id);
+                    return res.status(201).json({ message: "Datos cargados correctamente", data: newDocs });
                 });
             }
         });
@@ -56,7 +49,8 @@ function loadBackendGBD(app) {
         }
 
         db_GBD.find(dbQuery, (err, data) => {
-            res.status(200).json(cleanData(data));
+            data.forEach(c => delete c._id);
+            res.status(200).json(data);
         });
     });
 
@@ -74,7 +68,8 @@ function loadBackendGBD(app) {
         }
 
         db_GBD.find(query, (err, data) => {
-            res.status(200).json(cleanData(data));
+            data.forEach(c => delete c._id);
+            res.status(200).json(data);
         });
     });
 
@@ -89,7 +84,8 @@ function loadBackendGBD(app) {
             sec_cod: sec_cod
         }, (err, doc) => {
             if (!doc) return res.status(404).json({ error: "Recurso no encontrado." });
-            return res.status(200).json(cleanOne(doc));
+            delete doc._id;
+            return res.status(200).json(doc);
         });
     });
 
@@ -110,7 +106,8 @@ function loadBackendGBD(app) {
                 return res.status(409).json({ error: "El recurso ya existe." });
             } else {
                 db_GBD.insert(newData, (err2, inserted) => {
-                    res.status(201).json({ message: "Recurso creado exitosamente", data: cleanOne(inserted) });
+                    delete inserted._id;
+                    res.status(201).json({ message: "Recurso creado exitosamente", data: inserted });
                 });
             }
         });
