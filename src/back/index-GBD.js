@@ -166,7 +166,7 @@ function loadBackendGBD(app) {
         });
     });
 
-    app.get(BASE_API+"/docs", (request,response)=>{
+    app.get(BASE_API+"/contr-mun-stats/docs", (request,response)=>{
         response.redirect("https://documenter.getpostman.com/view/42117294/2sB2cPjR4S");
     })
 }
