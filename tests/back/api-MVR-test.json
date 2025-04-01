@@ -1,0 +1,454 @@
+{
+	"info": {
+		"_postman_id": "32b72e22-5c8e-4e4f-8f0b-2a9576d1c5c9",
+		"name": "F06",
+		"description": "This api handles dana-stats",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42354753"
+	},
+	"item": [
+		{
+			"name": "200 OK -Borra toda la DB",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200 OK o 404\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 404]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Mensaje de éxito o error\", () => {\r",
+							"    const data = pm.response.json();\r",
+							"\r",
+							"    const tieneMensaje = data.hasOwnProperty(\"message\");\r",
+							"    const tieneError = data.hasOwnProperty(\"error\");\r",
+							"\r",
+							"    pm.expect(tieneMensaje || tieneError).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-erte-stats",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-erte-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "201 Created - Inicialización de los datos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200 o 201\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Devuelve un array con al menos 10 registros\", () => {\r",
+							"    const data = pm.response.json();\r",
+							"    pm.expect(data.length).to.be.at.least(10);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-erte-stats/loadInitialData",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-erte-stats",
+						"loadInitialData"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 OK - Obtención de los datos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Devuelve un array\", () => {\r",
+							"    const data = pm.response.json();\r",
+							"    pm.expect(data).to.be.an(\"array\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-erte-stats/loadInitialData",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-erte-stats",
+						"loadInitialData"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "201 Created - Crea un dato nuevo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 201 Created\", () => {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Devuelve el nuevo recurso creado\", () => {\r",
+							"    const data = pm.response.json();\r",
+							"    pm.expect(data).to.have.property(\"data\");\r",
+							"    pm.expect(data.data).to.have.property(\"company_municipality\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"request_date\": \"11/04/2024\",\r\n        \"request_month\": 11,\r\n        \"request_year\": 2024,\r\n        \"cnae_descr\": \"Actividades de las empresas de trabajo temporal\",\r\n        \"company_municipality\": \"Sevilla\",\r\n        \"company_province\": \"Madrid\",\r\n        \"work_center_locality\": \"Aldaya; Almussafes; Gandía\",\r\n        \"sector\": \"SERVICIOS\",\r\n        \"total_work_sus\": 79,\r\n        \"men_work_sus\": 60,\r\n        \"women_work_sus\": 19\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-erte-stats",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-erte-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 OK - Borra la base de datos",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"request_date\": \"11/04/2024\",\r\n        \"request_month\": 11,\r\n        \"request_year\": 2024,\r\n        \"cnae_descr\": \"Actividades de las empresas de trabajo temporal\",\r\n        \"company_municipality\": \"Sevilla\",\r\n        \"company_province\": \"Madrid\",\r\n        \"work_center_locality\": \"Aldaya; Almussafes; Gandía\",\r\n        \"sector\": \"SERVICIOS\",\r\n        \"total_work_sus\": 79,\r\n        \"men_work_sus\": 60,\r\n        \"women_work_sus\": 19\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-erte-stats",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-erte-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "201 Created - Inicialización de los datos",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-erte-stats/loadInitialData",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-erte-stats",
+						"loadInitialData"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 OK - Borra los datos de un municipio concreto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200 OK o 404\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 404]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Mensaje de éxito o error\", () => {\r",
+							"    const data = pm.response.json();\r",
+							"\r",
+							"    const tieneMensaje = data.hasOwnProperty(\"message\");\r",
+							"    const tieneError = data.hasOwnProperty(\"error\");\r",
+							"\r",
+							"    pm.expect(tieneMensaje || tieneError).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-erte-stats/Elche",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-erte-stats",
+						"Elche"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 OK - Da los datos de un municipio en concreto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200 OK o 404\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 404]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Datos coherentes con el municipio\", () => {\r",
+							"    const data = pm.response.json();\r",
+							"    if (pm.response.code === 200) {\r",
+							"        pm.expect(data).to.have.property(\"data\");\r",
+							"        pm.expect(data.data).to.be.an(\"array\");\r",
+							"    } else {\r",
+							"        pm.expect(data).to.have.property(\"error\");\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-erte-stats/Madrid",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-erte-stats",
+						"Madrid"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 OK - Actualiza los datos del elemento especificado en el put",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200 OK o 400 o 404\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 400, 404]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Respuesta con mensaje\", () => {\r",
+							"    const data = pm.response.json();\r",
+							"    \r",
+							"    const hasMessage = Object.prototype.hasOwnProperty.call(data, \"message\");\r",
+							"    const hasError = Object.prototype.hasOwnProperty.call(data, \"error\");\r",
+							"\r",
+							"    pm.expect(hasMessage || hasError).to.be.true;\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"request_date\": \"22/11/2024\",\r\n        \"request_month\": 11,\r\n        \"request_year\": 2029,\r\n        \"cnae_descr\": \"Transporte de mercancías por carretera\",\r\n        \"company_municipality\": \"Alicante\",\r\n        \"company_province\": \"Alicante\",\r\n        \"work_center_locality\": \"Alicante\",\r\n        \"sector\": \"SERVICIOS\",\r\n        \"total_work_sus\": 6,\r\n        \"men_work_sus\": 5,\r\n        \"women_work_sus\": 1\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-erte-stats/Alicante",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-erte-stats",
+						"Alicante"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 OK - Prueba con query params",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200 OK\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Devuelve resultados filtrados\", () => {\r",
+							"    const data = pm.response.json();\r",
+							"    pm.expect(data).to.be.an(\"array\");\r",
+							"    pm.expect(data.length).to.be.greaterThan(0);\r",
+							"    data.forEach((item) => {\r",
+							"        pm.expect(item.sector).to.eql(\"INDUSTRIA\");\r",
+							"        pm.expect(item.company_province).to.eql(\"Castelló\");\r",
+							"    });\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-erte-stats?sector=INDUSTRIA&company_province=Castelló",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-erte-stats"
+					],
+					"query": [
+						{
+							"key": "sector",
+							"value": "INDUSTRIA"
+						},
+						{
+							"key": "company_province",
+							"value": "Castelló"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
