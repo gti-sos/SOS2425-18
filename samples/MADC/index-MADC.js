@@ -34,14 +34,14 @@ aidExampleArray = aidExampleArray.map(line => {
                 elem = parseInt(elem);
             } else {
                 if(elem.includes("/") && elem.split("/").length<3){
-                    elem = (key==="mun_name") ? elem.split("/").at(1) : elem.split("/").at(0);
+                    elem = (key==="mun_name") ? elem.split("/")[1] : elem.split("/")[0];
                 }
             }
         }
         obj[key] = (elem === '' || elem === null) ? null : elem;
     });
     return obj;
-});
+}).filter(aid=> aid.benef_id !== null);
 
 function avgByMunName(mun){
     let aidByMunName= aidExampleArray.filter(obj => Object.values(obj).find(value => value==mun));
@@ -55,4 +55,4 @@ function avgByMunNameRes(){
     console.log(avg);
 }
 avgByMunNameRes();
-module.exports = {aidExampleDataCSV, CAMPOS, aidExampleArray, avgByMunName};
+export {aidExampleDataCSV, CAMPOS, aidExampleArray, avgByMunName};

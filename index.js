@@ -2,6 +2,8 @@
 //const express= require("express");
 import express from "express";
 import { loadBackend } from "./src/back/index.js";
+import { loadBackendMADC } from "./src/back/index-MADC.js";
+
 
 const app= express();
 const PORT= process.env.PORT || 3000;
@@ -10,7 +12,9 @@ const PROYECTNAME= `SOS2425-18`;
 
 app.use("/", express.static("./public"));
 
-loadBackend(app)
+
+loadBackend(app);
+loadBackendMADC(app);
 
 // Readme
 app.use("/about", express.static("./about/"));
