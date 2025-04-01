@@ -165,6 +165,10 @@ function loadBackendGBD(app) {
             res.status(200).json({ message: "Recurso eliminado exitosamente" });
         });
     });
+
+    app.get(BASE_API+"/docs", (request,response)=>{
+        response.redirect("https://documenter.getpostman.com/view/42117294/2sB2cPjR4S");
+    })
 }
 
 export { loadBackendGBD };
