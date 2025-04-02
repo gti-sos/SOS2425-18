@@ -449,6 +449,246 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "200 OK -Borra toda la DB",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200 OK o 404\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 404]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Mensaje de éxito o error\", () => {\r",
+							"    const data = pm.response.json();\r",
+							"\r",
+							"    const tieneMensaje = data.hasOwnProperty(\"message\");\r",
+							"    const tieneError = data.hasOwnProperty(\"error\");\r",
+							"\r",
+							"    pm.expect(tieneMensaje || tieneError).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-erte-stats",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-erte-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "201 Created - Inicialización de los datos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200 o 201\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Devuelve un array con al menos 10 registros\", () => {\r",
+							"    const data = pm.response.json();\r",
+							"    pm.expect(data.length).to.be.at.least(10);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-erte-stats/loadInitialData",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-erte-stats",
+						"loadInitialData"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "405 Not Allowed - PUT no se puede hacer con una petición general",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 405\", function () {\r",
+							"    pm.response.to.have.status(405);\r",
+							"});\r",
+							"pm.test(\"Devuelve mensaje de error correcto\", function () {\r",
+							"    var json = pm.response.json();\r",
+							"    pm.expect(json.error).to.include(\"Method Not Allowed\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"request_date\": \"22/11/2024\",\r\n        \"request_month\": 11,\r\n        \"request_year\": 2029,\r\n        \"cnae_descr\": \"Transporte de mercancías por carretera\",\r\n        \"company_municipality\": \"Alicante\",\r\n        \"company_province\": \"Alicante\",\r\n        \"work_center_locality\": \"Alicante\",\r\n        \"sector\": \"SERVICIOS\",\r\n        \"total_work_sus\": 6,\r\n        \"men_work_sus\": 5,\r\n        \"women_work_sus\": 1\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-erte-stats",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-erte-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "405 Method Not Allowed -- No se puede hacer un POST en una petición de un dato específico",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 405\", function () {\r",
+							"    pm.response.to.have.status(405);\r",
+							"});\r",
+							"pm.test(\"Devuelve mensaje de error correcto\", function () {\r",
+							"    var json = pm.response.json();\r",
+							"    pm.expect(json.error).to.include(\"Method Not Allowed\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://sos2425-18.onrender.com/api/v1/dana-erte-stats/Elche",
+					"protocol": "https",
+					"host": [
+						"sos2425-18",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-erte-stats",
+						"Elche"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "409 Conflict - Elche ya existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 409 Conflict\", function () {\r",
+							"    pm.response.to.have.status(409);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Mensaje de error correcto\", function () {\r",
+							"    const res = pm.response.json();\r",
+							"    pm.expect(res.error).to.include(\"ya existe\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"request_date\": \"12/09/2024\",\r\n  \"request_month\": 12,\r\n  \"request_year\": 2024,\r\n  \"cnae_descr\": \"Educación secundaria técnica y profesional\",\r\n  \"company_municipality\": \"Elche\",\r\n  \"company_province\": \"Alicante\",\r\n  \"work_center_locality\": \"Elche\",\r\n  \"sector\": \"SERVICIOS\",\r\n  \"total_work_sus\": 3,\r\n  \"men_work_sus\": 2,\r\n  \"women_work_sus\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://sos2425-18.onrender.com/api/v1/dana-erte-stats",
+					"protocol": "https",
+					"host": [
+						"sos2425-18",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-erte-stats"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

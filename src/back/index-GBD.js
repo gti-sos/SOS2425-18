@@ -33,6 +33,10 @@ function loadBackendGBD(app) {
         });
     });
 
+    app.get(BASE_API+"/contr-mun-stats/docs", (request,response)=>{
+        response.redirect("https://documenter.getpostman.com/view/42117294/2sB2cPjR4S");
+    })
+
     app.get(BASE_API + "/contr-mun-stats", (req, res) => {
         const query = req.query;
         const dbQuery = {};
@@ -113,6 +117,14 @@ function loadBackendGBD(app) {
         });
     });
 
+    app.post(BASE_API + "/contr-mun-stats/:year/:month/:prov_cod/:mun_cod/:sec_cod", (req, res) => {
+        return res.status(405).json({ error: "Método no permitido en esta ruta." });
+    });
+
+    app.put(BASE_API + "/contr-mun-stats", (req, res) => {
+        return res.status(405).json({ error: "Método no permitido en esta ruta." });
+    });
+
     app.put(BASE_API + "/contr-mun-stats/:year/:month/:prov_cod/:mun_cod/:sec_cod", (req, res) => {
         const { year, month, prov_cod, mun_cod, sec_cod } = req.params;
         const updatedData = req.body;
@@ -157,6 +169,7 @@ function loadBackendGBD(app) {
             res.status(200).json({ message: "Recurso eliminado exitosamente" });
         });
     });
+
 }
 
 export { loadBackendGBD };

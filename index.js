@@ -22,11 +22,6 @@ loadBackendGBD(app);
 loadBackendMVR(app);
 
 
-
-
-
-
-
 // Readme
 app.use("/about", express.static("./about/"));
 
