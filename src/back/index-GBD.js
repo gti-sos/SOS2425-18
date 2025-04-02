@@ -40,23 +40,32 @@ function loadBackendGBD(app) {
     app.get(BASE_API + "/contr-mun-stats", (req, res) => {
         const query = req.query;
         const dbQuery = {};
-
+    
+        // Filtros dinámicos
         for (let key in query) {
-            if (key === 'from' || key === 'to') continue;
+            if (["from", "to", "limit", "offset"].includes(key)) continue;
             dbQuery[key] = isNaN(query[key]) ? query[key] : Number(query[key]);
         }
-
+    
+        // Filtro por rango de año
         if (query.from || query.to) {
             dbQuery.year = {};
             if (query.from) dbQuery.year.$gte = Number(query.from);
             if (query.to) dbQuery.year.$lte = Number(query.to);
         }
-
-        db_GBD.find(dbQuery, (err, data) => {
-            data.forEach(c => delete c._id);
+    
+        // Paginación
+        const limit = parseInt(query.limit) || 0;     // 0 significa sin límite
+        const offset = parseInt(query.offset) || 0;
+    
+        db_GBD.find(dbQuery).skip(offset).limit(limit).exec((err, data) => {
+            if (err) {
+                return res.status(500).json({ error: "Error al recuperar los datos." });
+            }
+            data.forEach(d => delete d._id);
             res.status(200).json(data);
         });
-    });
+    });    
 
     app.get(BASE_API + "/contr-mun-stats/:mun_name", (req, res) => {
         const mun_name = decodeURIComponent(req.params.mun_name);
