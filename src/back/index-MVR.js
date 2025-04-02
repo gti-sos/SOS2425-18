@@ -168,7 +168,9 @@ function loadBackendMVR(app){
 
     //dana-erte-stats
     const MVRMainResource = "/dana-erte-stats";
-
+    app.get(BASE_API+ MVRMainResource + "/docs", (req, res)=>{
+        res.redirect("https://documenter.getpostman.com/view/42354753/2sB2cRE4zz#2b4141cf-9fb6-4e16-a593-95fa982a0907");
+    });
     // Opciones permitidas en el main
     app.all(BASE_API + MVRMainResource, (req, res, next) => {
         if (!["GET", "POST", "DELETE"].includes(req.method)) {
@@ -434,9 +436,7 @@ function loadBackendMVR(app){
             }
             );
         });
-    app.get(BASE_API+ MVRMainResource + "/docs", (req, res)=>{
-        res.redirect("https://documenter.getpostman.com/view/42354753/2sB2cRE4zz#2b4141cf-9fb6-4e16-a593-95fa982a0907");
-    });
+
     }
 
 
