@@ -10,3 +10,4 @@ jobs:
         run: npm install
       - name: Run tests 
         run: npm run test-MVR-onl
+        run: npm run test-GBD-onl
