@@ -9,4 +9,4 @@ jobs:
       - name: Install dependences 
         run: npm install
       - name: Run tests 
-        run: npm test-MVR-onl
+        run: npm run test-MVR-onl
