@@ -434,7 +434,7 @@ function loadBackendMVR(app){
             }
             );
         });
-    app.get(BASE_API+"/docs", (req, res)=>{
+    app.get(BASE_API+ MVRMainResource + "/docs", (req, res)=>{
         res.redirect("https://documenter.getpostman.com/view/42354753/2sB2cRE4zz#2b4141cf-9fb6-4e16-a593-95fa982a0907");
     });
     }
