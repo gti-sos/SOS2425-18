@@ -2,6 +2,8 @@
 //const express= require("express");
 import express from "express";
 import { loadBackendMADC } from "./src/back/index-MADC.js";
+//import { objData, pueblosdistintos, readAllDataMADC } from "./src/back/index-MADC.js";
+
 import { loadBackendGBD } from "./src/back/index-GBD.js";
 import { loadBackendMVR } from "./src/back/index-MVR.js";
 
@@ -20,11 +22,6 @@ app.get('/', (req, res) => {
 loadBackendMADC(app);
 loadBackendGBD(app);
 loadBackendMVR(app);
-
-
-
-
-
 
 
 // Readme
