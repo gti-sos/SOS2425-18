@@ -9,5 +9,6 @@ jobs:
       - name: Install dependences 
         run: npm install
       - name: Run tests 
-        run: npm run test-MVR-onl
-        run: npm run test-GBD-onl
+        run: |
+          npm run test-MVR-onl
+          npm run test-GBD-onl
