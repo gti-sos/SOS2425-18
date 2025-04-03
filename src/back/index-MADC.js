@@ -89,16 +89,8 @@ function loadBackendMADC(app){
     
     app.get(`${BASE_API}/${MADCmainResource}`, (request, response) => {
         let statusCode= 200;
-        const munName= request.params.munName;
         let q= {};
 
-        //year;month;grant_date;benef_id;benef_name;benef_type;
-
-        // purpose;grantor;grant_type;amt_granted;amt_paid;reimbursed;
-        // refunded;region_name;sec_cod;sec_descr;aid_type;reg_base;
-
-        // fund_local;fund_regional;fund_state;fund_eu;fund_other;fund_type;
-        // prov_name;mun_name
         if(request.query.year) q.year= parseInt(request.query.year);
         if(request.query.month) q.month= parseInt(request.query.month);
         if(request.query.grant_date) q.grant_date= request.query.grant_date;
@@ -130,20 +122,28 @@ function loadBackendMADC(app){
         if(request.query.prov_name) q.prov_name= request.query.prov_name;
         if(request.query.mun_name) q.mun_name= request.query.mun_name;
 
-        /*if (request.query.from) q.year.$gte = parseInt(request.query.from);
+        if (request.query.from) q.year.$gte = parseInt(request.query.from);
         if (request.query.to) q.year.$lte = parseInt(request.query.to);
-
+        /*
         if (request.query.fromDate) q.grant_date.$gte = request.query.fromDate;
         if (request.query.toDate) q.grant_date.$lte = request.query.toDate;
-        
-        const page = parseInt(request.query.page) || 1;
-        const limit = parseInt(request.query.limit) || 10;
-        const offset = (page - 1) * limit;
-
         */
 
-        db_MADC.find(q, (err, data)=>{
-            console.log(data);
+        let page=null;
+        let limit=null;
+        let offset=null;
+
+        if (request.query.page && request.query.limit){
+            page = parseInt(request.query.page);
+            limit= parseInt(request.query.limit);
+            offset = (page - 1) * limit;
+        }
+
+        let pet= db_MADC.find(q);
+
+        if(page!==null && limit !==null) pet= pet.skip(offset).limit(limit); 
+
+        pet.exec((err, data)=>{
             if(err){
                 statusCode= 500;
                 return response.status(statusCode).json({"error": "Error interno del servidor", "statusCode": statusCode});
@@ -156,11 +156,12 @@ function loadBackendMADC(app){
                     return response.status(statusCode).json(data);
                 }else{
                     statusCode= 404;
-                    return response.status(statusCode).json({"error": `Recurso no encontrado para el municipio de ${q.mun_name}`, "statusCode": statusCode})
+                    let json404= {"error": `Recurso no encontrado`, "statusCode": statusCode};
+                    if(q) json404.error= json404.error.concat(` para {${Object.entries(q).map(([k,v])=> `${k}=${v}`).join(", ")}}`);
+                    return response.status(statusCode).json(json404);
                 }
-            }
-            
-        });   
+            }  
+        });
     });
     
     app.get(`${BASE_API}/${MADCmainResource}/:munName/:month/:benefId`, (request, response) => {
