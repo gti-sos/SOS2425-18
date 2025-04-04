@@ -1,7 +1,7 @@
 name: CI-CD
 on: [push,pull_request]
 jobs:
-  ci:
+  ci-cd:
     runs-on:  ubuntu-latest
     steps:
       - name: Checkout code 
@@ -10,9 +10,11 @@ jobs:
         run: npm install
       - name: Run tests 
         run: |
-          npm run test-MVR-loc
           npm run test-GBD-loc
           npm run test-MADC-loc
+          npm run test-MVR-loc
+          
+          
       - name: Deploy to Render
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
