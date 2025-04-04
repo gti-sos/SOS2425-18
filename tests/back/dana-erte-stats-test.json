@@ -618,11 +618,8 @@
 				"header": [],
 				"url": {
 					"raw": "{{BASE_URL}}/api/v1/dana-erte-stats/Elche",
-					"protocol": "https",
 					"host": [
-						"sos2425-18",
-						"onrender",
-						"com"
+						"{{BASE_URL}}"
 					],
 					"path": [
 						"api",
