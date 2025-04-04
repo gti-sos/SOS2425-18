@@ -1,6 +1,22 @@
 import dataStore from "nedb";
 //import * as MADC from "../../samples/MADC/index-MADC.js";
 import * as fs from "fs";
+import { request } from "http";
+import { response } from "express";
+
+//labs anteriores
+
+function avgByMunName(mun){
+    let aidByMunName= aidExampleArray.filter(obj => Object.values(obj).find(value => value==mun));
+    let total_amt_granted= aidByMunName.reduce((acc, obj) => acc + Number.parseFloat(obj.amt_granted), 0);
+    return (total_amt_granted/aidByMunName.length);
+}
+
+const mun= 'Elche';
+let avg= `La media del monto de ayuda/subvencion concedida para el municipio de ${mun} es de ${avgByMunName(mun).toFixed(2)}€`;
+function avgByMunNameRes(){
+    console.log(avg);
+}
 
 let objData=[];
 async function readAllDataMADC(ruta) {
@@ -55,37 +71,12 @@ function loadBackendMADC(app){
         db_MADC.find({}, (err, data)=>{
             if(data.length===0){
                 db_MADC.insert(objData);
-                statusCode= 201;
                 return response.status(statusCode).json({"message": "Inicialización de datos realizada correctamente", "statusCode": statusCode});
             }
             return response.status(statusCode).json({"message": "Inicialización de datos consecutiva realizada correctamente", "statusCode": statusCode});
         })
         
     });
-    
-    //RETRIEVE
-    /*app.get(`${BASE_API}/${MADCmainResource}`, (request, response) => {
-        let statusCode= 200;
-
-        db_MADC.find({}, (err, data)=>{
-            if(err){
-                statusCode= 500;
-                return response.status(statusCode).json({"error": "Error interno del servidor", "statusCode": statusCode});
-            }else{
-                if(data!==0){
-                    data= data.map(aid=>{
-                        delete aid._id;
-                        return aid;
-                    });
-                    return response.status(statusCode).json(data);
-                }else{
-                    statusCode=404;
-                    return response.status(statusCode).json({"error": "Recurso no encontrado", "statusCode": statusCode})
-                }
-            }
-        });
-        
-    });*/
     
     app.get(`${BASE_API}/${MADCmainResource}`, (request, response) => {
         let statusCode= 200;
@@ -186,6 +177,10 @@ function loadBackendMADC(app){
             
         }); 
     });
+
+    app.get(`${BASE_API}/${MADCmainResource}/docs`, (request, response)=>{
+        response.redirect("https://documenter.getpostman.com/view/42356631/2sB2cU9Mdj");
+    });
     
     //CREATE
     app.post(`${BASE_API}/${MADCmainResource}`, (request, response) => {
@@ -270,14 +265,19 @@ function loadBackendMADC(app){
 
     //DELETE
     app.delete(`${BASE_API}/${MADCmainResource}`, (request, response) => {
+        let statusCode=200;
+        let token= true;
+
         db_MADC.remove({}, {multi: true}, (err, numRemoved)=>{
-            let statusCode=200;
             if(err){
                 statusCode=500;
                 return response.status(statusCode).json({"error": "Error interno del servidor", "statusCode": statusCode});
+            }else if(token===false){
+                statusCode=401;
+                return response.status(statusCode).json({"error": `No Autorizado`, "statusCode": statusCode});
             }else{
                 return response.status(statusCode).json({"message": "Borrado de datos realizado", "statusCode": statusCode});
-            }
+            }    
         });
         
     });
@@ -287,6 +287,7 @@ function loadBackendMADC(app){
         const munName= request.params.munName;
         const month= parseInt(request.params.month);
         const benefId= request.params.benefId;
+        let token= true;
     
         db_MADC.remove({mun_name: `${munName}`, month: month, benef_id: `${benefId}`}, {}, (err, numRemoved)=>{
             if(err){

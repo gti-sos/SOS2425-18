@@ -12,3 +12,4 @@ jobs:
         run: |
           npm run test-MVR-onl
           npm run test-GBD-onl
+          npm run test-MADC-onl

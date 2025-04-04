@@ -1,0 +1,657 @@
+{
+	"info": {
+		"_postman_id": "ff16ba27-b3e2-4359-a943-6f40ff378e0c",
+		"name": "SOS2425-18-migdomcie",
+		"description": "The requests are made for this API were developed for an university project from a subject called SOS by the pupil **migdomcie**.\n\nExecuting this POSTMAN collection, you can retrieve, create, update and delete data in a simple way.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42356631",
+		"_collection_link": "https://www.postman.com/migdomcie/workspace/my-workspace/collection/42356631-ff16ba27-b3e2-4359-a943-6f40ff378e0c?action=share&source=collection_link&creator=42356631"
+	},
+	"item": [
+		{
+			"name": "inicializacion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Data initialized\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats/loadInitialData",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-grants-subsidies-stats",
+						"loadInitialData"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "obtencion de todos los recursos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"All resources retrieved\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-grants-subsidies-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "obtencion de un recurso especifico",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"A specific resource retrieved\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats/Alicante/12/E42665265",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-grants-subsidies-stats",
+						"Alicante",
+						"12",
+						"E42665265"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "obtencion busqueda por mun_name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Resources retrieved by a query string\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats?mun_name=Alicante",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-grants-subsidies-stats"
+					],
+					"query": [
+						{
+							"key": "mun_name",
+							"value": "Alicante"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "obtencion de todos los recursos paginada",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Resources retrieved and splitted in pages\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats?page=1&limit=2",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-grants-subsidies-stats"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "obtencion de recurso inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"The resource doesn´t exists\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats/Alicante/12/Z12121212",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-grants-subsidies-stats",
+						"Alicante",
+						"12",
+						"Z12121212"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "creacion de nuevos recursos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"All new resources created\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\r\n    \"year\": 2024,\r\n    \"month\": 12,\r\n    \"grant_date\": \"31/12/2024\",\r\n    \"benef_id\": \"B73614928\",\r\n    \"benef_name\": \"GREEN AVOCADO TECH S.L.\",\r\n    \"benef_type\": \"startup_innovación\",\r\n    \"purpose\": \"Desarrollo de un sistema de IA para optimizar el riego en plantaciones de aguacates\",\r\n    \"grantor\": \"Consejería de Transformación Económica\",\r\n    \"grant_type\": \"Iniciativa FuturoVerde\",\r\n    \"amt_granted\": 42500.00,\r\n    \"amt_paid\": 25000.00,\r\n    \"reimbursed\": 0.00,\r\n    \"refunded\": 0.00,\r\n    \"region_name\": \"Comunidad Valenciana\",\r\n    \"sec_cod\": 72,\r\n    \"sec_descr\": \"Agrotecnología sostenible\",\r\n    \"aid_type\": \"Innovación verde\",\r\n    \"reg_base\": \"Decreto 18/2025, de 8 de febrero\",\r\n    \"fund_local\": 8500.00,\r\n    \"fund_regional\": 12000.00,\r\n    \"fund_state\": 15000.00,\r\n    \"fund_eu\": 7000.00,\r\n    \"fund_other\": 0.00,\r\n    \"fund_type\": \"PlanTechVerde\",\r\n    \"prov_name\": \"Alicante\",\r\n    \"mun_name\": \"Denia\"\r\n}]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats/",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-grants-subsidies-stats",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "creacion de recursos repetidos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"All new resources already created\", function () {\r",
+							"    pm.response.to.have.status(409);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\r\n    \"year\": 2024,\r\n    \"month\": 12,\r\n    \"grant_date\": \"31/12/2024\",\r\n    \"benef_id\": \"B73614928\",\r\n    \"benef_name\": \"GREEN AVOCADO TECH S.L.\",\r\n    \"benef_type\": \"startup_innovación\",\r\n    \"purpose\": \"Desarrollo de un sistema de IA para optimizar el riego en plantaciones de aguacates\",\r\n    \"grantor\": \"Consejería de Transformación Económica\",\r\n    \"grant_type\": \"Iniciativa FuturoVerde\",\r\n    \"amt_granted\": 42500.00,\r\n    \"amt_paid\": 25000.00,\r\n    \"reimbursed\": 0.00,\r\n    \"refunded\": 0.00,\r\n    \"region_name\": \"Comunidad Valenciana\",\r\n    \"sec_cod\": 72,\r\n    \"sec_descr\": \"Agrotecnología sostenible\",\r\n    \"aid_type\": \"Innovación verde\",\r\n    \"reg_base\": \"Decreto 18/2025, de 8 de febrero\",\r\n    \"fund_local\": 8500.00,\r\n    \"fund_regional\": 12000.00,\r\n    \"fund_state\": 15000.00,\r\n    \"fund_eu\": 7000.00,\r\n    \"fund_other\": 0.00,\r\n    \"fund_type\": \"PlanTechVerde\",\r\n    \"prov_name\": \"Alicante\",\r\n    \"mun_name\": \"Denia\"\r\n}]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats/",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-grants-subsidies-stats",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "creacion de recursos mal formados",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"The request doesn´t match with the format expected\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\"year\": 25}]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats/",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-grants-subsidies-stats",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "creacion de recursos a url incorrecta",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"The request was made with a specific resource url\", function () {\r",
+							"    pm.response.to.have.status(405);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\r\n    \"year\": 2025,\r\n    \"month\": 3,\r\n    \"grant_date\": \"15/03/2025\",\r\n    \"benef_id\": \"B73614928\",\r\n    \"benef_name\": \"GREEN AVOCADO TECH S.L.\",\r\n    \"benef_type\": \"startup_innovación\",\r\n    \"purpose\": \"Desarrollo de un sistema de IA para optimizar el riego en plantaciones de aguacates\",\r\n    \"grantor\": \"Consejería de Transformación Económica\",\r\n    \"grant_type\": \"Iniciativa FuturoVerde\",\r\n    \"amt_granted\": 42500.00,\r\n    \"amt_paid\": 25000.00,\r\n    \"reimbursed\": 0.00,\r\n    \"refunded\": 0.00,\r\n    \"region_name\": \"Comunidad Valenciana\",\r\n    \"sec_cod\": 72,\r\n    \"sec_descr\": \"Agrotecnología sostenible\",\r\n    \"aid_type\": \"Innovación verde\",\r\n    \"reg_base\": \"Decreto 18/2025, de 8 de febrero\",\r\n    \"fund_local\": 8500.00,\r\n    \"fund_regional\": 12000.00,\r\n    \"fund_state\": 15000.00,\r\n    \"fund_eu\": 7000.00,\r\n    \"fund_other\": 0.00,\r\n    \"fund_type\": \"PlanTechVerde\",\r\n    \"prov_name\": \"Alicante\",\r\n    \"mun_name\": \"Denia\"\r\n}]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats/Alicante/12/E42665265",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-grants-subsidies-stats",
+						"Alicante",
+						"12",
+						"E42665265"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "actualizacion de un recurso especifico",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"A specific resource updated \", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"year\": 2024,\r\n    \"month\": 12,\r\n    \"grant_date\": \"31/12/2024\",\r\n    \"benef_id\": \"B73614928\",\r\n    \"benef_name\": \"AGUACATE MARRON TECH S.L.\",\r\n    \"benef_type\": \"startup_innovación\",\r\n    \"purpose\": \"Desarrollo de un sistema de IA para optimizar el riego en plantaciones de aguacates\",\r\n    \"grantor\": \"Consejería de Transformación Económica\",\r\n    \"grant_type\": \"Iniciativa FuturoVerde\",\r\n    \"amt_granted\": 42500.00,\r\n    \"amt_paid\": 25000.00,\r\n    \"reimbursed\": 0.00,\r\n    \"refunded\": 0.00,\r\n    \"region_name\": \"Comunidad Valenciana\",\r\n    \"sec_cod\": 72,\r\n    \"sec_descr\": \"Agrotecnología sostenible\",\r\n    \"aid_type\": \"Innovación verde\",\r\n    \"reg_base\": \"Decreto 18/2025, de 8 de febrero\",\r\n    \"fund_local\": 8500.00,\r\n    \"fund_regional\": 12000.00,\r\n    \"fund_state\": 15000.00,\r\n    \"fund_eu\": 7000.00,\r\n    \"fund_other\": 0.00,\r\n    \"fund_type\": \"PlanTechVerde\",\r\n    \"prov_name\": \"Alicante\",\r\n    \"mun_name\": \"Denia\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats/Denia/12/B73614928",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-grants-subsidies-stats",
+						"Denia",
+						"12",
+						"B73614928"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "actualizacion recurso a url incorrecta",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"The request was made with all resources url\", function () {\r",
+							"    pm.response.to.have.status(405);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"year\": 2025,\r\n    \"month\": 3,\r\n    \"grant_date\": \"15/03/2025\",\r\n    \"benef_id\": \"B73614928\",\r\n    \"benef_name\": \"GREEN AVOCADO TECH S.L.\",\r\n    \"benef_type\": \"startup_innovación\",\r\n    \"purpose\": \"Desarrollo de un sistema de IA para optimizar el riego en plantaciones de aguacates\",\r\n    \"grantor\": \"Consejería de Transformación Económica\",\r\n    \"grant_type\": \"Iniciativa FuturoVerde\",\r\n    \"amt_granted\": 42500.00,\r\n    \"amt_paid\": 25000.00,\r\n    \"reimbursed\": 0.00,\r\n    \"refunded\": 0.00,\r\n    \"region_name\": \"Comunidad Valenciana\",\r\n    \"sec_cod\": 72,\r\n    \"sec_descr\": \"Agrotecnología sostenible\",\r\n    \"aid_type\": \"Innovación verde\",\r\n    \"reg_base\": \"Decreto 18/2025, de 8 de febrero\",\r\n    \"fund_local\": 8500.00,\r\n    \"fund_regional\": 12000.00,\r\n    \"fund_state\": 15000.00,\r\n    \"fund_eu\": 7000.00,\r\n    \"fund_other\": 0.00,\r\n    \"fund_type\": \"PlanTechVerde\",\r\n    \"prov_name\": \"Alicante\",\r\n    \"mun_name\": \"Denia\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats/",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-grants-subsidies-stats",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "actualizacion de recurso mal formado",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"The request doesn´t match with the format expected\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"year\": 25}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats/Denia/3/B73614928",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-grants-subsidies-stats",
+						"Denia",
+						"3",
+						"B73614928"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "borrado de recurso inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"The resource doesn´t exists\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats/Valencia/12/A00000000",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-grants-subsidies-stats",
+						"Valencia",
+						"12",
+						"A00000000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "borrado de un recurso especifico",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"A specific resource deleted\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats/Denia/12/B73614928",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-grants-subsidies-stats",
+						"Denia",
+						"12",
+						"B73614928"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
