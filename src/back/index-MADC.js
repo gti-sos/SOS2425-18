@@ -66,12 +66,11 @@ function loadBackendMADC(app){
     const MADCmainResource= "dana-grants-subsidies-stats";
 
     app.get(`${BASE_API}/${MADCmainResource}/loadInitialData`, (request, response) => {
-        let statusCode;
 
         db_MADC.find({}, (err, data)=>{
             if(data.length===0){
                 db_MADC.insert(objData);
-                statusCode=201;
+                let statusCode=201;
                 return response.status(statusCode).json({"message": "Inicialización de datos realizada correctamente", "statusCode": statusCode});
             }
             return response.status(statusCode).json({"message": "Inicialización de datos consecutiva realizada correctamente", "statusCode": statusCode});
