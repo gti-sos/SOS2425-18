@@ -6,14 +6,14 @@ import { response } from "express";
 
 //labs anteriores
 
-function avgByMunName(mun){
-    let aidByMunName= aidExampleArray.filter(obj => Object.values(obj).find(value => value==mun));
+function avgByMunName(arr, mun){
+    let aidByMunName= arr.filter(obj => Object.values(obj).find(value => value==mun));
     let total_amt_granted= aidByMunName.reduce((acc, obj) => acc + Number.parseFloat(obj.amt_granted), 0);
     return (total_amt_granted/aidByMunName.length);
 }
 
-const mun= 'Elche';
-let avg= `La media del monto de ayuda/subvencion concedida para el municipio de ${mun} es de ${avgByMunName(mun).toFixed(2)}€`;
+//const mun= 'Elche';
+//let avg= `La media del monto de ayuda/subvencion concedida para el municipio de ${mun} es de ${avgByMunName(mun).toFixed(2)}€`;
 function avgByMunNameRes(){
     console.log(avg);
 }
