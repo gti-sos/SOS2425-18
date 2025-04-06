@@ -5,7 +5,7 @@
 		"description": "The requests are made for this API were developed for an university project from a subject called SOS by the pupil **migdomcie**.\n\nExecuting this POSTMAN collection, you can retrieve, create, update and delete data in a simple way.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "42356631",
-		"_collection_link": "https://www.postman.com/migdomcie/workspace/my-workspace/collection/42356631-ff16ba27-b3e2-4359-a943-6f40ff378e0c?action=share&source=collection_link&creator=42356631"
+		"_collection_link": "https://www.postman.com/migdomcie/my-workspace/collection/efwdb6d/sos2425-18-migdomcie?action=share&source=collection_link&creator=42356631"
 	},
 	"item": [
 		{
@@ -128,7 +128,9 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Resources retrieved by a query string\", function () {\r",
+							"    const responseJson= pm.response.json();\r",
 							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(responseJson).to.be.an('array').is.not.empty;\r",
 							"});"
 						],
 						"type": "text/javascript",
@@ -170,7 +172,9 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Resources retrieved and splitted in pages\", function () {\r",
+							"    const responseJson= pm.response.json();\r",
 							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(responseJson.length).to.equal(2);\r",
 							"});"
 						],
 						"type": "text/javascript",
@@ -622,6 +626,7 @@
 					"script": {
 						"exec": [
 							"pm.test(\"A specific resource deleted\", function () {\r",
+							"    const responseJson= pm.response.json();\r",
 							"    pm.response.to.have.status(200);\r",
 							"});"
 						],
@@ -648,6 +653,44 @@
 						"Denia",
 						"12",
 						"B73614928"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "obtencion de todos los recursos tras borrado",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"All resources retrieved\", function () {\r",
+							"    const responseJson= pm.response.json();\r",
+							"    pm.expect(responseJson.length).to.equal(10);\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"dana-grants-subsidies-stats"
 					]
 				}
 			},
