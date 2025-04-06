@@ -17,7 +17,7 @@ let inicialData = [
       sector: "SERVICIOS",
       total_work_sus: 1,
       men_work_sus: 1,
-      women_work_sus: 0
+      women_work_sus: 0 
   },
   {
       request_date: "12/09/2024",
