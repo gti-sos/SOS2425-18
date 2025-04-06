@@ -346,7 +346,6 @@ function loadBackendMVR(app){
     // DELETE un municipio en concreto.
     app.delete(BASE_API + MVRMainResource + "/:municipality", (request, response) => {
         const { municipality } = request.params;
-        const initialLength = dataMVR.length;
         console.log(`Llamando a DELETE para eliminar ${municipality} de la base de datos...`, request.params);
 
         // `^${municipality}$` indica el principio y final del string. es decir, coincidirá madrid con madrid, pero no con madrid_centro. La "i" es para pasar todo a minúscula
