@@ -680,12 +680,9 @@
 					}
 				},
 				"url": {
-					"raw": "https://sos2425-18.onrender.com/api/v1/dana-erte-stats",
-					"protocol": "https",
+					"raw": "{{BASE_URL}}/api/v1/dana-erte-stats",
 					"host": [
-						"sos2425-18",
-						"onrender",
-						"com"
+						"{{BASE_URL}}"
 					],
 					"path": [
 						"api",
