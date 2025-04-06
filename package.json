@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "test-online": "npm run test-MADC-loc && npm run test-MVR-loc && npm run test-GBD-loc",
-    "test-local": "npm run test-MADC-onl && npm run test-MVR-onl && npm run test-GBD-onl",
+    "test-online": "npm run test-MADC-onl && npm run test-MVR-onl && npm run test-GBD-onl",
+    "test-local": "npm run test-MADC-loc && npm run test-MVR-loc && npm run test-GBD-loc",
     "test-dana-grants-subsidies-stats-local": "npx newman run tests/back/dana-grants-subsidies-stats-test.json -e tests/back/api-env-local.json",
     "test-dana-grants-subsidies-stats-online": "npx newman run tests/back/dana-grants-subsidies-stats-test.json -e tests/back/api-env-online.json",
     "test-MADC-local": "start-server-and-test start http://localhost:3000 test-dana-grants-subsidies-stats-local",
