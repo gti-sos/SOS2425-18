@@ -15,10 +15,6 @@ const PROYECTNAME= `SOS2425-18`;
 app.use(express.json());
 app.use("/", express.static("./public"));
 
-app.get('/', (req, res) => {
-    res.status(200).send('API is up and running!');
-});
-
 loadBackendMADC(app);
 loadBackendGBD(app);
 loadBackendMVR(app);
