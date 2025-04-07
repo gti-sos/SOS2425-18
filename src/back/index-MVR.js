@@ -367,7 +367,7 @@ function loadBackendMVR(app){
         });
 
     // GET un municipio en concreto
-// GET un municipio en concreto (solo un objeto)
+
 // GET un municipio en concreto (solo un objeto)
 app.get(BASE_API + MVRMainResource + "/:municipality", (request, response) => {
     const { municipality } = request.params;
