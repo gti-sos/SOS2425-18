@@ -11,6 +11,49 @@
 			"name": "Test",
 			"item": [
 				{
+					"name": "Cargar base de datos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is an array\", function () {\r",
+									"    pm.expect(pm.response.json().data).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Array length is 10\", function () {\r",
+									"    pm.expect(pm.response.json().data.length).to.eql(10);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/loadInitialData",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contr-mun-stats",
+								"loadInitialData"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Obtener todos los datos",
 					"event": [
 						{
@@ -502,7 +545,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "\"prov_name\": \"Alicante/Alacant\",\n\"mun_cod\": 31,\n\"mun_name\": \"Benidorm\",",
+							"raw": "\n    \"id\": 212312,\n    \"prov_name\": \"Alicante/Alacant\",\n    \"mun_cod\": 31,\n    \"mun_name\": \"Benidorm\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -510,7 +553,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/2025/3/3/31/S",
+							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/",
 							"host": [
 								"{{BASE_URL}}"
 							],
@@ -518,11 +561,7 @@
 								"api",
 								"v1",
 								"contr-mun-stats",
-								"2025",
-								"3",
-								"3",
-								"31",
-								"S"
+								""
 							]
 						}
 					},

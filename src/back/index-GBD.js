@@ -104,10 +104,23 @@ function loadBackendGBD(app) {
 
     app.post(BASE_API + "/contr-mun-stats", (req, res) => {
         const newData = req.body;
-        if (!newData || Object.keys(newData).length === 0) {
-            return res.status(400).json({ error: "El cuerpo de la petición está vacío o mal formado." });
+    
+        // Lista de campos obligatorios
+        const requiredFields = [
+            "year", "month", "prov_cod", "prov_name",
+            "mun_cod", "mun_name", "sec_cod", "sec_descr", "num_contracts"
+        ];
+    
+        // Verificar si falta alguno
+        const missingFields = requiredFields.filter(field => !(field in newData));
+    
+        if (missingFields.length > 0) {
+            return res.status(400).json({
+                error: "Faltan campos obligatorios en la petición.",
+                missing: missingFields
+            });
         }
-
+    
         db_GBD.findOne({
             year: newData.year,
             month: newData.month,
@@ -124,7 +137,7 @@ function loadBackendGBD(app) {
                 });
             }
         });
-    });
+    });    
 
     app.post(BASE_API + "/contr-mun-stats/:year/:month/:prov_cod/:mun_cod/:sec_cod", (req, res) => {
         return res.status(405).json({ error: "Método no permitido en esta ruta." });
