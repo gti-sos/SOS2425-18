@@ -8,854 +8,791 @@
 	},
 	"item": [
 		{
-			"name": "Cargar Datos iniciales",
-			"event": [
+			"name": "Test",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 201\", function () {\r",
-							"    pm.response.to.have.status(201);\r",
-							"});\r",
-							"\r",
-							"\r",
-							"pm.test(\"Content type is application/json\", function () {\r",
-							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
-							"});\r",
-							"\r",
-							"// Iterate through each data element and check for specific fields\r",
-							"pm.test(\"Check data elements\", function () {\r",
-							"    pm.response.json().data.forEach((element) => {\r",
-							"        pm.expect(element).to.have.property(\"year\");\r",
-							"        pm.expect(element).to.have.property(\"month\");\r",
-							"        pm.expect(element).to.have.property(\"prov_cod\");\r",
-							"        pm.expect(element).to.have.property(\"prov_name\");\r",
-							"        pm.expect(element).to.have.property(\"mun_cod\");\r",
-							"        pm.expect(element).to.have.property(\"mun_name\");\r",
-							"        pm.expect(element).to.have.property(\"sec_cod\");\r",
-							"        pm.expect(element).to.have.property(\"sec_descr\");\r",
-							"        pm.expect(element).to.have.property(\"num_contracts\");\r",
-							"    });\r",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/loadInitialData",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"contr-mun-stats",
-						"loadInitialData"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Obtener todos los datos",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Response length is 10\", function () {\r",
-							"    pm.expect(pm.response.json()).to.have.length(10);\r",
-							"});\r",
-							"pm.test('Response is an array', function () {\r",
-							"    pm.expect(pm.response.json()).to.be.an('array');\r",
-							"});\r",
-							"\r",
-							"pm.sendRequest({\r",
-							"    url: pm.variables.get(\"BASE_URL\") + \"/api/v1/contr-mun-stats/\",\r",
-							"    method: \"GET\",\r",
-							"}, function (err, res) {\r",
-							"    // Add your test scripts here\r",
-							"    // For example:\r",
-							"    pm.test(\"Status code is 200\", function () {\r",
-							"        pm.response.to.have.status(200);\r",
-							"    });\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"contr-mun-stats",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Obtener cualquier dato",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test('Response body should be an array', function () {\r",
-							"    pm.expect(pm.response.json()).to.be.an('array');\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/api/v1/contr-mun-stats?prov_name=Alicante/Alacant&sec_descr=AGRICULTURA",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"contr-mun-stats"
-					],
-					"query": [
+					"name": "Obtener todos los datos",
+					"event": [
 						{
-							"key": "prov_name",
-							"value": "Alicante/Alacant"
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response length is 10\", function () {\r",
+									"    pm.expect(pm.response.json()).to.have.length(10);\r",
+									"});\r",
+									"pm.test('Response is an array', function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url: pm.variables.get(\"BASE_URL\") + \"/api/v1/contr-mun-stats/\",\r",
+									"    method: \"GET\",\r",
+									"}, function (err, res) {\r",
+									"    // Add your test scripts here\r",
+									"    // For example:\r",
+									"    pm.test(\"Status code is 200\", function () {\r",
+									"        pm.response.to.have.status(200);\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contr-mun-stats",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener cualquier recurso",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Response body should be an array', function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats?prov_name=Alicante/Alacant&sec_descr=AGRICULTURA",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contr-mun-stats"
+							],
+							"query": [
+								{
+									"key": "prov_name",
+									"value": "Alicante/Alacant"
+								},
+								{
+									"key": "sec_descr",
+									"value": "AGRICULTURA"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener por mun_name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body is an array\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check if the parameter exists\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"    pm.expect(pm.response.json()).to.not.be.empty;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats?mun_name=València",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contr-mun-stats"
+							],
+							"query": [
+								{
+									"key": "mun_name",
+									"value": "València"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener un recurso en concreto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check if the length of the response body is 1\r",
+									"pm.test(\"Length of response object is 9\", function () {\r",
+									"    pm.expect(Object.keys(pm.response.json()).length).to.equal(9);\r",
+									"});\r",
+									"\r",
+									"pm.test('Response body should be an object', function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/2024/12/3/31/S",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contr-mun-stats",
+								"2024",
+								"12",
+								"3",
+								"31",
+								"S"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener recurso de un año",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Response body is an array', function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats?year=2024",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contr-mun-stats"
+							],
+							"query": [
+								{
+									"key": "year",
+									"value": "2024"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener recurso por mun_name de un periodo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is an array\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/València?from=2023&to=2025",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contr-mun-stats",
+								"València"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "2023"
+								},
+								{
+									"key": "to",
+									"value": "2025"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener con paginación",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats?limit=3&offset=5",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contr-mun-stats"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "3"
+								},
+								{
+									"key": "offset",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener recurso por periodo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is an array\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats?from=2023&to=2025",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contr-mun-stats"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "2023"
+								},
+								{
+									"key": "to",
+									"value": "2025"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Acceder a un recurso inexistente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/2025/12/3/31/T",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contr-mun-stats",
+								"2025",
+								"12",
+								"3",
+								"31",
+								"T"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear un nuevo recurso",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has data\", function () {\r",
+									"    pm.expect(pm.response.json()).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"year\": 2025,\n        \"month\": 12,\n        \"prov_cod\": 3,\n        \"prov_name\": \"Alicante/Alacant\",\n        \"mun_cod\": 31,\n        \"mun_name\": \"Benidorm\",\n        \"sec_cod\": \"S\",\n        \"sec_descr\": \"SERVICIOS\",\n        \"num_contracts\": 102\n    }\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
-						{
-							"key": "sec_descr",
-							"value": "AGRICULTURA"
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contr-mun-stats"
+							]
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Obtener por mun_name",
-			"event": [
+					},
+					"response": []
+				},
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Response body is an array\", function () {\r",
-							"    pm.expect(pm.response.json()).to.be.an('array');\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Check if the parameter exists\", function () {\r",
-							"    pm.expect(pm.response.json()).to.be.an('array');\r",
-							"    pm.expect(pm.response.json()).to.not.be.empty;\r",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/api/v1/contr-mun-stats?mun_name=València",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"contr-mun-stats"
-					],
-					"query": [
+					"name": "POST con datos no esperados",
+					"event": [
 						{
-							"key": "mun_name",
-							"value": "València"
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Obtener un recurso en concreto",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// Check if the length of the response body is 1\r",
-							"pm.test(\"Length of response object is 9\", function () {\r",
-							"    pm.expect(Object.keys(pm.response.json()).length).to.equal(9);\r",
-							"});\r",
-							"\r",
-							"pm.test('Response body should be an object', function () {\r",
-							"    pm.expect(pm.response.json()).to.be.an('object');\r",
-							"});\r",
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/2024/12/3/31/S",
-					"host": [
-						"{{BASE_URL}}"
 					],
-					"path": [
-						"api",
-						"v1",
-						"contr-mun-stats",
-						"2024",
-						"12",
-						"3",
-						"31",
-						"S"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Obtener recurso de un año",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test('Response body is an array', function () {\r",
-							"    pm.expect(pm.response.json()).to.be.an('array');\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/api/v1/contr-mun-stats?year=2024",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"contr-mun-stats"
-					],
-					"query": [
-						{
-							"key": "year",
-							"value": "2024"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Obtener recurso por mun_name de un periodo",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Response is an array\", function () {\r",
-							"    pm.expect(pm.response.json()).to.be.an('array');\r",
-							"});\r",
-							"\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/València?from=2023&to=2025",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"contr-mun-stats",
-						"València"
-					],
-					"query": [
-						{
-							"key": "from",
-							"value": "2023"
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\"prov_name\": \"Alicante/Alacant\",\n\"mun_cod\": 31,\n\"mun_name\": \"Benidorm\",",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
-						{
-							"key": "to",
-							"value": "2025"
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/2025/3/3/31/S",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contr-mun-stats",
+								"2025",
+								"3",
+								"3",
+								"31",
+								"S"
+							]
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET con paginación",
-			"event": [
+					},
+					"response": []
+				},
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/api/v1/contr-mun-stats?limit=3&offset=5",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"contr-mun-stats"
-					],
-					"query": [
+					"name": "POST a recurso ya existente",
+					"event": [
 						{
-							"key": "limit",
-							"value": "3"
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 409\", function () {\r",
+									"    pm.response.to.have.status(409);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
 						},
-						{
-							"key": "offset",
-							"value": "5"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Obtener recurso por periodo",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Response is an array\", function () {\r",
-							"    pm.expect(pm.response.json()).to.be.an('array');\r",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/api/v1/contr-mun-stats?from=2023&to=2025",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"contr-mun-stats"
-					],
-					"query": [
-						{
-							"key": "from",
-							"value": "2023"
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"year\": 2024,\r\n        \"month\": 11,\r\n        \"prov_cod\": 12,\r\n        \"prov_name\": \"Castellón/Castelló\",\r\n        \"mun_cod\": 40,\r\n        \"mun_name\": \"Castelló de la Plana/Castellón de la Plana\",\r\n        \"sec_cod\": \"A\",\r\n        \"sec_descr\": \"Agricultura\",\r\n        \"num_contracts\": 21\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contr-mun-stats",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mal POST",
+					"event": [
 						{
-							"key": "to",
-							"value": "2025"
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 405\", function () {\r",
+									"    pm.response.to.have.status(405);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Acceder a un recurso inexistente",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 404\", function () {\r",
-							"    pm.response.to.have.status(404);\r",
-							"});\r",
-							"\r",
-							"\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/2025/12/3/31/T",
-					"host": [
-						"{{BASE_URL}}"
 					],
-					"path": [
-						"api",
-						"v1",
-						"contr-mun-stats",
-						"2025",
-						"12",
-						"3",
-						"31",
-						"T"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Crear un nuevo recurso",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"\r",
-							"pm.test(\"Status code is 201\", function () {\r",
-							"    pm.response.to.have.status(201);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Response has data\", function () {\r",
-							"    pm.expect(pm.response.json()).to.not.be.empty;\r",
-							"});\r",
-							"\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n        \"year\": 2025,\n        \"month\": 12,\n        \"prov_cod\": 3,\n        \"prov_name\": \"Alicante/Alacant\",\n        \"mun_cod\": 31,\n        \"mun_name\": \"Benidorm\",\n        \"sec_cod\": \"S\",\n        \"sec_descr\": \"SERVICIOS\",\n        \"num_contracts\": 102\n    }\n",
-					"options": {
-						"raw": {
-							"language": "json"
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/2025/12/3/31/S",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contr-mun-stats",
+								"2025",
+								"12",
+								"3",
+								"31",
+								"S"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{BASE_URL}}/api/v1/contr-mun-stats",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"contr-mun-stats"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "POST con datos no esperados",
-			"event": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 400\", function () {\r",
-							"    pm.response.to.have.status(400);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "\"prov_name\": \"Alicante/Alacant\",\n\"mun_cod\": 31,\n\"mun_name\": \"Benidorm\",",
-					"options": {
-						"raw": {
-							"language": "json"
+					"name": "Modificar un recurso en concreto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Resource exists\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
-					}
-				},
-				"url": {
-					"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/2025/3/3/31/S",
-					"host": [
-						"{{BASE_URL}}"
 					],
-					"path": [
-						"api",
-						"v1",
-						"contr-mun-stats",
-						"2025",
-						"3",
-						"3",
-						"31",
-						"S"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "POST a recurso ya existente",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 409\", function () {\r",
-							"    pm.response.to.have.status(409);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n        \"year\": 2024,\r\n        \"month\": 11,\r\n        \"prov_cod\": 12,\r\n        \"prov_name\": \"Castellón/Castelló\",\r\n        \"mun_cod\": 40,\r\n        \"mun_name\": \"Castelló de la Plana/Castellón de la Plana\",\r\n        \"sec_cod\": \"A\",\r\n        \"sec_descr\": \"Agricultura\",\r\n        \"num_contracts\": 21\r\n    }",
-					"options": {
-						"raw": {
-							"language": "json"
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"num_contracts\": 30,\n    \"sec_descr\": \"Turismo y Ocio\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/2025/12/3/31/S",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contr-mun-stats",
+								"2025",
+								"12",
+								"3",
+								"31",
+								"S"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"contr-mun-stats",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Mal POST",
-			"event": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 405\", function () {\r",
-							"    pm.response.to.have.status(405);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
+					"name": "PUT con datos no existentes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
-					}
-				},
-				"url": {
-					"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/2025/12/3/31/S",
-					"host": [
-						"{{BASE_URL}}"
 					],
-					"path": [
-						"api",
-						"v1",
-						"contr-mun-stats",
-						"2025",
-						"12",
-						"3",
-						"31",
-						"S"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Modificar un recurso en concreto",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Resource exists\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"num_contracts\": 30,\n    \"sec_descr\": \"Turismo y Ocio\"\n}\n",
-					"options": {
-						"raw": {
-							"language": "json"
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/2025/12/200/31/S",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contr-mun-stats",
+								"2025",
+								"12",
+								"200",
+								"31",
+								"S"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/2025/12/3/31/S",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"contr-mun-stats",
-						"2025",
-						"12",
-						"3",
-						"31",
-						"S"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "PUT con datos no existentes",
-			"event": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 400\", function () {\r",
-							"    pm.response.to.have.status(400);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/2025/12/200/31/S",
-					"host": [
-						"{{BASE_URL}}"
+					"name": "Mal PUT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 405\", function () {\r",
+									"    pm.response.to.have.status(405);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
 					],
-					"path": [
-						"api",
-						"v1",
-						"contr-mun-stats",
-						"2025",
-						"12",
-						"200",
-						"31",
-						"S"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Mal PUT",
-			"event": [
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contr-mun-stats",
+								""
+							]
+						}
+					},
+					"response": []
+				},
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 405\", function () {\r",
-							"    pm.response.to.have.status(405);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/",
-					"host": [
-						"{{BASE_URL}}"
+					"name": "Borrar un recurso en concreto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify resource is deleted\", function () {\r",
+									"    pm.expect(pm.response.json().message).to.equal(\"Recurso eliminado exitosamente\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
 					],
-					"path": [
-						"api",
-						"v1",
-						"contr-mun-stats",
-						""
-					]
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/2025/12/3/31/S",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contr-mun-stats",
+								"2025",
+								"12",
+								"3",
+								"31",
+								"S"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
-		},
-		{
-			"name": "Borrar un recurso en concreto",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Verify resource is deleted\", function () {\r",
-							"    pm.expect(pm.response.json().message).to.equal(\"Recurso eliminado exitosamente\");\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/2025/12/3/31/S",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"contr-mun-stats",
-						"2025",
-						"12",
-						"3",
-						"31",
-						"S"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Borrar todos los recursos",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"contr-mun-stats",
-						""
-					]
-				}
-			},
-			"response": []
+			]
 		}
 	]
 }
