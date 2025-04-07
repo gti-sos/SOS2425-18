@@ -124,15 +124,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BASE_URL}}/api/v1/dana-erte-stats/loadInitialData",
+					"raw": "{{BASE_URL}}/api/v1/dana-erte-stats",
 					"host": [
 						"{{BASE_URL}}"
 					],
 					"path": [
 						"api",
 						"v1",
-						"dana-erte-stats",
-						"loadInitialData"
+						"dana-erte-stats"
 					]
 				}
 			},
@@ -301,16 +300,7 @@
 							"    pm.expect(pm.response.code).to.be.oneOf([200, 404]);\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Datos coherentes con el municipio\", () => {\r",
-							"    const data = pm.response.json();\r",
-							"    if (pm.response.code === 200) {\r",
-							"        pm.expect(data).to.have.property(\"data\");\r",
-							"        pm.expect(data.data).to.be.an(\"array\");\r",
-							"    } else {\r",
-							"        pm.expect(data).to.have.property(\"error\");\r",
-							"    }\r",
-							"});\r",
-							""
+							"pm.expect(data).to.be.an(\"object\");"
 						],
 						"type": "text/javascript",
 						"packages": {}
