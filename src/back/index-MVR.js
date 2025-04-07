@@ -367,29 +367,35 @@ function loadBackendMVR(app){
         });
 
     // GET un municipio en concreto
-    app.get(BASE_API + MVRMainResource + "/:municipality", (request, response) => {
-        const { municipality } = request.params;
-        console.log(`Llamando a GET para obtener todos los datos de ${municipality}...`);
+// GET un municipio en concreto (solo un objeto)
+app.get(BASE_API + MVRMainResource + "/:municipality", (request, response) => {
+    const { municipality } = request.params;
+    console.log(`Llamando a GET para obtener el recurso de '${municipality}'...`);
 
-        db.find({company_municipality : new RegExp(`^${municipality}$`, "i")}, (err, docs) => {
+    db.findOne(
+        { company_municipality: new RegExp(`^${municipality}$`, "i") },
+        (err, doc) => {
             if (err) {
                 console.error("Error al buscar el municipio: ", err);
                 return response.status(500).send("Error interno del servidor");
             }
-            if(docs.length === 0){
-                return response.status(404).json({ 
-                    error: `El municipio '${municipality}' no fue encontrado.` 
+            if (!doc) {
+                return response.status(404).json({
+                    error: `El municipio '${municipality}' no fue encontrado.`
                 });
             }
-            return response.status(200).json({ 
-                message: `El municipio '${municipality}' fue encontrado en los siguientes datos:`, 
-                data: docs 
+            // doc ya es un único objeto
+            // Le quitamos la clave _id si no se quiere exponer:
+            const { _id, ...cleanDoc } = doc;
+
+            return response.status(200).json({
+                message: `El municipio '${municipality}' fue encontrado:`,
+                data: cleanDoc
             });
+        }
+    );
+});
 
-        });
-
-        
-    });
 
  
     // PUT que actualice los valores de un municipio concreto
