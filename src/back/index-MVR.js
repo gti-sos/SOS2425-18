@@ -185,7 +185,7 @@ function loadBackendMVR(app){
             return res.status(405).json({ error: "Method Not Allowed" });
         }
         next();
-    });
+    }); 
 
     // GET cargar la base de datos inicial.
     app.get(BASE_API + MVRMainResource + "/loadInitialData", (request, response) => {
