@@ -368,6 +368,7 @@ function loadBackendMVR(app){
 
     // GET un municipio en concreto
 // GET un municipio en concreto (solo un objeto)
+// GET un municipio en concreto (solo un objeto)
 app.get(BASE_API + MVRMainResource + "/:municipality", (request, response) => {
     const { municipality } = request.params;
     console.log(`Llamando a GET para obtener el recurso de '${municipality}'...`);
@@ -376,7 +377,7 @@ app.get(BASE_API + MVRMainResource + "/:municipality", (request, response) => {
         { company_municipality: new RegExp(`^${municipality}$`, "i") },
         (err, doc) => {
             if (err) {
-                console.error("Error al buscar el municipio: ", err);
+                console.error("Error al buscar el municipio:", err);
                 return response.status(500).send("Error interno del servidor");
             }
             if (!doc) {
@@ -384,17 +385,16 @@ app.get(BASE_API + MVRMainResource + "/:municipality", (request, response) => {
                     error: `El municipio '${municipality}' no fue encontrado.`
                 });
             }
-            // doc ya es un único objeto
-            // Le quitamos la clave _id si no se quiere exponer:
+
+            // Opcional: eliminar la clave _id si no deseas exponerla
             const { _id, ...cleanDoc } = doc;
 
-            return response.status(200).json({
-                message: `El municipio '${municipality}' fue encontrado:`,
-                data: cleanDoc
-            });
+            // Devuelve directamente un único objeto
+            return response.status(200).json(cleanDoc);
         }
     );
 });
+
 
 
  
