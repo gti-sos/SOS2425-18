@@ -49,17 +49,26 @@
                     "Content-Type" : "application/json"
                 },
                 body:JSON.stringify({
-                    "year": newContrYear,
-                    "month": newContrMonth,
-                    "prov_cod": newContrProv_cod,
+                    "year": Number(newContrYear),
+                    "month": Number(newContrMonth),
+                    "prov_cod": Number(newContrProv_cod),
                     "prov_name": newContrProv_name,
-                    "mun_cod": newContrMun_cod,
+                    "mun_cod": Number(newContrMun_cod),
                     "mun_name": newContrMun_name,
                     "sec_cod": newContrSec_cod,
                     "sec_descr": newContrSec_descr,
-                    "num_contracts": newContrNum_contracts
+                    "num_contracts": Number(newContrNum_contracts)
                 })
             });
+
+            if (
+                !newContrYear || !newContrMonth || !newContrProv_cod || !newContrProv_name ||
+                !newContrMun_cod || !newContrMun_name || !newContrSec_cod || !newContrSec_descr ||
+                !newContrNum_contracts
+            ) {
+                alert("Por favor, completa todos los campos antes de crear el contrato.");
+                return;
+            }
 
             const status = await res.status;
             resultStatus = status;
@@ -108,6 +117,29 @@
         }
     }
 
+    async function deleteOneContr(contr) {
+        resultStatus = result = "";
+        try {
+            const res = await fetch(`${API}/${contr.year}/${contr.month}/${contr.prov_cod}/${contr.mun_cod}/${contr.sec_cod}`, {
+                method: "DELETE"
+            });
+
+            const status = await res.status;
+            resultStatus = status;
+
+            if (status === 200) {
+                console.log(`Recurso eliminado correctamente`);
+                getContr();
+            } else {
+                console.log(`Error al eliminar recurso (status: ${status})`);
+            }
+
+        } catch (error) {
+            console.log(`ERROR: DELETE del recurso específico: ${error}`);
+        }
+    }
+
+
     onMount(async () => {
         getContr();
     })
@@ -141,41 +173,25 @@
             <td><input bind:value={newContrSec_cod}></td>
             <td><input bind:value={newContrSec_descr}></td>
             <td><input bind:value={newContrNum_contracts}></td>
-            <td>
-                <Button color="secondary" on:click={createContr}>Crear contrato</Button>
-                <Button color="danger" on:click={deleteContr}>Borrar todo</Button>
-            </td>
+            <td><Button color="success" on:click={createContr}>Crear contrato</Button></td>         
         </tr>        
         {#each contrs as contr}
             <tr>
-                <td>
-                    {contr.year}
-                </td>
-                <td>
-                    {contr.month}
-                </td>
-                <td>
-                    {contr.prov_cod}
-                </td>
-                <td>
-                    {contr.prov_name}
-                </td>
-                <td>
-                    {contr.mun_cod}
-                </td>
-                <td>
-                    {contr.mun_name}
-                </td>
-                <td>
-                    {contr.sec_cod}
-                </td>
-                <td>
-                    {contr.sec_descr}
-                </td>
-                <td>
-                    {contr.num_contracts}
-                </td>
+                <td>{contr.year}</td>
+                <td>{contr.month}</td>
+                <td>{contr.prov_cod}</td>
+                <td>{contr.prov_name}</td>
+                <td>{contr.mun_cod}</td>
+                <td>{contr.mun_name}</td>
+                <td>{contr.sec_cod}</td>
+                <td>{contr.sec_descr}</td>
+                <td>{contr.num_contracts}</td>
+                <td><Button color="danger" on:click={() => deleteOneContr(contr)}>Eliminar</Button></td>
             </tr>
         {/each}
     </tbody>
 </Table>
+
+<p align="right">
+    <Button color="danger" on:click={deleteContr}>Borrar todos los recursos</Button>
+</p>

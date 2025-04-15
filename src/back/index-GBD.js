@@ -105,22 +105,15 @@ function loadBackendGBD(app) {
     app.post(BASE_API + "/contr-mun-stats", (req, res) => {
         const newData = req.body;
     
-        // Lista de campos obligatorios
-        const requiredFields = [
-            "year", "month", "prov_cod", "prov_name",
-            "mun_cod", "mun_name", "sec_cod", "sec_descr", "num_contracts"
-        ];
+        // Validación de campos
+        const requiredFields = ["year", "month", "prov_cod", "prov_name", "mun_cod", "mun_name", "sec_cod", "sec_descr", "num_contracts"];
+        const hasAllFields = requiredFields.every(field => newData.hasOwnProperty(field) && newData[field] !== undefined && newData[field] !== null && newData[field] !== "");
     
-        // Verificar si falta alguno
-        const missingFields = requiredFields.filter(field => !(field in newData));
-    
-        if (missingFields.length > 0) {
-            return res.status(400).json({
-                error: "Faltan campos obligatorios en la petición.",
-                missing: missingFields
-            });
+        if (!hasAllFields) {
+            return res.status(400).json({ error: "Faltan campos obligatorios o alguno está vacío." });
         }
     
+        // Buscar si ya existe
         db_GBD.findOne({
             year: newData.year,
             month: newData.month,
@@ -137,7 +130,8 @@ function loadBackendGBD(app) {
                 });
             }
         });
-    });    
+    });
+    
 
     app.post(BASE_API + "/contr-mun-stats/:year/:month/:prov_cod/:mun_cod/:sec_cod", (req, res) => {
         return res.status(405).json({ error: "Método no permitido en esta ruta." });
