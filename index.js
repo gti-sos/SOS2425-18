@@ -1,6 +1,7 @@
 //CONSTANTES DE DESPLIEGUE Y DEPENDENCIAS GENERALES
 //const express= require("express");
 import express from "express";
+import cors from "cors";
 import { loadBackendMADC } from "./src/back/index-MADC.js";
 //import { objData, pueblosdistintos, readAllDataMADC } from "./src/back/index-MADC.js";
 
@@ -16,6 +17,7 @@ const PROYECTNAME= `SOS2425-18`;
 
 
 app.use(express.json());
+app.use(cors());
 //app.use("/", express.static("./public"));
 
 loadBackendMADC(app);
