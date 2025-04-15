@@ -17,12 +17,12 @@ const PROYECTNAME= `SOS2425-18`;
 
 app.use(express.json());
 //app.use("/", express.static("./public"));
-app.use(handler);
 
 loadBackendMADC(app);
 loadBackendGBD(app);
 loadBackendMVR(app);
 
+app.use(handler);
 
 // Readme
 app.use("/about", express.static("./about/"));

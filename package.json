@@ -28,7 +28,7 @@
     "test-GBD-loc": "npm run test-GBD-local",
     "test-GBD-onl": "npm run test-GBD-online",
 
-    "build": "cd src/front; npm run build"
+    "build": "cd src/front; npm install; npm run build"
   },
   "repository": {
     "type": "git",
