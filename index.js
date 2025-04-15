@@ -7,13 +7,17 @@ import { loadBackendMADC } from "./src/back/index-MADC.js";
 import { loadBackendGBD } from "./src/back/index-GBD.js";
 import { loadBackendMVR } from "./src/back/index-MVR.js";
 
+//import svelte-handler
+import { handler } from './src/front/build/handler.js';
+
 const app= express();
 const PORT= process.env.PORT || 3000;
 const PROYECTNAME= `SOS2425-18`;
 
 
 app.use(express.json());
-app.use("/", express.static("./public"));
+//app.use("/", express.static("./public"));
+app.use(handler);
 
 loadBackendMADC(app);
 loadBackendGBD(app);
