@@ -27,7 +27,6 @@
     "test-GBD-online": "start-server-and-test start https://sos2425-18.onrender.com test-contr-mun-stats-online",
     "test-GBD-loc": "npm run test-GBD-local",
     "test-GBD-onl": "npm run test-GBD-online",
-
     "build": "cd src/front; npm install; npm run build"
   },
   "repository": {
@@ -41,6 +40,7 @@
   },
   "homepage": "https://github.com/gti-sos/SOS2425-18#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.21.2",
     "nedb": "^1.8.0"
   },
