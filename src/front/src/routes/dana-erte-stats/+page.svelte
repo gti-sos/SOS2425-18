@@ -1,11 +1,13 @@
-
-
 <script>
     // @ts-nocheck
+    import { Button, Alert, Input, Table } from '@sveltestrap/sveltestrap';
     import { dev } from "$app/environment";
     import { onMount } from "svelte";
-
-    let API = "http://localhost:3000/api/v1/dana-erte-stats";
+    
+    let DEVEL_HOST = "http://localhost:3000";
+    let API = "/api/v1/dana-erte-stats";
+    if (dev)
+        API = DEVEL_HOST + API;
 
     let MVRDatas = [];
     let result = "";
@@ -33,9 +35,10 @@ async function getData() {
 
 <h1>
     Hola, estoy provando mi página svelte.
+    <Button color="secondary">Hola</Button>
 </h1>
 
-<table>
+<Table>
     <thead>
         <tr>
             <th>request_date</th>
@@ -64,4 +67,4 @@ async function getData() {
         </tr>
         {/each}
     </tbody>
-</table>
+</Table>
