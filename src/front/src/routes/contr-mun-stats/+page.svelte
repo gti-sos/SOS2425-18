@@ -62,9 +62,10 @@
     }
     
     async function getContr() {
+        mensaje = "";
         let url = API;
         const params = [];
-    
+
         if (filtroYear)         params.push(`year=${filtroYear}`);
         if (filtroMonth)        params.push(`month=${filtroMonth}`);
         if (filtroProvCod)      params.push(`prov_cod=${filtroProvCod}`);
@@ -78,34 +79,55 @@
         if (filtroTo)           params.push(`to=${filtroTo}`);
         if (filtroLimit)        params.push(`limit=${filtroLimit}`);
         if (filtroOffset)       params.push(`offset=${filtroOffset}`);
-    
-        if (params.length > 0) url += "?" + params.join("&");
-    
+
+        let queryURL = url;
+        if (params.length > 0) queryURL += "?" + params.join("&");
+
         try {
-            const res = await fetch(url);
+            const res = await fetch(queryURL);
             if (!res.ok) {
                 mostrarError("Error al obtener los datos del servidor.");
                 return;
             }
-    
+
             const data = await res.json();
             contrs = data;
-    
-            if (data.length === 0) {
-                if (filtroProvName) mostrarError(`No existe ningún contrato con la provincia '${filtroProvName}'.`);
-                else if (filtroMunName) mostrarError(`No existe ningún contrato con el municipio '${filtroMunName}'.`);
-                else if (filtroSecCod) mostrarError(`No existe ningún contrato con el sector '${filtroSecCod}'.`);
-                else if (filtroSecDescr) mostrarError(`No existe ningún contrato con la descripción de sector '${filtroSecDescr}'.`);
-                else if (filtroYear) mostrarError(`No hay contratos en el año '${filtroYear}'.`);
-                else if (filtroFrom || filtroTo) mostrarError(`No hay contratos en el rango de años indicado.`);
-                else if (filtroNumContracts) mostrarError(`No hay contratos con esa cantidad.`);
-                else mostrarError("No se encontraron resultados con los filtros aplicados.");
+
+            // Si hay resultados, mostrar normalmente
+            if (data.length > 0) return;
+
+            // Si no hay resultados, vamos a analizar cuál filtro falla
+            const resAll = await fetch(API); // sin filtros
+            const allData = await resAll.json();
+
+            if (filtroYear && !allData.some(d => d.year === Number(filtroYear))) {
+                mostrarError(`No existen contratos en el año '${filtroYear}'.`);
+            } else if (filtroMonth && !allData.some(d => d.month === Number(filtroMonth))) {
+                mostrarError(`No existen contratos en el mes '${filtroMonth}'.`);
+            } else if (filtroProvCod && !allData.some(d => d.prov_cod === Number(filtroProvCod))) {
+                mostrarError(`No existen contratos con código de provincia '${filtroProvCod}'.`);
+            } else if (filtroProvName && !allData.some(d => d.prov_name.toLowerCase() === filtroProvName.toLowerCase())) {
+                mostrarError(`No existen contratos en la provincia '${filtroProvName}'.`);
+            } else if (filtroMunCod && !allData.some(d => d.mun_cod === Number(filtroMunCod))) {
+                mostrarError(`No existen contratos con código de municipio '${filtroMunCod}'.`);
+            } else if (filtroMunName && !allData.some(d => d.mun_name.toLowerCase() === filtroMunName.toLowerCase())) {
+                mostrarError(`No existen contratos en el municipio '${filtroMunName}'.`);
+            } else if (filtroSecCod && !allData.some(d => d.sec_cod === filtroSecCod)) {
+                mostrarError(`No existen contratos con código de sector '${filtroSecCod}'.`);
+            } else if (filtroSecDescr && !allData.some(d => d.sec_descr.toLowerCase() === filtroSecDescr.toLowerCase())) {
+                mostrarError(`No existen contratos con descripción de sector '${filtroSecDescr}'.`);
+            } else if (filtroNumContracts && !allData.some(d => d.num_contracts === Number(filtroNumContracts))) {
+                mostrarError(`No existen contratos con exactamente '${filtroNumContracts}' contratos.`);
+            } else {
+                mostrarError("No se encontraron resultados con los filtros aplicados.");
             }
-    
+
         } catch {
             mostrarError("No se pudo conectar con el servidor.");
         }
     }
+
+
     
     async function createContr() {
         mensaje = "";
@@ -199,21 +221,27 @@ onMount(getContr);
         <Alert color={tipoMensaje}>{mensaje}</Alert>
     {/if}
     
-    <!-- Búsqueda avanzada -->
-    <section class="mb-4">
-        <h4>Buscar contratos</h4>
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.5rem;">
-            <Input bind:value={filtroProvName} placeholder="Nombre provincia (Ej: Valencia/València)" />
-            <Input bind:value={filtroMunName} placeholder="Nombre municipio (Ej: València)" />
-            <Input bind:value={filtroSecCod} placeholder="Código sector (Ej: S)" />
-            <Input bind:value={filtroFrom} type="number" placeholder="Desde año (from)" />
-            <Input bind:value={filtroTo} type="number" placeholder="Hasta año (to)" />
-            <Input bind:value={filtroLimit} type="number" placeholder="Límite de resultados" />
-            <Input bind:value={filtroOffset} type="number" placeholder="Desplazamiento (offset)" />
-            <Button on:click={getContr} color="info">Buscar</Button>
-            <Button on:click={deleteContr} color="danger">Eliminar todos</Button>
-        </div>
-    </section>
+    <!-- Búsqueda avanzada con todos los campos -->
+<section class="mb-4">
+    <h4>Buscar contratos</h4>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.5rem;">
+        <Input bind:value={filtroYear} type="number" placeholder="Año" />
+        <Input bind:value={filtroMonth} type="number" placeholder="Mes" />
+        <Input bind:value={filtroProvCod} type="number" placeholder="Código provincia" />
+        <Input bind:value={filtroProvName} placeholder="Nombre provincia" />
+        <Input bind:value={filtroMunCod} type="number" placeholder="Código municipio" />
+        <Input bind:value={filtroMunName} placeholder="Nombre municipio" />
+        <Input bind:value={filtroSecCod} placeholder="Código sector" />
+        <Input bind:value={filtroSecDescr} placeholder="Descripción sector" />
+        <Input bind:value={filtroNumContracts} type="number" placeholder="Contratos" />
+        <Input bind:value={filtroFrom} type="number" placeholder="Desde año" />
+        <Input bind:value={filtroTo} type="number" placeholder="Hasta año" />
+        <Input bind:value={filtroLimit} type="number" placeholder="Límite de resultados" />
+        <Input bind:value={filtroOffset} type="number" placeholder="Desplazamiento" />
+        <Button on:click={getContr} color="info">Buscar</Button>
+        <Button on:click={deleteContr} color="danger">Eliminar todos</Button>
+    </div>
+</section>
     
     <!-- Crear nuevo contrato -->
     <section class="mb-4">
