@@ -12,6 +12,9 @@
     let MVRDatas = [];
     let result = "";
     let resultStatus = "";
+    let newDate;
+    let newMonth;
+    let newMunicipality;
 
 async function getData() {
     resultStatus = result = "";
@@ -27,6 +30,65 @@ async function getData() {
     }
     
 }
+async function deleteData(company_municipality) {
+    resultStatus = result = "";
+    
+    try {
+        const res = await fetch(API+"/"+company_municipality, {method: "DELETE"});
+        const status = await res.status;
+        resultStatus = status;
+        if(status == 200){
+            console.log(`Data deleted ${company_municipality}`);
+            getData();
+
+        }else{
+            console.log(`ERROR deleting data ${company_municipality}: status received ${status}`);
+
+        }
+    } catch(error){
+        console.log(`ERROR: GET from ${API}: ${error}`)
+    }
+    
+    
+}
+async function createData() {
+    resultStatus = result = "";
+    
+    try {
+        const res = await fetch(API, {
+            method: "POST", 
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(
+                {request_date: newDate,
+                request_month: newMonth,
+                request_year: 2024,
+                cnae_descr: "Transporte de mercancías por carretera",
+                company_municipality: newMunicipality,
+                company_province: "Castelló",
+                work_center_locality: "Moncófar",
+                sector: "SERVICIOS",
+                total_work_sus: 2,
+                men_work_sus: 2,
+                women_work_sus: 0
+            })
+        
+        });
+        const status = await res.status;
+        resultStatus = status;
+        if(status == 201){
+            console.log(`Data created: \n${JSON.stringify(MVRDatas, null, 2)}`);
+
+        }else{
+            console.log(`ERROR creating data: status received ${status}`);
+
+        }
+    } catch(error){
+        console.log(`ERROR: GET from ${API}: ${error}`)
+    }
+    
+}
     onMount(async () => {
         getData();
     })
@@ -35,7 +97,6 @@ async function getData() {
 
 <h1>
     Hola, estoy provando mi página svelte.
-    <Button color="secondary">Hola</Button>
 </h1>
 
 <Table>
@@ -43,7 +104,7 @@ async function getData() {
         <tr>
             <th>request_date</th>
             <th>request_month</th>
-            <th></th>
+            <th>company_municipality</th>
             <th></th>
             <th></th>
             <th></th>
@@ -53,6 +114,25 @@ async function getData() {
       
     </thead>
     <tbody>
+        <tr>
+            <td>
+                <input bind:value={newDate}>
+            </td>
+            <td>
+                <input bind:value={newMonth}>
+            </td> 
+            <td>
+                <input bind:value={newMunicipality}>
+
+            </td>
+            <td>
+                <Button color="secondary" on:click={createData}>Create data</Button>
+            </td>
+            
+        </tr>
+        
+
+
         {#each MVRDatas as MVRData}
         <tr>
             <td>
@@ -62,7 +142,10 @@ async function getData() {
                 {MVRData.request_month}
             </td>
             <td>
-
+                {MVRData.company_municipality}
+            </td>
+            <td>
+                <Button color="danger" on:click={() => deleteData(MVRData.company_municipality)}>Delete data</Button>
             </td>
         </tr>
         {/each}
