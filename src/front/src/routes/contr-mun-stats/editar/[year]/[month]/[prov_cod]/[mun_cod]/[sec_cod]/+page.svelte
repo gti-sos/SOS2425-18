@@ -23,7 +23,7 @@
             const res = await fetch(`${API}/${year}/${month}/${prov_cod}/${mun_cod}/${sec_cod}`);
             if (!res.ok) throw new Error("No encontrado");
             contrato = await res.json();
-        } catch {
+        } catch (err) {
             mensaje = "No se pudo cargar el contrato.";
             tipoMensaje = "danger";
         }
@@ -31,22 +31,31 @@
 
     async function guardarCambios() {
         mensaje = "";
+
+        if (!contrato.prov_name || !contrato.mun_name || !contrato.sec_descr || contrato.num_contracts === "" || contrato.num_contracts === null) {
+            mensaje = "Todos los campos son obligatorios.";
+            tipoMensaje = "danger";
+            return;
+        }
+
         try {
             const res = await fetch(`${API}/${year}/${month}/${prov_cod}/${mun_cod}/${sec_cod}`, {
                 method: "PUT",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json"
+                },
                 body: JSON.stringify(contrato)
             });
 
             if (res.ok) {
                 mensaje = "Contrato actualizado correctamente.";
                 tipoMensaje = "success";
-                setTimeout(() => goto("/"), 1500);
+                setTimeout(() => goto("/contr-mun-stats"), 1500);
             } else {
                 mensaje = "Error al actualizar el contrato.";
                 tipoMensaje = "danger";
             }
-        } catch {
+        } catch (error) {
             mensaje = "No se pudo conectar con el servidor.";
             tipoMensaje = "danger";
         }
@@ -62,34 +71,20 @@
 {#if contrato}
     <h2>Editar Contrato</h2>
 
-    <p>
-        <label>Provincia<br />
-            <Input bind:value={contrato.prov_name} />
-        </label>
-    </p>
+    <label>Provincia</label>
+    <Input bind:value={contrato.prov_name} />
 
-    <p>
-        <label>Municipio<br />
-            <Input bind:value={contrato.mun_name} />
-        </label>
-    </p>
+    <label>Municipio</label>
+    <Input bind:value={contrato.mun_name} />
 
-    <p>
-        <label>Descripción del sector<br />
-            <Input bind:value={contrato.sec_descr} />
-        </label>
-    </p>
+    <label>Descripción del sector</label>
+    <Input bind:value={contrato.sec_descr} />
 
-    <p>
-        <label>Número de contratos<br />
-            <Input type="number" bind:value={contrato.num_contracts} />
-        </label>
-    </p>
+    <label>Número de contratos</label>
+    <Input type="number" bind:value={contrato.num_contracts} />
 
-    <p>
-        <Button color="success" on:click={guardarCambios}>Guardar cambios</Button>
-        <Button color="danger" class="ms-2" on:click={() => goto('/')}>Cancelar</Button>
-    </p>
+    <Button class="mt-3" color="primary" on:click={guardarCambios}>Guardar cambios</Button>
+    <Button class="mt-3 ms-2" color="secondary" on:click={() => goto('/contr-mun-stats')}>Cancelar</Button>
 {:else}
     <p>Cargando contrato...</p>
 {/if}
