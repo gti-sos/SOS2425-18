@@ -93,11 +93,16 @@
             const data = await res.json();
             contrs = data;
 
-            // Si hay resultados, mostrar normalmente
             if (data.length > 0) return;
 
-            // Si no hay resultados, vamos a analizar cuál filtro falla
-            const resAll = await fetch(API); // sin filtros
+            const filtrosAplicados = filtroYear || filtroMonth || filtroProvCod || filtroProvName || filtroMunCod ||
+                                    filtroMunName || filtroSecCod || filtroSecDescr || filtroNumContracts ||
+                                    filtroFrom || filtroTo || filtroLimit || filtroOffset;
+
+            if (!filtrosAplicados) return;
+
+            // Si hay filtros, pero no resultados, analizamos cuál filtro falla
+            const resAll = await fetch(API);
             const allData = await resAll.json();
 
             if (filtroYear && !allData.some(d => d.year === Number(filtroYear))) {
@@ -126,7 +131,7 @@
             mostrarError("No se pudo conectar con el servidor.");
         }
     }
-    
+
     async function createContr() {
         mensaje = "";
 
@@ -188,14 +193,22 @@
     }
     
     async function deleteOneContr(contr) {
-        mensaje = "";
         try {
             const res = await fetch(`${API}/${contr.year}/${contr.month}/${contr.prov_cod}/${contr.mun_cod}/${contr.sec_cod}`, {
                 method: "DELETE"
             });
+
             if (res.status === 200) {
-                mostrarExito("Contrato eliminado correctamente.");
-                getContr();
+                // Eliminamos el recurso localmente del array sin recargar
+                contrs = contrs.filter(c =>
+                    !(c.year === contr.year &&
+                    c.month === contr.month &&
+                    c.prov_cod === contr.prov_cod &&
+                    c.mun_cod === contr.mun_cod &&
+                    c.sec_cod === contr.sec_cod)
+                );
+
+                mostrarExito("Recurso eliminado correctamente.");
             } else if (res.status === 404) {
                 mostrarError("No existe un contrato con esos datos.");
             } else {
@@ -205,7 +218,7 @@
             mostrarError("No se pudo conectar con el servidor.");
         }
     }
-    
+
     function editarContr(contr) {
         goto(`/contr-mun-stats/editar/${contr.year}/${contr.month}/${contr.prov_cod}/${contr.mun_cod}/${contr.sec_cod}`);
     }
