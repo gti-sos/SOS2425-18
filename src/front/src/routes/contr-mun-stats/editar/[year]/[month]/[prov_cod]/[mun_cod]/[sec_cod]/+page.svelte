@@ -32,7 +32,9 @@
     async function guardarCambios() {
         mensaje = "";
 
-        if (!contrato.prov_name || !contrato.mun_name || !contrato.sec_descr || contrato.num_contracts === "" || contrato.num_contracts === null) {
+        if (!contrato.year || !contrato.month || !contrato.prov_cod || !contrato.prov_name ||
+            !contrato.mun_cod || !contrato.mun_name || !contrato.sec_cod || !contrato.sec_descr ||
+            !contrato.num_contracts) {
             mensaje = "Todos los campos son obligatorios.";
             tipoMensaje = "danger";
             return;
@@ -71,11 +73,26 @@
 {#if contrato}
     <h2>Editar Contrato</h2>
 
-    <label>Provincia</label>
+    <label>Año</label>
+    <Input type="number" bind:value={contrato.year} />
+
+    <label>Mes</label>
+    <Input type="number" bind:value={contrato.month} />
+
+    <label>Código de provincia</label>
+    <Input type="number" bind:value={contrato.prov_cod} />
+
+    <label>Nombre de provincia</label>
     <Input bind:value={contrato.prov_name} />
 
-    <label>Municipio</label>
+    <label>Código de municipio</label>
+    <Input type="number" bind:value={contrato.mun_cod} />
+
+    <label>Nombre de municipio</label>
     <Input bind:value={contrato.mun_name} />
+
+    <label>Código de sector</label>
+    <Input bind:value={contrato.sec_cod} />
 
     <label>Descripción del sector</label>
     <Input bind:value={contrato.sec_descr} />
