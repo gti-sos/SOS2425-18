@@ -126,11 +126,10 @@
             mostrarError("No se pudo conectar con el servidor.");
         }
     }
-
-
     
     async function createContr() {
         mensaje = "";
+
         if (
             !newContrYear || !newContrMonth || !newContrProv_cod || !newContrProv_name ||
             !newContrMun_cod || !newContrMun_name || !newContrSec_cod || !newContrSec_descr ||
@@ -139,7 +138,7 @@
             mostrarError("Por favor, completa todos los campos.");
             return;
         }
-    
+
         try {
             const res = await fetch(API, {
                 method: "POST",
@@ -156,11 +155,11 @@
                     num_contracts: Number(newContrNum_contracts)
                 })
             });
-    
+
             if (res.status === 201) {
-                mostrarExito("Contrato creado correctamente.");
                 limpiarFormulario();
-                await getContr(); // conservamos mensaje de éxito porque no limpiamos arriba
+                await getContr(); // primero recargamos los datos
+                mostrarExito("Contrato creado correctamente."); // luego mostramos el mensaje
             } else if (res.status === 400) {
                 mostrarError("Datos inválidos. Revisa los campos introducidos.");
             } else if (res.status === 409) {
