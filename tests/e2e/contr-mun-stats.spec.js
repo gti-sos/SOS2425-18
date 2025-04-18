@@ -31,16 +31,6 @@ test.describe('Gestión de Contratos por Municipio', () => {
     await expect(page.getByText("No existen contratos en el año '3000'.")).toBeVisible();
   });
 
-  test('Debe eliminar un contrato específico', async ({ page }) => {
-    const tabla = page.locator('table tbody tr');
-    await expect(tabla.first()).toBeVisible();
-
-    const primerContrato = tabla.first();
-    await primerContrato.getByRole('button', { name: 'Borrar' }).click();
-
-    await expect(page.locator('div.alert')).toContainText('Recurso eliminado correctamente.');
-  });
-
   test('Debe crear un nuevo contrato válido', async ({ page }) => {
     const crear = page.locator('section', { hasText: 'Añadir nuevo contrato' });
 
@@ -55,7 +45,13 @@ test.describe('Gestión de Contratos por Municipio', () => {
     await crear.getByPlaceholder('Contratos').fill(String(testContrato.num_contracts));
 
     await crear.getByRole('button', { name: 'Crear' }).click();
+
+    // Esperar mensaje de éxito
     await expect(page.locator('div.alert')).toContainText('Contrato creado correctamente.', { timeout: 7000 });
+
+    // Verificar que el nuevo contrato aparece en la tabla
+    const fila = page.locator('table tbody tr').filter({ hasText: testContrato.mun_name });
+    await expect(fila.first()).toBeVisible({ timeout: 7000 });
   });
 
   test('Debe mostrar error al intentar crear un contrato duplicado', async ({ page }) => {
@@ -72,7 +68,18 @@ test.describe('Gestión de Contratos por Municipio', () => {
     await crear.getByPlaceholder('Contratos').fill(String(testContrato.num_contracts));
 
     await crear.getByRole('button', { name: 'Crear' }).click();
-    await expect(page.locator('div.alert')).toContainText('Ya existe un contrato con esos datos.');
+
+    // Esperar mensaje de duplicado
+    await expect(page.locator('div.alert')).toContainText('Ya existe un contrato con esos datos.', { timeout: 7000 });
+  });
+
+  test('Debe eliminar un contrato específico', async ({ page }) => {
+    const fila = page.locator('table tbody tr').filter({ hasText: testContrato.mun_name });
+    await expect(fila.first()).toBeVisible({ timeout: 7000 });
+
+    await fila.first().getByRole('button', { name: 'Borrar' }).click();
+
+    await expect(page.locator('div.alert')).toContainText('Recurso eliminado correctamente.', { timeout: 5000 });
   });
 
 });
