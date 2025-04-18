@@ -19,18 +19,21 @@ let initialData = [
 ];
 
 function loadBackendGBD(app) {
-    app.get(BASE_API + "/contr-mun-stats/loadInitialData", (req, res) => {
-        db_GBD.find({}, (err, data) => {
-            if (data.length > 0) {
-                data.forEach(c => delete c._id);
-                return res.status(200).json({ message: "Datos ya cargados anteriormente", data });
-            } else {
-                db_GBD.insert(initialData, (err2, newDocs) => {
-                    newDocs.forEach(c => delete c._id);
-                    return res.status(201).json({ message: "Datos cargados correctamente", data: newDocs.map(({ _id, ...rest }) => rest) });
-                });
-            }
-        });
+    // Cargar datos iniciales si la base de datos está vacía
+    db_GBD.find({}, (err, data) => {
+        if (err) {
+            console.error("Error al acceder a la base de datos NeDB:", err);
+        } else if (data.length === 0) {
+            db_GBD.insert(initialData, (err2, newDocs) => {
+                if (err2) {
+                    console.error("Error al insertar datos iniciales:", err2);
+                } else {
+                    console.log("Datos iniciales cargados automáticamente.");
+                }
+            });
+        } else {
+            console.log("La base de datos ya contiene información, no se insertan datos iniciales.");
+        }
     });
 
     app.get(BASE_API+"/contr-mun-stats/docs", (request,response)=>{
