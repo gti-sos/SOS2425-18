@@ -68,6 +68,26 @@ test.describe('Gestión de Contratos por Municipio', () => {
     await expect(page.locator('div.alert')).toContainText('Contrato creado correctamente.', { timeout: 7000 });
   });
 
+  test('Debe buscar un contrato específico por todos sus identificadores', async ({ page }) => {
+    const filtros = page.locator('section', { hasText: 'Buscar contratos' });
+  
+    await filtros.getByPlaceholder('Año').first().fill(String(testContrato.year));
+    await filtros.getByPlaceholder('Mes').first().fill(String(testContrato.month));
+    await filtros.getByPlaceholder('Código provincia').first().fill(String(testContrato.prov_cod));
+    await filtros.getByPlaceholder('Código municipio').first().fill(String(testContrato.mun_cod));
+    await filtros.getByPlaceholder('Código sector').first().fill(testContrato.sec_cod);
+  
+    await filtros.getByRole('button', { name: 'Buscar' }).click();
+  
+    const fila = page.locator('table tbody tr').first();
+  
+    await expect(fila).toContainText(String(testContrato.year));
+    await expect(fila).toContainText(String(testContrato.month));
+    await expect(fila).toContainText(testContrato.prov_name);
+    await expect(fila).toContainText(testContrato.mun_name);
+    await expect(fila).toContainText(testContrato.sec_descr);
+  });    
+
   test('Debe filtrar correctamente por múltiples campos', async ({ page }) => {
     const filtros = page.locator('section').filter({ hasText: 'Buscar contratos' });
   
@@ -124,7 +144,7 @@ test.describe('Gestión de Contratos por Municipio', () => {
     const segundoResultado = await tabla.first().innerText();
   
     expect(segundoResultado).not.toBe(primerResultadoSinOffset);
-  });  
+  });    
 
   test('Debe mostrar error al intentar crear un contrato duplicado', async ({ page }) => {
     const crear = page.locator('section', { hasText: 'Añadir nuevo contrato' });
@@ -169,6 +189,25 @@ test.describe('Gestión de Contratos por Municipio', () => {
   
     // Verificar que la nueva descripción aparece en alguna fila de la tabla
     await expect(page.locator('tr', { hasText: nuevaDescripcion })).toBeVisible();
+  });  
+
+  test('Debe mostrar error si se deja un campo vacío al modificar', async ({ page }) => {
+    // Localizamos la fila por el municipio del contrato de prueba y accedemos a editar
+    const fila = page.locator('tr', { hasText: testContrato.mun_name });
+    await fila.getByRole('button', { name: 'Editar' }).click();
+  
+    // Esperamos a que aparezca la vista de edición
+    await expect(page.getByRole('heading', { name: 'Editar Contrato' })).toBeVisible();
+  
+    // Borramos el campo "Nombre provincia"
+    const campoProvName = page.getByLabel('Nombre de provincia');
+    await campoProvName.fill(''); // lo dejamos vacío
+  
+    // Pulsamos en guardar cambios
+    await page.getByRole('button', { name: 'Guardar cambios' }).click();
+  
+    // Verificamos que aparece el mensaje de error
+    await expect(page.locator('div.alert')).toContainText('Todos los campos son obligatorios.');
   });  
 
   test('Debe volver al listado si se pulsa Cancelar en la edición', async ({ page }) => {
