@@ -27,8 +27,6 @@ function loadBackendGBD(app) {
             db_GBD.insert(initialData, (err2, newDocs) => {
                 if (err2) {
                     console.error("Error al insertar datos iniciales:", err2);
-                } else {
-                    console.log("Datos iniciales cargados automáticamente.");
                 }
             });
         } else {
