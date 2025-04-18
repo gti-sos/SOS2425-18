@@ -1,7 +1,7 @@
 // tests/e2e/contr-mun-stats.spec.js
 import { test, expect } from '@playwright/test';
 
-const BASE_URL = 'http://localhost:5173/contr-mun-stats';
+const BASE_URL = 'http://localhost:3000/contr-mun-stats';
 
 const testContrato = {
   year: 2036,
