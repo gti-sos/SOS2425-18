@@ -11,45 +11,6 @@
 			"name": "Test",
 			"item": [
 				{
-					"name": "Cargar base de datos",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Response is an array\", function () {\r",
-									"    pm.expect(pm.response.json().data).to.be.an(\"array\");\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Array length is 10\", function () {\r",
-									"    pm.expect(pm.response.json().data.length).to.eql(10);\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/loadInitialData",
-							"host": [
-								"{{BASE_URL}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"contr-mun-stats",
-								"loadInitialData"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Obtener todos los datos",
 					"event": [
 						{
