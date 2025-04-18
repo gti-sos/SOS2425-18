@@ -145,6 +145,21 @@ async function createData() {
                 {MVRData.company_municipality}
             </td>
             <td>
+                {MVRData.company_municipality}
+            </td>
+            <td>
+                {MVRData.company_municipality}
+            </td>
+            <td>
+                {MVRData.company_municipality}
+            </td>
+            <td>
+                {MVRData.company_municipality}
+            </td>
+            <td>
+                {MVRData.company_municipality}
+            </td>
+            <td>
                 <Button color="danger" on:click={() => deleteData(MVRData.company_municipality)}>Delete data</Button>
             </td>
         </tr>
