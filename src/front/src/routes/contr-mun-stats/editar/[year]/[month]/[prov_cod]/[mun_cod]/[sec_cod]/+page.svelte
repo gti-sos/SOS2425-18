@@ -74,32 +74,32 @@
 {#if contrato}
     <h2>Editar Contrato</h2>
 
-    <label>Año</label>
-    <Input type="number" bind:value={contrato.year} />
+    <label for="year">Año</label>
+    <Input id="year" type="number" bind:value={contrato.year} />
 
-    <label>Mes</label>
-    <Input type="number" bind:value={contrato.month} />
+    <label for="month">Mes</label>
+    <Input id="month" type="number" bind:value={contrato.month} />
 
-    <label>Código de provincia</label>
-    <Input type="number" bind:value={contrato.prov_cod} />
+    <label for="prov_cod">Código de provincia</label>
+    <Input id="prov_cod" type="number" bind:value={contrato.prov_cod} />
 
-    <label>Nombre de provincia</label>
-    <Input bind:value={contrato.prov_name} />
+    <label for="prov_name">Nombre de provincia</label>
+    <Input id="prov_name" bind:value={contrato.prov_name} />
 
-    <label>Código de municipio</label>
-    <Input type="number" bind:value={contrato.mun_cod} />
+    <label for="mun_cod">Código de municipio</label>
+    <Input id="mun_cod" type="number" bind:value={contrato.mun_cod} />
 
-    <label>Nombre de municipio</label>
-    <Input bind:value={contrato.mun_name} />
+    <label for="mun_name">Nombre de municipio</label>
+    <Input id="mun_name" bind:value={contrato.mun_name} />
 
-    <label>Código de sector</label>
-    <Input bind:value={contrato.sec_cod} />
+    <label for="sec_cod">Código de sector</label>
+    <Input id="sec_cod" bind:value={contrato.sec_cod} />
 
-    <label>Descripción del sector</label>
-    <Input bind:value={contrato.sec_descr} />
+    <label for="sec_descr">Descripción del sector</label>
+    <Input id="sec_descr" bind:value={contrato.sec_descr} />
 
-    <label>Número de contratos</label>
-    <Input type="number" bind:value={contrato.num_contracts} />
+    <label for="num_contracts">Número de contratos</label>
+    <Input id="num_contracts" type="number" bind:value={contrato.num_contracts} />
 
     <Button class="mt-3" color="primary" on:click={guardarCambios}>Guardar cambios</Button>
     <Button class="mt-3 ms-2" color="secondary" on:click={() => goto('/contr-mun-stats')}>Cancelar</Button>
