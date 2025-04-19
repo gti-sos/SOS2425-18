@@ -50,7 +50,7 @@
 		// NOTA: si tu backend ya admite from/to, mantenlos aquí; sino omítelos
 		if (filtroFrom) params.push(`from=${filtroFrom}`);
 		if (filtroTo) params.push(`to=${filtroTo}`);
-
+		console.log('filtroYear:', filtroYear, 'params antes:', params);
 		// 2) Montamos la URL final
 		const url = params.length ? `${API}?${params.join('&')}` : API;
 
@@ -113,28 +113,45 @@
 			}
 
 			// 3.2) Comprueba cada filtro, en el orden que quieras
-			if (filtroMunicipality && !allData.some(
+			if (
+				filtroMunicipality &&
+				!allData.some(
 					(d) => d.company_municipality.toLowerCase() === filtroMunicipality.toLowerCase()
-				)) {
-				mensaje = `No existe ningún municipio ‘${filtroMunicipality}’.`;
+				)
+			) {
+				mensaje = `No existe ningún municipio '${filtroMunicipality}'.`;
 				tipoMensaje = 'warning';
 			} else if (filtroYear && !allData.some((d) => d.request_year === Number(filtroYear))) {
-				mensaje = `No existen datos para el año ${filtroYear}.`;
+				mensaje = `No existen datos para el año '${filtroYear}'.`;
 				tipoMensaje = 'warning';
 			} else if (filtroMonth && !allData.some((d) => d.request_month === Number(filtroMonth))) {
-				mensaje = `No existen datos para el mes ${filtroMonth}.`;
+				mensaje = `No existen datos para el mes '${filtroMonth}'.`;
 				tipoMensaje = 'warning';
-			} else if (filtroCnaeDescr && !allData.some((d) => d.cnae_descr.toLowerCase() === filtroCnaeDescr.toLowerCase())) {
+			} else if (
+				filtroCnaeDescr &&
+				!allData.some((d) => d.cnae_descr.toLowerCase() === filtroCnaeDescr.toLowerCase())
+			) {
 				mensaje = `No existen datos para la descripción ${filtroCnaeDescr}.`;
 				tipoMensaje = 'warning';
-			} else if (filtroSector && !allData.some((d) =>  d.sector.toLowerCase() === filtroSector.toLowerCase())) {
+			} else if (
+				filtroSector &&
+				!allData.some((d) => d.sector.toLowerCase() === filtroSector.toLowerCase())
+			) {
 				mensaje = `No existen datos para el sector ${filtroSector}.`;
 				tipoMensaje = 'warning';
-			} else if (filtroWorkCenter && !allData.some((d) =>  d.work_center_locality.toLowerCase() === filtroWorkCenter.toLowerCase())) {
+			} else if (
+				filtroWorkCenter &&
+				!allData.some(
+					(d) => d.work_center_locality.toLowerCase() === filtroWorkCenter.toLowerCase()
+				)
+			) {
 				mensaje = `No existen datos para la localidad ${filtroWorkCenter}.`;
 				tipoMensaje = 'warning';
-			} else if (filtroWorkerTot && !allData.some((d) => d.total_work_sus === Number(filtroWorkerTot))) {
-				mensaje = `No existen datos para el numero ${filtroWorkerTot} de trabajadores.`;
+			} else if (
+				filtroWorkerTot &&
+				!allData.some((d) => d.total_work_sus === Number(filtroWorkerTot))
+			) {
+				mensaje = `No existen datos para el numero '${filtroWorkerTot}' de trabajadores.`;
 				tipoMensaje = 'warning';
 			} else {
 				// si todos los filtros existen en some registro pero no juntos:
@@ -152,38 +169,44 @@
 		MVRDatas = [];
 	}
 
-	async function deleteData(company_municipality) {
+	async function deleteData(company_municipality, request_year, request_month) {
 		resultStatus = result = '';
-
 		try {
-			const res = await fetch(API + '/' + company_municipality, { method: 'DELETE' });
-			const status = await res.status;
-			resultStatus = status;
-			if (status == 200) {
-				console.log(`Data deleted ${company_municipality}`);
-				getData();
+			const res = await fetch(
+				`${API}/${encodeURIComponent(company_municipality)}/${request_year}/${request_month}`,
+				{ method: 'DELETE' }
+			);
+			resultStatus = res.status;
+
+			if (res.ok) {
+				await getData();
+				mensaje = 'Registro eliminado correctamente.';
+				tipoMensaje = 'success';
 			} else {
-				console.log(`ERROR deleting data ${company_municipality}: status received ${status}`);
+				mensaje = 'Error al borrar el registro.';
+				tipoMensaje = 'danger';
 			}
-		} catch (error) {
-			console.log(`ERROR: GET from ${API}: ${error}`);
+		} catch (err) {
+			mensaje = 'Error de conexión al borrar registro.';
+			tipoMensaje = 'danger';
 		}
 	}
 	async function deleteDatas() {
 		resultStatus = result = '';
-
 		try {
 			const res = await fetch(API, { method: 'DELETE' });
-			const status = await res.status;
-			resultStatus = status;
-			if (status == 200) {
-				console.log(`Base data deleted`);
-				getData();
+			resultStatus = res.status;
+			if (res.ok) {
+				await getData();
+				mensaje = 'Base de datos eliminada correctamente.';
+				tipoMensaje = 'success';
 			} else {
-				console.log(`ERROR deleting the data base`);
+				mensaje = 'Error al borrar la base de datos.';
+				tipoMensaje = 'danger';
 			}
 		} catch (error) {
-			console.log(`ERROR: GET from ${API}: ${error}`);
+			mensaje = 'Error de conexión al borrar la base de datos.';
+			tipoMensaje = 'danger';
 		}
 	}
 	async function createData() {
@@ -233,6 +256,10 @@
 		getData();
 	});
 </script>
+
+<svelte:head>
+	<title>Ertes de la Dana</title>
+</svelte:head>
 
 <section class="mb-4">
 	{#if mensaje}
@@ -289,15 +316,15 @@
 	</thead>
 	<tbody>
 		<tr>
-			<td><input bind:value={newMonth} /></td>
-			<td><input bind:value={newYear} /></td>
-			<td><input bind:value={newCnaeDescr} /></td>
-			<td><input bind:value={newMunicipality} /></td>
-			<td><input bind:value={newWorkCenter} /></td>
-			<td><input bind:value={newSector} /></td>
-			<td><input bind:value={newTotalWorkers} /></td>
+			<td><input placeholder="Mes" bind:value={newMonth} /></td>
+			<td><input placeholder="Año" bind:value={newYear} /></td>
+			<td><input placeholder="Descripción de cnae" bind:value={newCnaeDescr} /></td>
+			<td><input placeholder="Municipio" bind:value={newMunicipality} /></td>
+			<td><input placeholder="Localidad" bind:value={newWorkCenter} /></td>
+			<td><input placeholder="Sector" bind:value={newSector} /></td>
+			<td><input placeholder="Trabajadores totales" bind:value={newTotalWorkers} /></td>
 			<td>
-				<Button color="secondary" on:click={createData}>Create data</Button>
+				<Button color="secondary" on:click={createData}>Crear</Button>
 			</td>
 		</tr>
 		<tr>
@@ -354,9 +381,14 @@
 					</Button>
 				</td>
 				<td>
-					<Button color="danger" size="sm" on:click={() => deleteData(MVRData.company_municipality)}
-						>Borrar</Button
+					<Button
+						color="danger"
+						size="sm"
+						on:click={() =>
+							deleteData(MVRData.company_municipality, MVRData.request_year, MVRData.request_month)}
 					>
+						Borrar
+					</Button>
 				</td>
 			</tr>
 		{/each}

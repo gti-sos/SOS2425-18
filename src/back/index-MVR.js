@@ -333,28 +333,51 @@ function loadBackendMVR(app) {
     });
 
 
-    // DELETE un municipio en concreto.
-    app.delete(BASE_API + MVRMainResource + "/:municipality", (request, response) => {
-        const { municipality } = request.params;
-        console.log(`Llamando a DELETE para eliminar ${municipality} de la base de datos...`, request.params);
-
-        // `^${municipality}$` indica el principio y final del string. es decir, coincidirá madrid con madrid, pero no con madrid_centro. La "i" es para pasar todo a minúscula
-        db.remove({ company_municipality: new RegExp(`^${municipality}$`, "i") }, { multi: true }, (err, numRemoved) => {
-            if (err) {
-                console.error("Error al eliminar el municipio:", err);
-                return response.status(500).send("Error interno del servidor");
-            }
-            if (numRemoved === 0) {
-                return response.status(404).json({
-                    error: `El municipio '${municipality}' no fue encontrado.`
-                });
-            }
-            return response.status(200).json({
-                message: `El municipio '${municipality}' ha sido eliminado correctamente.`,
-                data: { numRemoved }
-            });
+// DELETE un registro concreto (municipio + año + mes)
+app.delete(BASE_API + MVRMainResource + "/:municipality/:year/:month", (request, response) => {
+      const { municipality, year, month } = request.params;
+  
+      console.log(
+        `Llamando a DELETE para eliminar registro de '${municipality}' en ${month}/${year}...`,
+        request.params
+      );
+  
+      // Validar year y month
+      const yr = parseInt(year, 10);
+      const mo = parseInt(month, 10);
+      if (isNaN(yr) || isNaN(mo)) {
+        return response.status(400).json({
+          error: "Los parámetros year y month deben ser números válidos."
         });
-    });
+      }
+  
+      // Eliminamos sólo ese registro (multi: false)
+      db.remove(
+        {
+          company_municipality: new RegExp(`^${municipality}$`, "i"),
+          request_year: yr,
+          request_month: mo
+        },
+        { multi: false },
+        (err, numRemoved) => {
+          if (err) {
+            console.error("Error al eliminar el registro:", err);
+            return response.status(500).send("Error interno del servidor");
+          }
+          if (numRemoved === 0) {
+            return response.status(404).json({
+              error: `No existe un registro para '${municipality}' en ${month}/${year}.`
+            });
+          }
+          return response.status(200).json({
+            message: `Registro de '${municipality}' (${month}/${year}) eliminado correctamente.`,
+            data: { numRemoved }
+          });
+        }
+      );
+    }
+  );
+  
 
     // GET un municipio en concreto
 
