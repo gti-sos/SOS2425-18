@@ -3,6 +3,39 @@ import { test, defineConfig, expect } from '@playwright/test';
 
 const BASE_URL = 'http://localhost:3000/dana-grants-subsidies-stats';
 
+// Datos de la nueva subvención
+const nuevaSubvencion = {
+  year: 2024,
+  month: 12,
+  grant_date: "31/12/2024",
+  benef_id: "B73614928",
+  benef_name: "GREEN AVOCADO TECH S.L.",
+  benef_type: "startup_innovación",
+  purpose: "Desarrollo de un sistema de IA para optimizar el riego en plantaciones de aguacates",
+  grantor: "Consejería de Transformación Económica",
+  grant_type: "Iniciativa FuturoVerde",
+  amt_granted: 42500.00,
+  amt_paid: 25000.00,
+  reimbursed: 0.00,
+  refunded: 0.00,
+  region_name: "Comunidad Valenciana",
+  sec_cod: 72,
+  sec_descr: "Agrotecnología sostenible",
+  aid_type: "Innovación verde",
+  reg_base: "Decreto 18/2025, de 8 de febrero",
+  fund_local: 8500.00,
+  fund_regional: 12000.00,
+  fund_state: 15000.00,
+  fund_eu: 7000.00,
+  fund_other: 0.00,
+  fund_type: "PlanTechVerde",
+  prov_name: "Alicante",
+  mun_name: "Denia"
+};
+
+// Nombre actualizado para la edición
+const nombreActualizado = "AGUACATE MARRON TECH S.L.";
+
 // Test para crear, actualizar y eliminar un recurso de ayuda
 
 test.beforeEach(async ({ page }) => {
@@ -10,38 +43,6 @@ test.beforeEach(async ({ page }) => {
   });
 
 test('Creación de subvención', async ({ page }) => {
-  // Datos de la nueva subvención
-  const nuevaSubvencion = {
-    year: 2024,
-    month: 12,
-    grant_date: "31/12/2024",
-    benef_id: "B73614928",
-    benef_name: "GREEN AVOCADO TECH S.L.",
-    benef_type: "startup_innovación",
-    purpose: "Desarrollo de un sistema de IA para optimizar el riego en plantaciones de aguacates",
-    grantor: "Consejería de Transformación Económica",
-    grant_type: "Iniciativa FuturoVerde",
-    amt_granted: 42500.00,
-    amt_paid: 25000.00,
-    reimbursed: 0.00,
-    refunded: 0.00,
-    region_name: "Comunidad Valenciana",
-    sec_cod: 72,
-    sec_descr: "Agrotecnología sostenible",
-    aid_type: "Innovación verde",
-    reg_base: "Decreto 18/2025, de 8 de febrero",
-    fund_local: 8500.00,
-    fund_regional: 12000.00,
-    fund_state: 15000.00,
-    fund_eu: 7000.00,
-    fund_other: 0.00,
-    fund_type: "PlanTechVerde",
-    prov_name: "Alicante",
-    mun_name: "Denia"
-  };
-
-  // Nombre actualizado para la edición
-  const nombreActualizado = "AGUACATE MARRON TECH S.L.";
 
   // 1. Navegar a la página principal
   await page.goto(BASE_URL);
