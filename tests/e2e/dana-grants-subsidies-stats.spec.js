@@ -138,7 +138,7 @@ test('Eliminación subvención', async ({ page }) => {
 
   // 16. Hacer clic en el botón de eliminar
 
-  const aidRow = await page.locator(`tr:has-text("${aid.benef_name}")`);
+  const aidRow = await page.locator(`tr:has-text("${nuevaSubvencion.benef_name}")`);
 
   // Dentro de esa fila, selecciona el botón "Eliminar"
   const deleteButton = aidRow.locator('button', { hasText: 'Eliminar' });
