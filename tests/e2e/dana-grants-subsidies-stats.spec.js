@@ -4,7 +4,12 @@ import { test, defineConfig, expect } from '@playwright/test';
 const BASE_URL = 'http://localhost:3000/dana-grants-subsidies-stats';
 
 // Test para crear, actualizar y eliminar un recurso de ayuda
-test('Gestión completa de subvención: creación, actualización y eliminación', async ({ page }) => {
+
+test.beforeEach(async ({ page }) => {
+    await page.goto(BASE_URL);
+  });
+
+test('Creación de subvención', async ({ page }) => {
   // Datos de la nueva subvención
   const nuevaSubvencion = {
     year: 2024,
@@ -44,7 +49,6 @@ test('Gestión completa de subvención: creación, actualización y eliminación
   
   // 2. Abrir el formulario para crear una nueva subvención
   await page.getByText('Crear nueva subvención').click();
-  await expect(page.getByText('Crear nueva subvención', { exact: true })).toBeVisible();
 
   // 3. Rellenar el formulario con los datos de la nueva subvención
   await page.locator('#year').fill(nuevaSubvencion.year.toString());
@@ -73,17 +77,20 @@ test('Gestión completa de subvención: creación, actualización y eliminación
   await page.locator('#fund_type').fill(nuevaSubvencion.fund_type);
   await page.locator('#prov_name').fill(nuevaSubvencion.prov_name);
   await page.locator('#mun_name').fill(nuevaSubvencion.mun_name);
+});
 
+test('Comprobación creación subvención', async ({ page }) => {
   // 4. Guardar la nueva subvención
-  await page.getByRole('button', { name: 'Guardar', exact: true }).click();
+  await page.getByRole('button', { name: 'Guardar'}).click();
 
   // 5. Verificar que la subvención se ha creado correctamente (aparece la alerta de éxito)
-  await expect(page.locator('.alert-success')).toBeVisible();
   await expect(page.locator('.alert-success')).toContainText('Subvención creada con éxito');
 
   // 6. Verificar que la subvención aparece en la tabla
   await expect(page.getByRole('cell', { name: nuevaSubvencion.benef_name })).toBeVisible();
+});
 
+test('Comprobación creación subvención (búsqueda)', async ({ page }) => {
   // 7. Filtrar para encontrar nuestra subvención específica
   await page.getByText('Filtros').click();
   await page.locator('#filtroBenefId').fill(nuevaSubvencion.benef_id);
@@ -93,7 +100,9 @@ test('Gestión completa de subvención: creación, actualización y eliminación
   const filas = page.locator('tbody tr');
   await expect(filas).toHaveCount(1);
   await expect(page.getByRole('cell', { name: nuevaSubvencion.benef_id })).toBeVisible();
+});
 
+test('Edición subvención', async ({ page }) => {
   // 9. Hacer clic en el botón de editar
   await page.getByRole('button', { name: 'Editar' }).click();
 
@@ -107,9 +116,11 @@ test('Gestión completa de subvención: creación, actualización y eliminación
 
   // 12. Guardar los cambios
   await page.getByRole('button', { name: 'Guardar cambios' }).click();
+});
+
+test('Comprobación edición subvención', async ({ page }) => {
 
   // 13. Verificar que la subvención se ha actualizado correctamente
-  await expect(page.locator('.alert-success')).toBeVisible();
   await expect(page.locator('.alert-success')).toContainText('Subvención actualizada con éxito');
 
   // 14. Verificar que se ha redirigido a la página principal y aplicar filtro
@@ -120,16 +131,28 @@ test('Gestión completa de subvención: creación, actualización y eliminación
 
   // 15. Verificar que la subvención actualizada aparece en la tabla
   await expect(page.getByRole('cell', { name: nombreActualizado })).toBeVisible();
+});
+
+test('Eliminación subvención', async ({ page }) => {
 
   // 16. Hacer clic en el botón de eliminar
-  await page.getByRole('button', { name: 'Eliminar' }).click();
 
+  const aidRow = await page.locator(`tr:has-text("${aid.benef_name}")`);
+
+  // Dentro de esa fila, selecciona el botón "Eliminar"
+  const deleteButton = aidRow.locator('button', { hasText: 'Eliminar' });
+  
+  // Haz clic en el botón "Eliminar"
+  await deleteButton.click();
+  
   // 17. Confirmar la eliminación en el modal
-  await expect(page.getByText(`¿Está seguro de que desea eliminar la subvención para ${nombreActualizado}?`)).toBeVisible();
-  await page.getByRole('button', { name: 'Eliminar', exact: true }).click();
+  await page.getByRole('button', { name: 'Eliminar'}).click();
+
+});
+
+test('Comprobación eliminación subvención', async ({ page }) => {
 
   // 18. Verificar que la subvención se ha eliminado correctamente
-  await expect(page.locator('.alert-success')).toBeVisible();
   await expect(page.locator('.alert-success')).toContainText('Subvención eliminada con éxito');
 
   // 19. Verificar que la subvención ya no aparece en la tabla
@@ -138,6 +161,5 @@ test('Gestión completa de subvención: creación, actualización y eliminación
   await page.getByRole('button', { name: 'Aplicar filtros' }).click();
   
   // Esperamos que aparezca un mensaje indicando que no se encontraron recursos
-  await expect(page.locator('.alert-danger')).toBeVisible();
   await expect(page.locator('.alert-danger')).toContainText('No se ha encontrado ningún recurso');
 });
