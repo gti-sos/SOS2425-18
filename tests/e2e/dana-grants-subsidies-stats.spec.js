@@ -1,7 +1,7 @@
 // tests/e2e/contr-mun-stats.spec.js
 import { test, defineConfig, expect } from '@playwright/test';
 
-//const BASE_URL = 'http://localhost:3000/';
+const BASE_URL = 'http://localhost:3000/dana-grants-subsidies-stats';
 
 // Test para crear, actualizar y eliminar un recurso de ayuda
 test('Gestión completa de subvención: creación, actualización y eliminación', async ({ page }) => {
@@ -39,7 +39,7 @@ test('Gestión completa de subvención: creación, actualización y eliminación
   const nombreActualizado = "AGUACATE MARRON TECH S.L.";
 
   // 1. Navegar a la página principal
-  await page.goto('/dana-grants-subsidies-stats');
+  await page.goto(BASE_URL);
   await expect(page).toHaveTitle(/Ayudas y subvenciones/);
 
   // 2. Abrir el formulario para crear una nueva subvención
