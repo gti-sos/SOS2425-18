@@ -10,7 +10,7 @@ const testRecord = {
   company_municipality: 'TestVille',
   work_center_locality: 'TestCenter',
   sector: 'TEST',
-  total_work_sus: 42
+  total_work_sus: 42 
 };
 // helpers
 const buscaSection = page =>
