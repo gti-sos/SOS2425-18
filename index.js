@@ -27,6 +27,7 @@ loadBackendMVR(app);
 app.use(handler);
 
 // Readme
+app.use("/public", express.static("./public/"));
 app.use("/about", express.static("./about/"));
 
 // Inicializar el servidor
