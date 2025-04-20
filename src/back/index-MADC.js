@@ -80,7 +80,18 @@ function loadBackendMADC(app){
         let statusCode= 200;
         let q= {};
 
-        if(request.query.year) q.year= parseInt(request.query.year);
+        if(request.query.year){
+            q.year= parseInt(request.query.year);
+        }else{
+            if(request.query.from){
+                q.year= {};
+                q.year.$gte = parseInt(request.query.from);
+            }
+            if(request.query.to){
+                q.year= q.year? q.year: {};
+                q.year.$gte = parseInt(request.query.to);
+            } 
+        } 
         if(request.query.month) q.month= parseInt(request.query.month);
         if(request.query.grant_date) q.grant_date= request.query.grant_date;
         if(request.query.benef_id) q.benef_id= request.query.benef_id;
@@ -127,7 +138,6 @@ function loadBackendMADC(app){
             limit= parseInt(request.query.limit);
             offset = (page - 1) * limit;
         }
-
         let pet= db_MADC.find(q);
 
         if(page!==null && limit !==null) pet= pet.skip(offset).limit(limit); 
