@@ -24,11 +24,14 @@ loadBackendMADC(app);
 loadBackendGBD(app);
 loadBackendMVR(app);
 
-app.use(handler);
+// Sirve la landing page en la raíz
+app.use("/", express.static("./public"));
 
-// Readme
-app.use("/public", express.static("./public/"));
-app.use("/about", express.static("./about/"));
+// Sirve el /about
+app.use("/about", express.static("./about"));
+
+// Svelte frontend
+app.use(handler);
 
 // Inicializar el servidor
 app.listen(PORT, ()=>{
