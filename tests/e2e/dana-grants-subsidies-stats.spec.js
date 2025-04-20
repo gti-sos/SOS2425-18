@@ -40,8 +40,8 @@ test('Gestión completa de subvención: creación, actualización y eliminación
 
   // 1. Navegar a la página principal
   await page.goto(BASE_URL);
-  await expect(page).toHaveTitle(/Ayudas y subvenciones/);
-
+  await expect(page.locator('h1.text-center')).toHaveText('Ayudas y subvenciones solicitadas Comunidad Valenciana, 4º Trimestre 2024');
+  
   // 2. Abrir el formulario para crear una nueva subvención
   await page.getByText('Crear nueva subvención').click();
   await expect(page.getByText('Crear nueva subvención', { exact: true })).toBeVisible();
