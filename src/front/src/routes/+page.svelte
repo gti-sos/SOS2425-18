@@ -92,7 +92,7 @@
   <ul>
     <li><a href="https://sos2425-18.onrender.com/api/v1/contr-mun-stats">/api/v1/contr-mun-stats</a> (Guillermo Blanco Díaz)</li>
     <li><a href="https://sos2425-18.onrender.com/api/v1/dana-erte-stats">/api/v1/dana-erte-stats</a> (Miguel Vázquez de la Rubia)</li>
-    <li><a href="https://sos2425-18.onrender.com/api/v1/dana-grants-subsidies-stats">/api/v1/dana-grants-subsidies-stats</a> (Miguel Ángel Domínguez Ciero)</li>
+    <li><a href="https://sos2425-18.onrender.com/api/v2/dana-grants-subsidies-stats">/api/v2/dana-grants-subsidies-stats</a> (Miguel Ángel Domínguez Ciero)</li>
   </ul>
   
   <h2>API Documentation</h2>
@@ -108,7 +108,7 @@
       </a> - Miguel Vázquez de la Rubia
     </li>
     <li>
-      <a href="https://sos2425-18.onrender.com/api/v1/dana-grants-subsidies-stats/docs" target="_blank">
+      <a href="https://sos2425-18.onrender.com/api/v2/dana-grants-subsidies-stats/docs" target="_blank">
         /api/v1/dana-grants-subsidies-stats/docs
       </a> - Miguel Ángel Domínguez Ciero
     </li>
