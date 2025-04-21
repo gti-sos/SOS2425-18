@@ -110,6 +110,17 @@
 
     if (dev) API = DEVEL_HOST + API;
 
+    async function iniatilizeData(){
+        try {
+            const res = await fetch(`${API}/loadInitialData`);
+            if (res.status==500) {
+                showAlert("Error interno del servidor", "danger");
+                return;
+            }
+        } catch (error) {
+            showAlert("No se pudo conectar con el servidor", "danger");
+        }
+    }
     // Función para obtener las ayudas con filtros opcionales
     async function getAids() {
         let url = API;
