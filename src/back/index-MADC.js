@@ -65,6 +65,12 @@ function loadBackendMADC(app){
 
     const MADCmainResource= "dana-grants-subsidies-stats";
 
+    db_MADC.find({}, (err, data)=>{
+        if(data.length===0){
+            db_MADC.insert(objData);
+        }
+    })
+
     app.get(`${BASE_API}/${MADCmainResource}/loadInitialData`, (request, response) => {
         let statusCode=201;
         db_MADC.find({}, (err, data)=>{
