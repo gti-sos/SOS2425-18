@@ -1,1 +1,117 @@
-Mi primera página svelte desarrollada con Nodejs (v3)
+<style>
+    /* Estilos similares al primer HTML proporcionado */
+    :global(body) {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 60px auto;
+      padding: 40px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      border-radius: 8px;
+    }
+    
+    h1, h2 {
+      border-bottom: 1px solid #e1e4e8;
+      padding-bottom: 0.3em;
+      margin-top: 0;
+    }
+    
+    h1 {
+      font-size: 2em;
+      color: #2c3e50;
+    }
+    
+    h2 {
+      font-size: 1.5em;
+      margin-top: 2em;
+    }
+    
+    p {
+      line-height: 1.6;
+    }
+    
+    ul {
+      padding-left: 1.5em;
+    }
+    
+    li {
+      margin-bottom: 0.5em;
+    }
+    
+    a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+    
+    a:hover {
+      text-decoration: underline;
+    }
+    
+    .team-member {
+      margin: 4px 0;
+    }
+  </style>
+
+<svelte:head>
+  <title>SOS2425-18 Project</title>
+</svelte:head>
+
+<div class="container">
+  <h1>SOS2425-18</h1>
+  
+  <h2>Team Members</h2>
+  <div class="team-member">• Guillermo Blanco Díaz (<a href="https://github.com/GuilleBlanco08" target="_blank">github.com/GuilleBlanco08</a>) - <em>contr-mun-stats</em></div>
+  <div class="team-member">• Miguel Vázquez de la Rubia (<a href="https://github.com/Mikyvaz" target="_blank">github.com/Mikyvaz</a>) - <em>dana-erte-stats</em></div>
+  <div class="team-member">• Miguel Ángel Domínguez Ciero (<a href="https://github.com/migdomcie" target="_blank">github.com/migdomcie</a>) - <em>dana-grants-subsidies-stats</em></div>
+  
+  <h2>Project Description</h2>
+  <p>
+    This project analyzes data on grants and subsidies from the Generalitat Valenciana, employment contracts by municipality, gender, age, and sector, as well as temporary employment regulation files (ERTE). The objective is to identify trends in aid distribution, employment evolution, and high-demand occupations, helping to evaluate their impact on different sectors and populations.
+  </p>
+  
+  <h2>Repository</h2>
+  <p><a href="https://github.com/gti-sos/SOS2425-18" target="_blank">github.com/gti-sos/SOS2425-18</a></p>
+  
+  <h2>Project Deployment</h2>
+  <p><a href="https://sos2425-18.onrender.com" target="_blank">https://sos2425-18.onrender.com</a></p>
+  
+  <h2>Frontend Applications</h2>
+  <ul>
+    <li><a href="/contr-mun-stats">Frontend - contr-mun-stats</a> (Guillermo Blanco Díaz)</li>
+    <li><a href="/dana-erte-stats">Frontend - dana-erte-stats</a> (Miguel Vázquez de la Rubia)</li>
+    <li><a href="/dana-grants-subsidies-stats">Frontend - dana-grants-subsidies-stats</a> (Miguel Ángel Domínguez Ciero)</li>
+  </ul>
+  
+  <h2>API Base URLs</h2>
+  <ul>
+    <li><a href="https://sos2425-18.onrender.com/api/v1/contr-mun-stats">/api/v1/contr-mun-stats</a> (Guillermo Blanco Díaz)</li>
+    <li><a href="https://sos2425-18.onrender.com/api/v1/dana-erte-stats">/api/v1/dana-erte-stats</a> (Miguel Vázquez de la Rubia)</li>
+    <li><a href="https://sos2425-18.onrender.com/api/v1/dana-grants-subsidies-stats">/api/v1/dana-grants-subsidies-stats</a> (Miguel Ángel Domínguez Ciero)</li>
+  </ul>
+  
+  <h2>API Documentation</h2>
+  <ul>
+    <li>
+      <a href="https://sos2425-18.onrender.com/api/v1/contr-mun-stats/docs" target="_blank">
+        /api/v1/contr-mun-stats/docs
+      </a> - Guillermo Blanco Díaz
+    </li>
+    <li>
+      <a href="https://sos2425-18.onrender.com/api/v1/dana-erte-stats/docs" target="_blank">
+        /api/v1/dana-erte-stats/docs
+      </a> - Miguel Vázquez de la Rubia
+    </li>
+    <li>
+      <a href="https://sos2425-18.onrender.com/api/v1/dana-grants-subsidies-stats/docs" target="_blank">
+        /api/v1/dana-grants-subsidies-stats/docs
+      </a> - Miguel Ángel Domínguez Ciero
+    </li>
+  </ul>
+</div>
+

@@ -28,6 +28,7 @@
 	import query from "express/lib/middleware/query";
     import { page } from '$app/stores';
     import { get } from 'svelte/store';
+	import { before } from "node:test";
 
     const params = get(page).params;
     const munNameParam= params.mun_name;  
@@ -130,6 +131,10 @@
     }
 
 </style>
+
+<svelte:head>
+        <title>Editar {currentAid!==null? currentAid.benef_id: ""}</title>
+</svelte:head>
 
 <Container fluid>
     <!-- Alerta para mensajes -->

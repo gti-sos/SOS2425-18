@@ -412,6 +412,9 @@
         z-index: 1050;
     }
 </style>
+    <svelte:head>
+        <title>Ayudas y Subvenciones</title>
+    </svelte:head>
 
     <Container fluid>
     <!-- Alerta para mensajes -->
