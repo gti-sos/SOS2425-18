@@ -10,7 +10,7 @@
     import { goto } from "$app/navigation";
     
     let DEVEL_HOST = "http://localhost:3000";
-    let API = "/api/v1/contr-mun-stats";
+    let API = "/api/v2/contr-mun-stats";
     if (dev) API = DEVEL_HOST + API;
     
     let contrs = [];

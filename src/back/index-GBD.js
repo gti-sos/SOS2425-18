@@ -1,7 +1,7 @@
 // contr-mun-stats con persistencia usando NeDB
 
 import dataStore from "nedb";
-const BASE_API = "/api/v1";
+const BASE_API = "/api/v2";
 
 let db_GBD = new dataStore();
 
