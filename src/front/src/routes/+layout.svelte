@@ -1,5 +1,5 @@
 <svelte:head>
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" href="/src/front/static/favicon.ico" />
 </svelte:head>
 <script>
     import Header from './Header.svelte';
