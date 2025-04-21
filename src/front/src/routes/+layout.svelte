@@ -1,3 +1,6 @@
+<svelte:head>
+    <link rel="icon" href="/favicon.ico" />
+</svelte:head>
 <script>
     import Header from './Header.svelte';
     import Footer from './Footer.svelte';
