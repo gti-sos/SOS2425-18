@@ -891,9 +891,9 @@
                             filtroTo = "";
                             filtroLimit = "";
                             filtroPage = "";
-                            
-                            goto(window.location.pathname.substring(0, window.location.pathname.indexOf("?")), { replaceState: true });
                             getAids();
+                            goto("/dana-grants-subsidies-stats");
+                            
                         }}>Limpiar filtros</Button>
                     </div>
                 </Form>
