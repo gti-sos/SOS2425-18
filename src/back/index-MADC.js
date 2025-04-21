@@ -58,7 +58,7 @@ async function readAllDataMADC(ruta) {
 objData= await readAllDataMADC("./datasets/Ejemplo-Ayudas-Subvenciones-DANA-4TR(;).csv");
 let pueblosdistintos= new Set(objData.map(e=> e.reg_base));
 
-const BASE_API = "/api/v1";
+const BASE_API = "/api/v2";
 let db_MADC = new dataStore();
 
 function loadBackendMADC(app){
