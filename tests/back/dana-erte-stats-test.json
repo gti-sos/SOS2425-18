@@ -14,7 +14,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats/",
+					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/",
 					"host": [
 						"{{BASE_URL}}"
 					],
@@ -37,7 +37,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats/loadInitialData",
+					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/loadInitialData",
 					"host": [
 						"{{BASE_URL}}"
 					],
@@ -74,7 +74,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats",
+					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats",
 					"host": [
 						"{{BASE_URL}}"
 					],
@@ -110,7 +110,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats/Alicante/12/E42665265",
+					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/Alicante/12/E42665265",
 					"host": [
 						"{{BASE_URL}}"
 					],
@@ -151,7 +151,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats?mun_name=Alicante",
+					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats?mun_name=Alicante",
 					"host": [
 						"{{BASE_URL}}"
 					],
@@ -195,7 +195,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats?page=1&limit=2",
+					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats?page=1&limit=2",
 					"host": [
 						"{{BASE_URL}}"
 					],
@@ -241,7 +241,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats/Alicante/12/Z12121212",
+					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/Alicante/12/Z12121212",
 					"host": [
 						"{{BASE_URL}}"
 					],
@@ -289,7 +289,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats/",
+					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/",
 					"host": [
 						"{{BASE_URL}}"
 					],
@@ -335,7 +335,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats/",
+					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/",
 					"host": [
 						"{{BASE_URL}}"
 					],
@@ -381,7 +381,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats/",
+					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/",
 					"host": [
 						"{{BASE_URL}}"
 					],
@@ -427,7 +427,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats/Alicante/12/E42665265",
+					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/Alicante/12/E42665265",
 					"host": [
 						"{{BASE_URL}}"
 					],
@@ -475,7 +475,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats/Denia/12/B73614928",
+					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/Denia/12/B73614928",
 					"host": [
 						"{{BASE_URL}}"
 					],
@@ -523,7 +523,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats/",
+					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/",
 					"host": [
 						"{{BASE_URL}}"
 					],
@@ -569,7 +569,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats/Denia/3/B73614928",
+					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/Denia/3/B73614928",
 					"host": [
 						"{{BASE_URL}}"
 					],
@@ -608,7 +608,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats/Valencia/12/A00000000",
+					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/Valencia/12/A00000000",
 					"host": [
 						"{{BASE_URL}}"
 					],
@@ -648,7 +648,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats/Denia/12/B73614928",
+					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/Denia/12/B73614928",
 					"host": [
 						"{{BASE_URL}}"
 					],
@@ -689,7 +689,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats",
+					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats",
 					"host": [
 						"{{BASE_URL}}"
 					],
