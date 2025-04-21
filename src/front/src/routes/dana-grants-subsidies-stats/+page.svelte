@@ -949,7 +949,7 @@
         </ModalHeader>
         <ModalBody>
             {#if currentAid}
-                <div class="alert alert-danger">
+                <div class="alert alert-danger" id="eliminacion-especifica">
                     <p>¿Está seguro de que desea eliminar la subvención para <strong>{currentAid.benef_name}</strong>?</p>
                     <p>Esta acción no se puede deshacer.</p>
                 </div>
@@ -967,7 +967,7 @@
             Confirmar eliminación
         </ModalHeader>
         <ModalBody>
-            <div class="alert alert-danger">
+            <div class="alert alert-danger" id="eliminacion-masiva">
                 <p>¿Está seguro de que desea eliminar <strong>todas</strong> las subvenciones?</p>
                 <p>Esta acción eliminará <strong>{aids.length}</strong> registros y no se puede deshacer.</p>
             </div>

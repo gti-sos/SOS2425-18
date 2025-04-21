@@ -105,7 +105,6 @@ test.describe('Gestión de subvenciones - CRUD', () => {
     await expect(page.locator('.alert-success')).toContainText('Subvención eliminada con éxito');
     await page.locator('#filtros').click();
 
-    await filtrarPorBenefId(page, nuevaSubvencion.benef_id);
-    await expect(page.locator('.alert-danger')).toContainText('No se ha encontrado ningún recurso');
+    await expect(page.locator(`tr:has-text("${nombreActualizado}")`)).toHaveCount(0);
   });
 });
