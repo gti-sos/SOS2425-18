@@ -1,7 +1,7 @@
 // Inicialización del array con los datos de ejemplo (cada registro en una sola línea)
 import dataStore from "nedb";
 
-const BASE_API = "/api/v2";
+const BASE_API = "/api/v1";
 
 let db = new dataStore();
 

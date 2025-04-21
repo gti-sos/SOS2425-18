@@ -91,7 +91,7 @@
   <h2>API Base URLs</h2>
   <ul>
     <li><a href="https://sos2425-18.onrender.com/api/v1/contr-mun-stats">/api/v1/contr-mun-stats</a> (Guillermo Blanco Díaz)</li>
-    <li><a href="https://sos2425-18.onrender.com/api/v2/dana-erte-stats">/api/v2/dana-erte-stats</a> (Miguel Vázquez de la Rubia)</li>
+    <li><a href="https://sos2425-18.onrender.com/api/v1/dana-erte-stats">/api/v1/dana-erte-stats</a> (Miguel Vázquez de la Rubia)</li>
     <li><a href="https://sos2425-18.onrender.com/api/v1/dana-grants-subsidies-stats">/api/v1/dana-grants-subsidies-stats</a> (Miguel Ángel Domínguez Ciero)</li>
   </ul>
   
@@ -103,8 +103,8 @@
       </a> - Guillermo Blanco Díaz
     </li>
     <li>
-      <a href="https://sos2425-18.onrender.com/api/v2/dana-erte-stats/docs" target="_blank">
-        /api/v2/dana-erte-stats/docs
+      <a href="https://sos2425-18.onrender.com/api/v1/dana-erte-stats/docs" target="_blank">
+        /api/v1/dana-erte-stats/docs
       </a> - Miguel Vázquez de la Rubia
     </li>
     <li>
