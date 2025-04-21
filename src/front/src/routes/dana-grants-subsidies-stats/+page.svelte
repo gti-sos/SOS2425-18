@@ -362,7 +362,10 @@
         }, 3000);
     }
 
-    onMount(getAids);
+    onMount(()=>{
+        iniatilizeData();
+        getAids();
+    });
 </script>
 
 <style>
