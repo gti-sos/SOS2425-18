@@ -15,12 +15,14 @@
     "test-MADC-online": "start-server-and-test start https://sos2425-18.onrender.com test-dana-grants-subsidies-stats-online",
     "test-MADC-loc": "npm run test-MADC-local",
     "test-MADC-onl": "npm run test-MADC-online",
+
     "test-dana-erte-stats-local": "npx newman run tests/back/dana-erte-stats-test.json -e tests/back/api-env-local.json",
     "test-dana-erte-stats-online": "npx newman run tests/back/dana-erte-stats-test.json -e tests/back/api-env-online.json",
     "test-MVR-local": "start-server-and-test start http://localhost:3000 test-dana-erte-stats-local",
     "test-MVR-online": "start-server-and-test start https://sos2425-18.onrender.com test-dana-erte-stats-online",
     "test-MVR-loc": "npm run test-MVR-local",
     "test-MVR-onl": "npm run test-MVR-online",
+    
     "test-contr-mun-stats": "npx newman run tests/back/contr-mun-stats-test.json -e tests/back/api-env-local.json",
     "test-contr-mun-stats-online": "npx newman run tests/back/contr-mun-stats-test.json -e tests/back/api-env-online.json",
     "test-GBD-local": "start-server-and-test start http://localhost:3000 test-contr-mun-stats",

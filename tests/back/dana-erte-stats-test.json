@@ -20,7 +20,7 @@
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"dana-grants-subsidies-stats",
 						""
 					]
@@ -43,7 +43,7 @@
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"dana-grants-subsidies-stats",
 						"loadInitialData"
 					]
@@ -80,7 +80,7 @@
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"dana-grants-subsidies-stats"
 					]
 				}
@@ -116,7 +116,7 @@
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"dana-grants-subsidies-stats",
 						"Alicante",
 						"12",
@@ -157,7 +157,7 @@
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"dana-grants-subsidies-stats"
 					],
 					"query": [
@@ -201,7 +201,7 @@
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"dana-grants-subsidies-stats"
 					],
 					"query": [
@@ -247,7 +247,7 @@
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"dana-grants-subsidies-stats",
 						"Alicante",
 						"12",
@@ -295,7 +295,7 @@
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"dana-grants-subsidies-stats",
 						""
 					]
@@ -341,7 +341,7 @@
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"dana-grants-subsidies-stats",
 						""
 					]
@@ -387,7 +387,7 @@
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"dana-grants-subsidies-stats",
 						""
 					]
@@ -433,7 +433,7 @@
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"dana-grants-subsidies-stats",
 						"Alicante",
 						"12",
@@ -481,7 +481,7 @@
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"dana-grants-subsidies-stats",
 						"Denia",
 						"12",
@@ -529,7 +529,7 @@
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"dana-grants-subsidies-stats",
 						""
 					]
@@ -575,7 +575,7 @@
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"dana-grants-subsidies-stats",
 						"Denia",
 						"3",
@@ -614,7 +614,7 @@
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"dana-grants-subsidies-stats",
 						"Valencia",
 						"12",
@@ -654,7 +654,7 @@
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"dana-grants-subsidies-stats",
 						"Denia",
 						"12",
@@ -695,7 +695,7 @@
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"dana-grants-subsidies-stats"
 					]
 				}
