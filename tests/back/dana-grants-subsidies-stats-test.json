@@ -37,13 +37,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BASE_URL}}/api/v1/dana-grants-subsidies-stats/loadInitialData",
+					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/loadInitialData",
 					"host": [
 						"{{BASE_URL}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"dana-grants-subsidies-stats",
 						"loadInitialData"
 					]
