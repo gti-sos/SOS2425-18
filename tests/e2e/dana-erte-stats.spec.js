@@ -72,7 +72,7 @@ test.describe('Gestión de ERTEs de la Dana', () => {
 
     await Promise.all([
       page.waitForResponse(resp =>
-        resp.url().includes('/api/v1/dana-erte-stats') &&
+        resp.url().includes('/api/v2/dana-erte-stats') &&
         resp.request().method() === 'POST' &&
         resp.status() === 201
       ),
@@ -133,7 +133,7 @@ test.describe('Gestión de ERTEs de la Dana', () => {
 
     await Promise.all([
       page.waitForResponse(resp =>
-        resp.url().includes('/api/v1/dana-erte-stats') &&
+        resp.url().includes('/api/v2/dana-erte-stats') &&
         resp.request().method() === 'PUT' &&
         resp.status() === 200
       ),
@@ -271,12 +271,12 @@ test.describe('Gestión de ERTEs de la Dana', () => {
     // Pulsar y esperar DELETE + GET (refresco)
     await Promise.all([
       page.waitForResponse(resp =>
-        resp.url().endsWith('/api/v1/dana-erte-stats') &&
+        resp.url().endsWith('/api/v2/dana-erte-stats') &&
         resp.request().method() === 'DELETE' &&
         resp.status() === 200
       ),
       page.waitForResponse(resp =>
-        resp.url().endsWith('/api/v1/dana-erte-stats') &&
+        resp.url().endsWith('/api/v2/dana-erte-stats') &&
         resp.request().method() === 'GET' &&
         resp.status() === 200
       ),

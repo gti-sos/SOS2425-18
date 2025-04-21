@@ -1,66 +1,27 @@
 {
 	"info": {
-		"_postman_id": "ff16ba27-b3e2-4359-a943-6f40ff378e0c",
-		"name": "SOS2425-18-migdomcie",
-		"description": "The requests are made for this API were developed for an university project from a subject called SOS by the pupil **migdomcie**.\n\nExecuting this POSTMAN collection, you can retrieve, create, update and delete data in a simple way.",
+		"_postman_id": "65ce8e44-a6b2-47d9-af40-330a8d80269b",
+		"name": "F07",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "42356631",
-		"_collection_link": "https://www.postman.com/migdomcie/my-workspace/collection/efwdb6d/sos2425-18-migdomcie?action=share&source=collection_link&creator=42356631"
+		"_exporter_id": "42354753"
 	},
 	"item": [
 		{
-			"name": "borrado de todos los recursos",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"api",
-						"v2",
-						"dana-grants-subsidies-stats",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "carga de todos los recursos",
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/loadInitialData",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"api",
-						"v2",
-						"dana-grants-subsidies-stats",
-						"loadInitialData"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "obtencion de todos los recursos",
+			"name": "200 OK - Obtención de los datos",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"All resources retrieved\", function () {\r",
+							"pm.test(\"Status code is 200\", () => {\r",
 							"    pm.response.to.have.status(200);\r",
-							"});"
+							"});\r",
+							"\r",
+							"pm.test(\"Devuelve un array\", () => {\r",
+							"    const data = pm.response.json();\r",
+							"    pm.expect(data).to.be.an(\"array\");\r",
+							"});\r",
+							""
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -74,29 +35,35 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats",
+					"raw": "{{BASE_URL}}/api/v2/dana-erte-stats",
 					"host": [
 						"{{BASE_URL}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"dana-grants-subsidies-stats"
+						"dana-erte-stats"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "obtencion de un recurso especifico",
+			"name": "200 OK - Obtención de Moncófar/2024/12",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"A specific resource retrieved\", function () {\r",
+							"pm.test(\"Status code is 200\", () => {\r",
 							"    pm.response.to.have.status(200);\r",
-							"});"
+							"});\r",
+							"\r",
+							"pm.test(\"Devuelve un array\", () => {\r",
+							"    const data = pm.response.json();\r",
+							"    pm.expect(data).to.be.an(\"Object\");\r",
+							"});\r",
+							""
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -110,163 +77,39 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/Alicante/12/E42665265",
+					"raw": "{{BASE_URL}}/api/v2/dana-erte-stats/Moncófar/2024/12",
 					"host": [
 						"{{BASE_URL}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"dana-grants-subsidies-stats",
-						"Alicante",
-						"12",
-						"E42665265"
+						"dana-erte-stats",
+						"Moncófar",
+						"2024",
+						"12"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "obtencion busqueda por mun_name",
+			"name": "201 Created - Crea un dato nuevo",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Resources retrieved by a query string\", function () {\r",
-							"    const responseJson= pm.response.json();\r",
-							"    pm.response.to.have.status(200);\r",
-							"    pm.expect(responseJson).to.be.an('array').is.not.empty;\r",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats?mun_name=Alicante",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"api",
-						"v2",
-						"dana-grants-subsidies-stats"
-					],
-					"query": [
-						{
-							"key": "mun_name",
-							"value": "Alicante"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "obtencion de todos los recursos paginada",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Resources retrieved and splitted in pages\", function () {\r",
-							"    const responseJson= pm.response.json();\r",
-							"    pm.response.to.have.status(200);\r",
-							"    pm.expect(responseJson.length).to.equal(2);\r",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats?page=1&limit=2",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"api",
-						"v2",
-						"dana-grants-subsidies-stats"
-					],
-					"query": [
-						{
-							"key": "page",
-							"value": "1"
-						},
-						{
-							"key": "limit",
-							"value": "2"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "obtencion de recurso inexistente",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"The resource doesn´t exists\", function () {\r",
-							"    pm.response.to.have.status(404);\r",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/Alicante/12/Z12121212",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"api",
-						"v2",
-						"dana-grants-subsidies-stats",
-						"Alicante",
-						"12",
-						"Z12121212"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "creacion de nuevos recursos",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"All new resources created\", function () {\r",
+							"pm.test(\"Status 201 Created\", () => {\r",
 							"    pm.response.to.have.status(201);\r",
-							"});"
+							"});\r",
+							"\r",
+							"pm.test(\"Devuelve el nuevo recurso creado\", () => {\r",
+							"    const data = pm.response.json();\r",
+							"    pm.expect(data).to.have.property(\"data\");\r",
+							"    pm.expect(data.data).to.have.property(\"company_municipality\");\r",
+							"});\r",
+							""
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -281,7 +124,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "[{\r\n    \"year\": 2024,\r\n    \"month\": 12,\r\n    \"grant_date\": \"31/12/2024\",\r\n    \"benef_id\": \"B73614928\",\r\n    \"benef_name\": \"GREEN AVOCADO TECH S.L.\",\r\n    \"benef_type\": \"startup_innovación\",\r\n    \"purpose\": \"Desarrollo de un sistema de IA para optimizar el riego en plantaciones de aguacates\",\r\n    \"grantor\": \"Consejería de Transformación Económica\",\r\n    \"grant_type\": \"Iniciativa FuturoVerde\",\r\n    \"amt_granted\": 42500.00,\r\n    \"amt_paid\": 25000.00,\r\n    \"reimbursed\": 0.00,\r\n    \"refunded\": 0.00,\r\n    \"region_name\": \"Comunidad Valenciana\",\r\n    \"sec_cod\": 72,\r\n    \"sec_descr\": \"Agrotecnología sostenible\",\r\n    \"aid_type\": \"Innovación verde\",\r\n    \"reg_base\": \"Decreto 18/2025, de 8 de febrero\",\r\n    \"fund_local\": 8500.00,\r\n    \"fund_regional\": 12000.00,\r\n    \"fund_state\": 15000.00,\r\n    \"fund_eu\": 7000.00,\r\n    \"fund_other\": 0.00,\r\n    \"fund_type\": \"PlanTechVerde\",\r\n    \"prov_name\": \"Alicante\",\r\n    \"mun_name\": \"Denia\"\r\n}]",
+					"raw": "{\r\n        \"request_month\": 11,\r\n        \"request_year\": 2024,\r\n        \"cnae_descr\": \"Actividades de las empresas de trabajo temporal\",\r\n        \"company_municipality\": \"Sevilla\",\r\n        \"work_center_locality\": \"Aldaya; Almussafes; Gandía\",\r\n        \"sector\": \"SERVICIOS\",\r\n        \"total_work_sus\": 79\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -289,30 +132,255 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/",
+					"raw": "{{BASE_URL}}/api/v2/dana-erte-stats",
 					"host": [
 						"{{BASE_URL}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"dana-grants-subsidies-stats",
-						""
+						"dana-erte-stats"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "creacion de recursos repetidos",
+			"name": "200 OK - Actualiza los datos del elemento especificado en el put",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"All new resources already created\", function () {\r",
+							"pm.test(\"Status 200 OK o 400 o 404\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 400, 404]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Respuesta con mensaje\", () => {\r",
+							"    const data = pm.response.json();\r",
+							"    \r",
+							"    const hasMessage = Object.prototype.hasOwnProperty.call(data, \"message\");\r",
+							"    const hasError = Object.prototype.hasOwnProperty.call(data, \"error\");\r",
+							"\r",
+							"    pm.expect(hasMessage || hasError).to.be.true;\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"request_month\": 11,\r\n        \"request_year\": 2024,\r\n        \"cnae_descr\": \"Actividades de las empresas de trabajo temporal\",\r\n        \"company_municipality\": \"Sevilla\",\r\n        \"work_center_locality\": \"Gandía\",\r\n        \"sector\": \"SERVICIOS\",\r\n        \"total_work_sus\": 80\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v2/dana-erte-stats/Sevilla/2024/11",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"dana-erte-stats",
+						"Sevilla",
+						"2024",
+						"11"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 OK - Actualiza los datos del elemento especificado en el put",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200 OK o 400 o 404\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 400, 404]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Respuesta con mensaje\", () => {\r",
+							"    const data = pm.response.json();\r",
+							"    \r",
+							"    const hasMessage = Object.prototype.hasOwnProperty.call(data, \"message\");\r",
+							"    const hasError = Object.prototype.hasOwnProperty.call(data, \"error\");\r",
+							"\r",
+							"    pm.expect(hasMessage || hasError).to.be.true;\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"request_month\": 11,\r\n        \"request_year\": 2024,\r\n        \"cnae_descr\": \"Actividades de las empresas de trabajo temporal\",\r\n        \"company_municipality\": \"Sevilla\",\r\n        \"work_center_locality\": \"Gandía\",\r\n        \"sector\": \"SERVICIOS\",\r\n        \"total_work_sus\": 80\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v2/dana-erte-stats/Sevilla/2024/11",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"dana-erte-stats",
+						"Sevilla",
+						"2024",
+						"11"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "405 Not Allowed - PUT no se puede hacer con una petición general",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 405\", function () {\r",
+							"    pm.response.to.have.status(405);\r",
+							"});\r",
+							"pm.test(\"Devuelve mensaje de error correcto\", function () {\r",
+							"    var json = pm.response.json();\r",
+							"    pm.expect(json.error).to.include(\"Method Not Allowed\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"request_date\": \"22/11/2024\",\r\n        \"request_month\": 11,\r\n        \"request_year\": 2029,\r\n        \"cnae_descr\": \"Transporte de mercancías por carretera\",\r\n        \"company_municipality\": \"Alicante\",\r\n        \"company_province\": \"Alicante\",\r\n        \"work_center_locality\": \"Alicante\",\r\n        \"sector\": \"SERVICIOS\",\r\n        \"total_work_sus\": 6,\r\n        \"men_work_sus\": 5,\r\n        \"women_work_sus\": 1\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v2/dana-erte-stats",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"dana-erte-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "405 Method Not Allowed -- No se puede hacer un POST en una petición de un dato específico",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 405\", function () {\r",
+							"    pm.response.to.have.status(405);\r",
+							"});\r",
+							"pm.test(\"Devuelve mensaje de error correcto\", function () {\r",
+							"    var json = pm.response.json();\r",
+							"    pm.expect(json.error).to.include(\"Method Not Allowed\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v2/dana-erte-stats/Elche",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"dana-erte-stats",
+						"Elche"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "409 Conflict - Elche ya existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 409 Conflict\", function () {\r",
 							"    pm.response.to.have.status(409);\r",
-							"});"
+							"});\r",
+							"\r",
+							"pm.test(\"Mensaje de error correcto\", function () {\r",
+							"    const res = pm.response.json();\r",
+							"    pm.expect(res.error).to.include(\"ya existe\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -327,7 +395,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "[{\r\n    \"year\": 2024,\r\n    \"month\": 12,\r\n    \"grant_date\": \"31/12/2024\",\r\n    \"benef_id\": \"B73614928\",\r\n    \"benef_name\": \"GREEN AVOCADO TECH S.L.\",\r\n    \"benef_type\": \"startup_innovación\",\r\n    \"purpose\": \"Desarrollo de un sistema de IA para optimizar el riego en plantaciones de aguacates\",\r\n    \"grantor\": \"Consejería de Transformación Económica\",\r\n    \"grant_type\": \"Iniciativa FuturoVerde\",\r\n    \"amt_granted\": 42500.00,\r\n    \"amt_paid\": 25000.00,\r\n    \"reimbursed\": 0.00,\r\n    \"refunded\": 0.00,\r\n    \"region_name\": \"Comunidad Valenciana\",\r\n    \"sec_cod\": 72,\r\n    \"sec_descr\": \"Agrotecnología sostenible\",\r\n    \"aid_type\": \"Innovación verde\",\r\n    \"reg_base\": \"Decreto 18/2025, de 8 de febrero\",\r\n    \"fund_local\": 8500.00,\r\n    \"fund_regional\": 12000.00,\r\n    \"fund_state\": 15000.00,\r\n    \"fund_eu\": 7000.00,\r\n    \"fund_other\": 0.00,\r\n    \"fund_type\": \"PlanTechVerde\",\r\n    \"prov_name\": \"Alicante\",\r\n    \"mun_name\": \"Denia\"\r\n}]",
+					"raw": "{\r\n  \"request_date\": \"12/09/2024\",\r\n  \"request_month\": 12,\r\n  \"request_year\": 2024,\r\n  \"cnae_descr\": \"Educación secundaria técnica y profesional\",\r\n  \"company_municipality\": \"Elche\",\r\n  \"company_province\": \"Alicante\",\r\n  \"work_center_locality\": \"Elche\",\r\n  \"sector\": \"SERVICIOS\",\r\n  \"total_work_sus\": 3,\r\n  \"men_work_sus\": 2,\r\n  \"women_work_sus\": 1\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -335,45 +403,30 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/",
+					"raw": "{{BASE_URL}}/api/v2/dana-erte-stats",
 					"host": [
 						"{{BASE_URL}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"dana-grants-subsidies-stats",
-						""
+						"dana-erte-stats"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "creacion de recursos mal formados",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"The request doesn´t match with the format expected\", function () {\r",
-							"    pm.response.to.have.status(400);\r",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
+			"name": "404 Not Found -- DELETE de un municipio en concreto (Alicante) que no existe en la base de datos",
 			"request": {
 				"auth": {
 					"type": "noauth"
 				},
-				"method": "POST",
+				"method": "DELETE",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "[{\"year\": 25}]",
+					"raw": "{\r\n        \"request_date\": \"22/11/2024\",\r\n        \"request_month\": 11,\r\n        \"request_year\": 2024,\r\n        \"cnae_descr\": \"Transporte de mercancías por carretera\",\r\n        \r\n        \"company_province\": \"Alicante\",\r\n        \"work_center_locality\": \"Alicante\",\r\n        \"sector\": \"SERVICIOS\",\r\n        \"total_work_sus\": 1,\r\n        \"men_work_sus\": 1,\r\n        \"women_work_sus\": 0\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -381,172 +434,38 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/",
+					"raw": "https://sos2425-18.onrender.com/api/v2/dana-erte-stats/Alicante/201/11",
+					"protocol": "https",
 					"host": [
-						"{{BASE_URL}}"
+						"sos2425-18",
+						"onrender",
+						"com"
 					],
 					"path": [
 						"api",
 						"v2",
-						"dana-grants-subsidies-stats",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "creacion de recursos a url incorrecta",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"The request was made with a specific resource url\", function () {\r",
-							"    pm.response.to.have.status(405);\r",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "[{\r\n    \"year\": 2025,\r\n    \"month\": 3,\r\n    \"grant_date\": \"15/03/2025\",\r\n    \"benef_id\": \"B73614928\",\r\n    \"benef_name\": \"GREEN AVOCADO TECH S.L.\",\r\n    \"benef_type\": \"startup_innovación\",\r\n    \"purpose\": \"Desarrollo de un sistema de IA para optimizar el riego en plantaciones de aguacates\",\r\n    \"grantor\": \"Consejería de Transformación Económica\",\r\n    \"grant_type\": \"Iniciativa FuturoVerde\",\r\n    \"amt_granted\": 42500.00,\r\n    \"amt_paid\": 25000.00,\r\n    \"reimbursed\": 0.00,\r\n    \"refunded\": 0.00,\r\n    \"region_name\": \"Comunidad Valenciana\",\r\n    \"sec_cod\": 72,\r\n    \"sec_descr\": \"Agrotecnología sostenible\",\r\n    \"aid_type\": \"Innovación verde\",\r\n    \"reg_base\": \"Decreto 18/2025, de 8 de febrero\",\r\n    \"fund_local\": 8500.00,\r\n    \"fund_regional\": 12000.00,\r\n    \"fund_state\": 15000.00,\r\n    \"fund_eu\": 7000.00,\r\n    \"fund_other\": 0.00,\r\n    \"fund_type\": \"PlanTechVerde\",\r\n    \"prov_name\": \"Alicante\",\r\n    \"mun_name\": \"Denia\"\r\n}]",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/Alicante/12/E42665265",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"api",
-						"v2",
-						"dana-grants-subsidies-stats",
+						"dana-erte-stats",
 						"Alicante",
-						"12",
-						"E42665265"
+						"201",
+						"11"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "actualizacion de un recurso especifico",
+			"name": "400 - No Crea un dato nuevo",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"A specific resource updated \", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"year\": 2024,\r\n    \"month\": 12,\r\n    \"grant_date\": \"31/12/2024\",\r\n    \"benef_id\": \"B73614928\",\r\n    \"benef_name\": \"AGUACATE MARRON TECH S.L.\",\r\n    \"benef_type\": \"startup_innovación\",\r\n    \"purpose\": \"Desarrollo de un sistema de IA para optimizar el riego en plantaciones de aguacates\",\r\n    \"grantor\": \"Consejería de Transformación Económica\",\r\n    \"grant_type\": \"Iniciativa FuturoVerde\",\r\n    \"amt_granted\": 42500.00,\r\n    \"amt_paid\": 25000.00,\r\n    \"reimbursed\": 0.00,\r\n    \"refunded\": 0.00,\r\n    \"region_name\": \"Comunidad Valenciana\",\r\n    \"sec_cod\": 72,\r\n    \"sec_descr\": \"Agrotecnología sostenible\",\r\n    \"aid_type\": \"Innovación verde\",\r\n    \"reg_base\": \"Decreto 18/2025, de 8 de febrero\",\r\n    \"fund_local\": 8500.00,\r\n    \"fund_regional\": 12000.00,\r\n    \"fund_state\": 15000.00,\r\n    \"fund_eu\": 7000.00,\r\n    \"fund_other\": 0.00,\r\n    \"fund_type\": \"PlanTechVerde\",\r\n    \"prov_name\": \"Alicante\",\r\n    \"mun_name\": \"Denia\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/Denia/12/B73614928",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"api",
-						"v2",
-						"dana-grants-subsidies-stats",
-						"Denia",
-						"12",
-						"B73614928"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "actualizacion recurso a url incorrecta",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"The request was made with all resources url\", function () {\r",
-							"    pm.response.to.have.status(405);\r",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"year\": 2025,\r\n    \"month\": 3,\r\n    \"grant_date\": \"15/03/2025\",\r\n    \"benef_id\": \"B73614928\",\r\n    \"benef_name\": \"GREEN AVOCADO TECH S.L.\",\r\n    \"benef_type\": \"startup_innovación\",\r\n    \"purpose\": \"Desarrollo de un sistema de IA para optimizar el riego en plantaciones de aguacates\",\r\n    \"grantor\": \"Consejería de Transformación Económica\",\r\n    \"grant_type\": \"Iniciativa FuturoVerde\",\r\n    \"amt_granted\": 42500.00,\r\n    \"amt_paid\": 25000.00,\r\n    \"reimbursed\": 0.00,\r\n    \"refunded\": 0.00,\r\n    \"region_name\": \"Comunidad Valenciana\",\r\n    \"sec_cod\": 72,\r\n    \"sec_descr\": \"Agrotecnología sostenible\",\r\n    \"aid_type\": \"Innovación verde\",\r\n    \"reg_base\": \"Decreto 18/2025, de 8 de febrero\",\r\n    \"fund_local\": 8500.00,\r\n    \"fund_regional\": 12000.00,\r\n    \"fund_state\": 15000.00,\r\n    \"fund_eu\": 7000.00,\r\n    \"fund_other\": 0.00,\r\n    \"fund_type\": \"PlanTechVerde\",\r\n    \"prov_name\": \"Alicante\",\r\n    \"mun_name\": \"Denia\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"api",
-						"v2",
-						"dana-grants-subsidies-stats",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "actualizacion de recurso mal formado",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"The request doesn´t match with the format expected\", function () {\r",
+							"pm.test(\"Status 201 Created\", () => {\r",
 							"    pm.response.to.have.status(400);\r",
-							"});"
+							"});\r",
+							"\r",
+							"\r",
+							""
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -557,11 +476,11 @@
 				"auth": {
 					"type": "noauth"
 				},
-				"method": "PUT",
+				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"year\": 25}",
+					"raw": "{\r\n        \"request_year\": 2024,\r\n        \"cnae_descr\": \"Actividades de las empresas de trabajo temporal\",\r\n        \"company_municipality\": \"Sevilla\",\r\n        \"work_center_locality\": \"Aldaya; Almussafes; Gandía\",\r\n        \"sector\": \"SERVICIOS\",\r\n        \"total_work_sus\": 79\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -569,134 +488,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/Denia/3/B73614928",
+					"raw": "{{BASE_URL}}/api/v2/dana-erte-stats",
 					"host": [
 						"{{BASE_URL}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"dana-grants-subsidies-stats",
-						"Denia",
-						"3",
-						"B73614928"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "borrado de recurso inexistente",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"The resource doesn´t exists\", function () {\r",
-							"    pm.response.to.have.status(404);\r",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/Valencia/12/A00000000",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"api",
-						"v2",
-						"dana-grants-subsidies-stats",
-						"Valencia",
-						"12",
-						"A00000000"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "borrado de un recurso especifico",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"A specific resource deleted\", function () {\r",
-							"    const responseJson= pm.response.json();\r",
-							"    pm.response.to.have.status(200);\r",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats/Denia/12/B73614928",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"api",
-						"v2",
-						"dana-grants-subsidies-stats",
-						"Denia",
-						"12",
-						"B73614928"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "obtencion de todos los recursos tras borrado",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"All resources retrieved\", function () {\r",
-							"    const responseJson= pm.response.json();\r",
-							"    pm.expect(responseJson.length).to.equal(10);\r",
-							"    pm.response.to.have.status(200);\r",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{BASE_URL}}/api/v2/dana-grants-subsidies-stats",
-					"host": [
-						"{{BASE_URL}}"
-					],
-					"path": [
-						"api",
-						"v2",
-						"dana-grants-subsidies-stats"
+						"dana-erte-stats"
 					]
 				}
 			},

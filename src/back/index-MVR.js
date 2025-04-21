@@ -1,7 +1,7 @@
 // Inicialización del array con los datos de ejemplo (cada registro en una sola línea)
 import dataStore from "nedb";
 
-const BASE_API = "/api/v1";
+const BASE_API = "/api/v2";
 
 let db = new dataStore();
 
@@ -123,9 +123,26 @@ avgByPrueb(selectedProvince);
 // L06 --------------------------------------------------------------------------------------------
 
 
+db.find({}, (err, docs) => {
+    if (err) {
+      console.error("Error al leer DB en startup:", err);
+    } else if (docs.length === 0) {
+      db.insert(inicialData, (err2, newDocs) => {
+        if (err2) {
+          console.error("Error insertando datos iniciales:", err2);
+        } else {
+          console.log(`Sembrados ${newDocs.length} registros en MVR.`);
+        }
+      });
+    } else {
+      console.log("MVR ya tenía datos, no se resembran.");
+    }
+  });
+
 function loadBackendMVR(app) {
     // F05-MVR
     let dataMVR = [];
+    
 
     //dana-erte-stats
     const MVRMainResource = "/dana-erte-stats";

@@ -7,7 +7,7 @@
 	import { goto } from '$app/navigation';
 
 	let DEVEL_HOST = 'http://localhost:3000';
-	let API = '/api/v1/dana-erte-stats';
+	let API = '/api/v2/dana-erte-stats';
 	if (dev) API = DEVEL_HOST + API;
 
 	let MVRDatas = [];
