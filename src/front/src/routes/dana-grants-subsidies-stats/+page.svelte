@@ -409,7 +409,7 @@
             </div>
         {/if}
     </Container>
-    <h1 class="text-center my-4">Ayudas y subvenciones solicitadas <br>Comunidad Valenciana, 4º Trimestre 2024</h1>
+    <h2 class="text-center my-4">Ayudas y subvenciones solicitadas <br>Comunidad Valenciana, 4º Trimestre 2024</h2>
 
     <!-- Sección para crear nuevo recurso -->
     <div class="form-section">
@@ -656,7 +656,7 @@
     <!-- Tabla de subvenciones con filtros -->
     <div class="table-header">
         <div>
-            <Button color="outline-primary" on:click={() => showFilterForm = !showFilterForm}>
+            <Button color="outline-primary" id="filtros" on:click={() => showFilterForm = !showFilterForm}>
                 <i class="bi bi-funnel"></i> Filtros
             </Button>
         </div>
@@ -957,7 +957,7 @@
         </ModalBody>
         <ModalFooter>
             <Button color="secondary" on:click={() => deleteModalOpen = false}>Cancelar</Button>
-            <Button color="danger" on:click={deleteAid}>Eliminar</Button>
+            <Button color="danger" id="confirmar-eliminacion" on:click={deleteAid}>Eliminar</Button>
         </ModalFooter>
     </Modal>
 
