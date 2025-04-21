@@ -34,7 +34,7 @@ function loadBackendGBD(app) {
         }
     });
 
-    app.get("/api/v1/contr-mun-stats/loadInitialData", (req, res) => {
+    app.get(BASE_API+"contr-mun-stats/loadInitialData", (req, res) => {
         db_GBD.count({}, (err, count) => {
             if (err) {
                 return res.status(500).json({ error: "Error al acceder a la base de datos." });
