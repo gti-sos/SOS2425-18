@@ -36,7 +36,7 @@
     const benefIDParam = params.benef_id;
 
     let DEVEL_HOST = "http://localhost:3000";
-    let API = "/api/v1/dana-grants-subsidies-stats";
+    let API = "/api/v2/dana-grants-subsidies-stats";
     let queryURL="";
 
     let currentAid = null;
