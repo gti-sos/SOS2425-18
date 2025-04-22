@@ -12,8 +12,6 @@
     let API = "/api/v2/contr-mun-stats";
     if (dev) API = DEVEL_HOST + API;
 
-    let sectorData = [];
-
     async function getAndProcessData() {
         try {
             const res = await fetch(API);
@@ -29,22 +27,22 @@
                 }
             });
 
-            // Convertimos a arrays para Highcharts
-            const categories = Object.keys(sectorMap);
-            const values = Object.values(sectorMap);
+            // Reordenar manualmente las categorías
+            const orderedCategories = ["AGRICULTURA", "CONSTRUCCIÓN", "INDUSTRIA", "SERVICIOS"];
+            const orderedValues = orderedCategories.map(sector => sectorMap[sector] || 0);
 
-            // Dibujar gráfico
+            // Configurar Highcharts
             Highcharts.chart('spider-container', {
                 chart: {
                     polar: true,
-                    type: 'line'
+                    type: 'area'
                 },
                 title: {
                     text: 'Distribución de Contratos por Sector',
                     align: 'center'
                 },
                 xAxis: {
-                    categories: categories,
+                    categories: orderedCategories,
                     tickmarkPlacement: 'on',
                     lineWidth: 0
                 },
@@ -57,9 +55,17 @@
                     shared: true,
                     pointFormat: '<span>{series.name}: <b>{point.y}</b><br/>'
                 },
+                plotOptions: {
+                    series: {
+                        fillOpacity: 0.4,    // Transparencia del área
+                        marker: {
+                            enabled: true    // Mostrar puntos en cada vértice
+                        }
+                    }
+                },
                 series: [{
                     name: 'Contratos',
-                    data: values,
+                    data: orderedValues,
                     pointPlacement: 'on'
                 }]
             });
