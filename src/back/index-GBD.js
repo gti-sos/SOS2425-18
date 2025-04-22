@@ -80,7 +80,7 @@ function loadBackendGBD(app) {
         }
     
         // Paginación
-        const limit = parseInt(query.limit) || 0;     // 0 significa sin límite
+        const limit = parseInt(query.limit) || 0;     
         const offset = parseInt(query.offset) || 0;
     
         db_GBD.find(dbQuery).skip(offset).limit(limit).exec((err, data) => {
@@ -209,6 +209,21 @@ function loadBackendGBD(app) {
             }
             res.status(200).json({ message: "Recurso eliminado exitosamente" });
         });
+    });
+
+    app.get(BASE_API+"/data",(request,response)=>{
+        console.log("New GET to /data");
+        let data = [];
+
+        function getRandomInt(){
+            return Math.floor((Math.random()*1000));
+        }
+
+        for(let i=0;i<200;i++)
+            data[i] = getRandomInt();
+
+        response.json(data);
+        
     });
 
 }
