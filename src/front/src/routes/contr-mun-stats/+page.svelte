@@ -237,8 +237,8 @@ onMount(getContr);
             <a href="/contr-mun-stats/spiderweb-graph" class="btn btn-sm btn-primary me-2">
                 Gráfica Telaraña
             </a>
-            <a href="/contr-mun-stats/bubble-graph" class="btn btn-sm btn-primary">
-                Gráfico de burbujas
+            <a href="/contr-mun-stats/sunburst-graph" class="btn btn-sm btn-primary">
+                Gráfico radial jerárquico
             </a>
         </div>
     </div>
