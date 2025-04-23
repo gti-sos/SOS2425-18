@@ -1,5 +1,5 @@
 <svelte:head>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 </svelte:head>
 
 <script>
@@ -8,91 +8,96 @@
 
     let DEVEL_HOST = "http://localhost:3000";
     let API = "/api/v2/contr-mun-stats";
-
     if (dev) API = DEVEL_HOST + API;
-
-    let chartInstance;
 
     onMount(async () => {
         try {
             const res = await fetch(API);
             const data = await res.json();
 
-            console.log("Datos cargados:", data);
+            // Procesar datos: Provincia -> Sector -> Contratos
+            const groupedData = {};
 
-            if (!data.length) {
-                console.error("No hay datos disponibles para mostrar.");
-                return;
-            }
+            // @ts-ignore
+            data.forEach(item => {
+                // @ts-ignore
+                if (!groupedData[item.prov_name]) {
+                    // @ts-ignore
+                    groupedData[item.prov_name] = {};
+                }
+                // @ts-ignore
+                if (!groupedData[item.prov_name][item.sec_descr]) {
+                    // @ts-ignore
+                    groupedData[item.prov_name][item.sec_descr] = 0;
+                }
+                // @ts-ignore
+                groupedData[item.prov_name][item.sec_descr] += item.num_contracts;
+            });
 
-            const bubbleData = data.map(item => ({
-                x: item.year,
-                y: item.month,
-                r: Math.sqrt(item.num_contracts)  // Escala del radio
+            const processedData = Object.entries(groupedData).map(([provincia, sectores]) => ({
+                name: provincia,
+                children: Object.entries(sectores).map(([sector, value]) => ({
+                    name: sector,
+                    value: value
+                }))
             }));
 
-            const ctx = document.getElementById('bubbleChart').getContext('2d');
+            const chartDom = document.getElementById('sunburstChart');
+            // @ts-ignore
+            const myChart = echarts.init(chartDom);
 
-            chartInstance = new Chart(ctx, {
-                type: 'bubble',
-                data: {
-                    datasets: [{
-                        label: 'Contratos por Año y Mes',
-                        data: bubbleData,
-                        backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                        borderColor: 'rgba(75, 192, 192, 1)'
-                    }]
+            const option = {
+                title: {
+                    text: 'Distribución de Contratos',
+                    left: 'center'
                 },
-                options: {
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Año'
-                            },
-                            ticks: {
-                                precision: 0
+                series: {
+                    type: 'sunburst',
+                    data: processedData,
+                    radius: [0, '90%'],
+                    label: {
+                        rotate: 'radial',
+                        minAngle: 10,     // Oculta etiquetas en sectores pequeños
+                        fontSize: 12
+                    },
+                    levels: [
+                        {},  // Raíz
+                        {
+                            label: {
+                                fontSize: 14,
+                                color: '#000'
                             }
                         },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Mes'
-                            },
-                            min: 1,
-                            max: 12,
-                            ticks: {
-                                stepSize: 1
+                        {
+                            label: {
+                                fontSize: 10,
+                                color: '#333'
                             }
                         }
-                    },
-                    plugins: {
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const index = context.dataIndex;
-                                    const contrato = data[index];
-                                    return `${contrato.mun_name}: ${contrato.num_contracts} contratos`;
-                                }
-                            }
-                        }
-                    }
+                    ]
+                },
+                tooltip: {
+                    trigger: 'item',
+                    // @ts-ignore
+                    formatter: params => `${params.name}: ${params.value} contratos`
                 }
-            });
+            };
+
+            myChart.setOption(option);
+
         } catch (err) {
-            console.error("Error al cargar los datos o crear el gráfico:", err);
+            console.error("Error al cargar o procesar los datos:", err);
         }
     });
 </script>
 
-<canvas id="bubbleChart" width="600" height="400"></canvas>
+<figure>
+    <div id="sunburstChart" style="width: 600px; height: 600px; margin: auto;"></div>
+</figure>
 
 <style>
-    canvas {
-        display: block;
-        margin: 2rem auto;
-        background: #fff;
-        border: 1px solid #ddd;
-        border-radius: 6px;
+    figure {
+        margin-top: 2rem;
+        text-align: center;
     }
 </style>

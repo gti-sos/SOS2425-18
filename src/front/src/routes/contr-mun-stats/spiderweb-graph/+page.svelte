@@ -5,6 +5,8 @@
 </svelte:head>
 
 <script>
+// @ts-nocheck
+
     import { onMount } from "svelte";
     import { dev } from "$app/environment";
 

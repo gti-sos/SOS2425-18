@@ -231,12 +231,22 @@ onMount(getContr);
     
 </script>
     
-    <h2 class="mb-4">Contrataciones por municipio</h2>
-    
+    <div style="display: flex; justify-content: space-between; align-items: center;" class="mb-4">
+        <h2 style="margin: 0;">Contrataciones por municipio</h2>
+        <div>
+            <a href="/contr-mun-stats/spiderweb-graph" class="btn btn-sm btn-primary me-2">
+                Gráfica Telaraña
+            </a>
+            <a href="/contr-mun-stats/bubble-graph" class="btn btn-sm btn-primary">
+                Gráfico de burbujas
+            </a>
+        </div>
+    </div>
+
     {#if mensaje}
         <Alert color={tipoMensaje}>{mensaje}</Alert>
     {/if}
-    
+
     <!-- Búsqueda avanzada con todos los campos -->
 <section class="mb-4">
     <h4>Buscar contratos</h4>
