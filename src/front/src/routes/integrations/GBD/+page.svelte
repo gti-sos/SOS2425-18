@@ -16,7 +16,7 @@
     let countriesChartInstance;
   
     onMount(async () => {
-      // 1️⃣ CoinGecko - Criptomonedas
+      // CoinGecko - Criptomonedas
       try {
         const resCrypto = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=5&page=1');
         cryptoData = await resCrypto.json();
@@ -26,9 +26,9 @@
         cargandoCrypto = false;
       }
   
-      // 2️⃣ SpaceX - Últimos lanzamientos
+      // SpaceX con proxy- Últimos lanzamientos
       try {
-        const resSpaceX = await fetch('https://api.spacexdata.com/v4/launches/past');
+        const resSpaceX = await fetch('http://localhost:3000/spacex-proxy/past');
         const data = await resSpaceX.json();
         launches = data.slice(-3).reverse();
       } catch (err) {
@@ -37,7 +37,7 @@
         cargandoSpaceX = false;
       }
   
-      // 3️⃣ REST Countries - Gráfica de Barras
+      // REST Countries - Gráfica de Barras
       try {
         const resCountries = await fetch('https://restcountries.com/v3.1/region/europe');
         const countries = await resCountries.json();
@@ -73,8 +73,6 @@
           }
         });
   
-        console.log("✅ Gráfica de países creada");
-  
       } catch (err) {
         console.error("Error Countries API:", err);
       } finally {
@@ -83,11 +81,11 @@
     });
   </script>
   
-  <h1>🌐 Integración de APIs</h1>
+  <h1> Integración de APIs</h1>
   
-  <!-- 1️⃣ CoinGecko -->
+  <!-- 1 CoinGecko -->
   <section>
-    <h2>📈 Precios de Criptomonedas (CoinGecko)</h2>
+    <h2> Precios de Criptomonedas (CoinGecko)</h2>
     {#if cargandoCrypto}
       <p>Cargando datos de criptomonedas...</p>
     {:else}
@@ -110,9 +108,9 @@
     {/if}
   </section>
   
-  <!-- 2️⃣ SpaceX -->
+  <!-- 2 SpaceX -->
   <section>
-    <h2>🚀 Últimos Lanzamientos de SpaceX</h2>
+    <h2> Últimos Lanzamientos de SpaceX</h2>
     {#if cargandoSpaceX}
       <p>Cargando datos de SpaceX...</p>
     {:else}
@@ -128,9 +126,9 @@
     {/if}
   </section>
   
-  <!-- 3️⃣ Countries API -->
+  <!-- 3 Countries API -->
   <section>
-    <h2>🌍 Países más poblados de Europa</h2>
+    <h2> Países más poblados de Europa</h2>
   
     {#if cargandoCountries}
       <p>Cargando datos y generando gráfica...</p>
