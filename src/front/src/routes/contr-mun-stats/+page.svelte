@@ -10,7 +10,7 @@
     import { goto } from "$app/navigation";
     
     let DEVEL_HOST = "http://localhost:3000";
-    let API = "/api/v1/contr-mun-stats";
+    let API = "/api/v2/contr-mun-stats";
     if (dev) API = DEVEL_HOST + API;
     
     let contrs = [];
@@ -231,12 +231,22 @@ onMount(getContr);
     
 </script>
     
-    <h2 class="mb-4">Contrataciones por municipio</h2>
-    
+    <div style="display: flex; justify-content: space-between; align-items: center;" class="mb-4">
+        <h2 style="margin: 0;">Contrataciones por municipio</h2>
+        <div>
+            <a href="/contr-mun-stats/spiderweb-graph" class="btn btn-sm btn-primary me-2">
+                Gráfico Telaraña
+            </a>
+            <a href="/contr-mun-stats/sunburst-graph" class="btn btn-sm btn-primary">
+                Gráfico radial jerárquico
+            </a>
+        </div>
+    </div>
+
     {#if mensaje}
         <Alert color={tipoMensaje}>{mensaje}</Alert>
     {/if}
-    
+
     <!-- Búsqueda avanzada con todos los campos -->
 <section class="mb-4">
     <h4>Buscar contratos</h4>

@@ -45,13 +45,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/",
+							"raw": "{{BASE_URL}}/api/v2/contr-mun-stats/",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"api",
-								"v1",
+								"v2",
 								"contr-mun-stats",
 								""
 							]
@@ -85,13 +85,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats?prov_name=Alicante/Alacant&sec_descr=AGRICULTURA",
+							"raw": "{{BASE_URL}}/api/v2/contr-mun-stats?prov_name=Alicante/Alacant&sec_descr=AGRICULTURA",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"api",
-								"v1",
+								"v2",
 								"contr-mun-stats"
 							],
 							"query": [
@@ -138,13 +138,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats?mun_name=València",
+							"raw": "{{BASE_URL}}/api/v2/contr-mun-stats?mun_name=València",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"api",
-								"v1",
+								"v2",
 								"contr-mun-stats"
 							],
 							"query": [
@@ -186,13 +186,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/2024/12/3/31/S",
+							"raw": "{{BASE_URL}}/api/v2/contr-mun-stats/2024/12/3/31/S",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"api",
-								"v1",
+								"v2",
 								"contr-mun-stats",
 								"2024",
 								"12",
@@ -230,13 +230,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats?year=2024",
+							"raw": "{{BASE_URL}}/api/v2/contr-mun-stats?year=2024",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"api",
-								"v1",
+								"v2",
 								"contr-mun-stats"
 							],
 							"query": [
@@ -275,13 +275,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/València?from=2023&to=2025",
+							"raw": "{{BASE_URL}}/api/v2/contr-mun-stats/València?from=2023&to=2025",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"api",
-								"v1",
+								"v2",
 								"contr-mun-stats",
 								"València"
 							],
@@ -320,13 +320,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats?limit=3&offset=5",
+							"raw": "{{BASE_URL}}/api/v2/contr-mun-stats?limit=3&offset=5",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"api",
-								"v1",
+								"v2",
 								"contr-mun-stats"
 							],
 							"query": [
@@ -367,13 +367,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats?from=2023&to=2025",
+							"raw": "{{BASE_URL}}/api/v2/contr-mun-stats?from=2023&to=2025",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"api",
-								"v1",
+								"v2",
 								"contr-mun-stats"
 							],
 							"query": [
@@ -413,13 +413,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/2025/12/3/31/T",
+							"raw": "{{BASE_URL}}/api/v2/contr-mun-stats/2025/12/3/31/T",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"api",
-								"v1",
+								"v2",
 								"contr-mun-stats",
 								"2025",
 								"12",
@@ -467,13 +467,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats",
+							"raw": "{{BASE_URL}}/api/v2/contr-mun-stats",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"api",
-								"v1",
+								"v2",
 								"contr-mun-stats"
 							]
 						}
@@ -510,13 +510,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/",
+							"raw": "{{BASE_URL}}/api/v2/contr-mun-stats/",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"api",
-								"v1",
+								"v2",
 								"contr-mun-stats",
 								""
 							]
@@ -557,13 +557,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/",
+							"raw": "{{BASE_URL}}/api/v2/contr-mun-stats/",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"api",
-								"v1",
+								"v2",
 								"contr-mun-stats",
 								""
 							]
@@ -601,13 +601,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/2025/12/3/31/S",
+							"raw": "{{BASE_URL}}/api/v2/contr-mun-stats/2025/12/3/31/S",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"api",
-								"v1",
+								"v2",
 								"contr-mun-stats",
 								"2025",
 								"12",
@@ -653,13 +653,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/2025/12/3/31/S",
+							"raw": "{{BASE_URL}}/api/v2/contr-mun-stats/2025/12/3/31/S",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"api",
-								"v1",
+								"v2",
 								"contr-mun-stats",
 								"2025",
 								"12",
@@ -692,13 +692,13 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/2025/12/200/31/S",
+							"raw": "{{BASE_URL}}/api/v2/contr-mun-stats/2025/12/200/31/S",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"api",
-								"v1",
+								"v2",
 								"contr-mun-stats",
 								"2025",
 								"12",
@@ -731,13 +731,13 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/",
+							"raw": "{{BASE_URL}}/api/v2/contr-mun-stats/",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"api",
-								"v1",
+								"v2",
 								"contr-mun-stats",
 								""
 							]
@@ -770,13 +770,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/api/v1/contr-mun-stats/2025/12/3/31/S",
+							"raw": "{{BASE_URL}}/api/v2/contr-mun-stats/2025/12/3/31/S",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"api",
-								"v1",
+								"v2",
 								"contr-mun-stats",
 								"2025",
 								"12",

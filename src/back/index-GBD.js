@@ -1,7 +1,7 @@
 // contr-mun-stats con persistencia usando NeDB
 
 import dataStore from "nedb";
-const BASE_API = "/api/v1";
+const BASE_API = "/api/v2";
 
 let db_GBD = new dataStore();
 
@@ -34,29 +34,33 @@ function loadBackendGBD(app) {
         }
     });
 
-    app.get(BASE_API+"contr-mun-stats/loadInitialData", (req, res) => {
-        db_GBD.count({}, (err, count) => {
-            if (err) {
-                return res.status(500).json({ error: "Error al acceder a la base de datos." });
-            }
-
-            if (count > 0) {
-                return res.status(200).json({ message: "Los datos ya estaban cargados previamente." });
-            }
-
+    app.get(BASE_API + "/contr-mun-stats/loadInitialData", (req, res) => {
+        db_GBD.find({}, (err, docs) => {
+          if (err) {
+            return res.status(500).json({ error: "Error al acceder a la base de datos." });
+          }
+      
+          if (docs.length === 0) {
             db_GBD.insert(initialData, (err2, newDocs) => {
-                if (err2) {
-                    return res.status(500).json({ error: "Error al insertar los datos iniciales." });
-                }
-
-                const datosSinId = newDocs.map(({ _id, ...rest }) => rest);
-                return res.status(201).json({
-                    message: "Datos iniciales insertados correctamente.",
-                    data: datosSinId
-                });
+              if (err2) {
+                return res.status(500).json({ error: "Error al insertar los datos iniciales." });
+              }
+      
+              const insertedClean = newDocs.map(({ _id, ...rest }) => rest);
+              return res.status(201).json({
+                message: "Datos iniciales insertados correctamente.",
+                data: insertedClean
+              });
             });
+          } else {
+            const cleanDocs = docs.map(({ _id, ...rest }) => rest);
+            return res.status(200).json({
+              message: "Los datos ya estaban presentes.",
+              data: cleanDocs
+            });
+          }
         });
-    });  
+      });       
 
     app.get(BASE_API+"/contr-mun-stats/docs", (request,response)=>{
         response.redirect("https://documenter.getpostman.com/view/42117294/2sB2cPjR4S");
@@ -80,7 +84,7 @@ function loadBackendGBD(app) {
         }
     
         // Paginación
-        const limit = parseInt(query.limit) || 0;     // 0 significa sin límite
+        const limit = parseInt(query.limit) || 0;     
         const offset = parseInt(query.offset) || 0;
     
         db_GBD.find(dbQuery).skip(offset).limit(limit).exec((err, data) => {
@@ -209,6 +213,21 @@ function loadBackendGBD(app) {
             }
             res.status(200).json({ message: "Recurso eliminado exitosamente" });
         });
+    });
+
+    app.get(BASE_API+"/data",(request,response)=>{
+        console.log("New GET to /data");
+        let data = [];
+
+        function getRandomInt(){
+            return Math.floor((Math.random()*1000));
+        }
+
+        for(let i=0;i<200;i++)
+            data[i] = getRandomInt();
+
+        response.json(data);
+        
     });
 
 }
