@@ -34,29 +34,33 @@ function loadBackendGBD(app) {
         }
     });
 
-    app.get(BASE_API+"contr-mun-stats/loadInitialData", (req, res) => {
-        db_GBD.count({}, (err, count) => {
-            if (err) {
-                return res.status(500).json({ error: "Error al acceder a la base de datos." });
-            }
-
-            if (count > 0) {
-                return res.status(200).json({ message: "Los datos ya estaban cargados previamente." });
-            }
-
+    app.get(BASE_API + "/contr-mun-stats/loadInitialData", (req, res) => {
+        db_GBD.find({}, (err, docs) => {
+          if (err) {
+            return res.status(500).json({ error: "Error al acceder a la base de datos." });
+          }
+      
+          if (docs.length === 0) {
             db_GBD.insert(initialData, (err2, newDocs) => {
-                if (err2) {
-                    return res.status(500).json({ error: "Error al insertar los datos iniciales." });
-                }
-
-                const datosSinId = newDocs.map(({ _id, ...rest }) => rest);
-                return res.status(201).json({
-                    message: "Datos iniciales insertados correctamente.",
-                    data: datosSinId
-                });
+              if (err2) {
+                return res.status(500).json({ error: "Error al insertar los datos iniciales." });
+              }
+      
+              const insertedClean = newDocs.map(({ _id, ...rest }) => rest);
+              return res.status(201).json({
+                message: "Datos iniciales insertados correctamente.",
+                data: insertedClean
+              });
             });
+          } else {
+            const cleanDocs = docs.map(({ _id, ...rest }) => rest);
+            return res.status(200).json({
+              message: "Los datos ya estaban presentes.",
+              data: cleanDocs
+            });
+          }
         });
-    });  
+      });       
 
     app.get(BASE_API+"/contr-mun-stats/docs", (request,response)=>{
         response.redirect("https://documenter.getpostman.com/view/42117294/2sB2cPjR4S");
