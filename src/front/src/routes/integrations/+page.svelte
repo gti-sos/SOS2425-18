@@ -3,15 +3,18 @@
     import Chart from 'chart.js/auto';
   
     // Estados de carga
+    // @ts-ignore
     let cryptoData = [];
     let cargandoCrypto = true;
   
+    // @ts-ignore
     let launches = [];
     let cargandoSpaceX = true;
   
     let cargandoCountries = true;
   
     // Canvas y Chart.js
+    // @ts-ignore
     let countriesCanvas;
     let countriesChartInstance;
   
@@ -43,13 +46,18 @@
         const countries = await resCountries.json();
   
         const topCountries = countries
+          // @ts-ignore
           .filter(c => c.population && c.name && c.name.common)
+          // @ts-ignore
           .sort((a, b) => b.population - a.population)
           .slice(0, 5);
   
+        // @ts-ignore
         const nombres = topCountries.map(c => c.name.common);
+        // @ts-ignore
         const poblaciones = topCountries.map(c => c.population);
   
+        // @ts-ignore
         const ctx = countriesCanvas.getContext('2d');
   
         countriesChartInstance = new Chart(ctx, {
