@@ -7,15 +7,15 @@
   let cargandoCrypto = true;
   let cargandoSpaceX = true;
   let cargandoCountries = true;
-  let cargandoMerged = true;
+  let cargandoSanciones = true;
   let cargandoTransporte = true;
 
   let countriesCanvas;
   let countriesChartInstance;
-  let mergedCanvas;
-  let mergedChartInstance;
-  let transportCanvas;
-  let transportChartInstance;
+  let sancionesCanvas;
+  let sancionesChartInstance;
+  let transporteCanvas;
+  let transporteChartInstance;
 
   onMount(async () => {
     // CoinGecko
@@ -39,24 +39,26 @@
       cargandoSpaceX = false;
     }
 
-    // Countries
+    // Countries (Doughnut con colores)
     try {
       const resCountries = await fetch('https://restcountries.com/v3.1/region/europe');
       const countries = await resCountries.json();
-      const topCountries = countries.filter(c => c.population && c.name && c.name.common).sort((a, b) => b.population - a.population).slice(0, 5);
-      const nombres = topCountries.map(c => c.name.common);
-      const poblaciones = topCountries.map(c => c.population);
+      const top = countries.filter(c => c.population && c.name && c.name.common)
+        .sort((a, b) => b.population - a.population)
+        .slice(0, 5);
+      const labels = top.map(c => c.name.common);
+      const data = top.map(c => c.population);
       const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
+
       const ctx = countriesCanvas.getContext('2d');
       countriesChartInstance = new Chart(ctx, {
         type: 'doughnut',
         data: {
-          labels: nombres,
+          labels,
           datasets: [{
             label: 'Población',
-            data: poblaciones,
+            data,
             backgroundColor: colors,
-            borderColor: colors,
             borderWidth: 1
           }]
         },
@@ -71,36 +73,36 @@
       cargandoCountries = false;
     }
 
-    // Contratos vs sanciones
+    // Integración: Contratos vs. Sanciones
     try {
-      const resContratos = await fetch('https://sos2425-18.onrender.com/api/v2/contr-mun-stats');
-      const datosContratos = await resContratos.json();
-      const resSanciones = await fetch('https://sos2425-19.onrender.com/api/v1/sanctions-and-points-stats');
-      const datosSanciones = await resSanciones.json();
+      const res1 = await fetch('https://sos2425-18.onrender.com/api/v2/contr-mun-stats');
+      const contratos = await res1.json();
+
+      const res2 = await fetch('https://sos2425-19.onrender.com/api/v1/sanctions-and-points-stats/');
+      const sanciones = await res2.json();
 
       const provincias = ["Valencia/València", "Alicante/Alacant", "Castellón/Castelló"];
+      const datosContratos = provincias.map(p => contratos
+        .filter(c => c.prov_name === p)
+        .reduce((acc, cur) => acc + (cur.num_contracts || 0), 0));
+      const datosSanciones = provincias.map(p => sanciones
+        .filter(s => s.provincia === p)
+        .reduce((acc, cur) => acc + Number(cur["total_sanciones_con_puntos"] || 0), 0));
 
-      const datosContratosAgrupados = provincias.map(p =>
-        datosContratos.filter(c => c.prov_name?.toLowerCase() === p.toLowerCase()).reduce((acc, cur) => acc + (cur.num_contracts || 0), 0)
-      );
-      const datosSancionesAgrupados = provincias.map(p =>
-        datosSanciones.filter(s => s.provincia?.toLowerCase() === p.toLowerCase()).reduce((acc, cur) => acc + (parseFloat(cur["total_sanciones_con_puntos"]) || 0), 0)
-      );
-
-      const ctx = mergedCanvas.getContext('2d');
-      mergedChartInstance = new Chart(ctx, {
+      const ctx = sancionesCanvas.getContext('2d');
+      sancionesChartInstance = new Chart(ctx, {
         type: 'bar',
         data: {
           labels: provincias,
           datasets: [
             {
               label: 'Contratos',
-              data: datosContratosAgrupados,
+              data: datosContratos,
               backgroundColor: 'rgba(54, 162, 235, 0.6)'
             },
             {
               label: 'Sanciones con puntos',
-              data: datosSancionesAgrupados,
+              data: datosSanciones,
               backgroundColor: 'rgba(255, 99, 132, 0.6)'
             }
           ]
@@ -112,36 +114,38 @@
         }
       });
     } catch (err) {
-      console.error("Error en integración comparativa:", err);
+      console.error("Error integración sanciones:", err);
     } finally {
-      cargandoMerged = false;
+      cargandoSanciones = false;
     }
 
-    // Contratos vs viajes en transporte público
+    // Integración: Contratos vs. Transporte Público
     try {
-      const resContratos = await fetch('https://sos2425-18.onrender.com/api/v2/contr-mun-stats');
-      const datosContratos = await resContratos.json();
-      const resTransporte = await fetch('https://sos2425-21.onrender.com/api/v1/public-transit-stats');
-      const datosTransporte = await resTransporte.json();
+      const res1 = await fetch('https://sos2425-18.onrender.com/api/v2/contr-mun-stats');
+      const contratos = await res1.json();
 
-      const provincias = ["Alicante", "Valencia", "Castellón"];
+      const res2 = await fetch('https://sos2425-21.onrender.com/api/v1/public-transit-stats');
+      const transporte = await res2.json();
 
-      const puntos = provincias.map(p => {
-        const provContratos = datosContratos.filter(c => c.prov_name?.toLowerCase().includes(p.toLowerCase()));
-        const provViajes = datosTransporte.filter(t => t.provincia?.toLowerCase().includes(p.toLowerCase()));
-        const contratos = provContratos.reduce((sum, c) => sum + (c.num_contracts || 0), 0);
-        const viajes = provViajes.reduce((sum, t) => sum + (t.total_viajes || 0), 0);
-        return { x: contratos, y: viajes };
-      });
+      const provincias = ["Valencia/València", "Alicante/Alacant", "Castellón/Castelló"];
+      const datosContratos = provincias.map(p => contratos
+        .filter(c => c.prov_name === p)
+        .reduce((acc, cur) => acc + (cur.num_contracts || 0), 0));
+      const datosViajes = provincias.map(p => transporte
+        .filter(t => t.provincia === p)
+        .reduce((acc, cur) => acc + Number(String(cur.total_viajes).replace(",", "")), 0));
 
-      const ctx = transportCanvas.getContext('2d');
-      transportChartInstance = new Chart(ctx, {
+      const ctx = transporteCanvas.getContext('2d');
+      transporteChartInstance = new Chart(ctx, {
         type: 'scatter',
         data: {
           datasets: [{
             label: 'Contratos vs. Viajes (Transporte Público)',
-            data: puntos,
-            backgroundColor: 'rgba(153, 102, 255, 0.7)'
+            data: provincias.map((_, i) => ({
+              x: datosContratos[i],
+              y: datosViajes[i]
+            })),
+            backgroundColor: 'purple'
           }]
         },
         options: {
@@ -154,60 +158,69 @@
         }
       });
     } catch (err) {
-      console.error("Error en integración transporte:", err);
+      console.error("Error integración transporte:", err);
     } finally {
       cargandoTransporte = false;
     }
   });
 </script>
 
-<!-- HTML Sections -->
 <h1>Integración de APIs</h1>
+
 <section>
-  <h2>Precios de Criptomonedas (CoinGecko)</h2>
-  {#if cargandoCrypto}<p>Cargando datos de criptomonedas...</p>{:else}
-    <table><thead><tr><th>Criptomoneda</th><th>Precio (USD)</th></tr></thead><tbody>
-      {#each cryptoData as coin}<tr><td>{coin.name}</td><td>${coin.current_price}</td></tr>{/each}
-    </tbody></table>
+  <h2>Precios de Criptomonedas</h2>
+  {#if cargandoCrypto}
+    <p>Cargando...</p>
+  {:else}
+    <table>
+      <thead><tr><th>Cripto</th><th>Precio (USD)</th></tr></thead>
+      <tbody>{#each cryptoData as c}<tr><td>{c.name}</td><td>${c.current_price}</td></tr>{/each}</tbody>
+    </table>
   {/if}
 </section>
 
 <section>
   <h2>Últimos Lanzamientos de SpaceX</h2>
-  {#if cargandoSpaceX}<p>Cargando datos de SpaceX...</p>{:else}
-    <ul>
-      {#each launches as launch}<li>
-        <strong>Misión:</strong> {launch.name}<br>
-        <strong>Fecha:</strong> {new Date(launch.date_utc).toLocaleDateString()}<br>
-        <strong>Estado:</strong> {launch.success ? 'Éxito' : 'Fallo'}
-      </li>{/each}
-    </ul>
+  {#if cargandoSpaceX}
+    <p>Cargando...</p>
+  {:else}
+    <ul>{#each launches as l}<li><strong>{l.name}</strong> – {new Date(l.date_utc).toLocaleDateString()}</li>{/each}</ul>
   {/if}
 </section>
 
 <section>
   <h2>Países más poblados de Europa</h2>
-  {#if cargandoCountries}<p>Cargando datos y generando gráfica...</p>{/if}
-  <div style="width: 100%; max-width: 700px; height: 400px;"><canvas bind:this={countriesCanvas}></canvas></div>
+  {#if cargandoCountries}
+    <p>Cargando...</p>
+  {/if}
+  <div style="width: 700px; height: 400px;"><canvas bind:this={countriesCanvas}></canvas></div>
 </section>
 
 <section>
-  <h2>Comparativa: Contratos vs. Sanciones (por Provincia)</h2>
-  {#if cargandoMerged}<p>Cargando datos comparativos...</p>{/if}
-  <div style="width: 100%; max-width: 800px; height: 400px;"><canvas bind:this={mergedCanvas}></canvas></div>
+  <h2>Comparativa: Contratos vs. Sanciones</h2>
+  {#if cargandoSanciones}
+    <p>Cargando datos comparativos...</p>
+  {/if}
+  <div style="width: 700px; height: 400px;"><canvas bind:this={sancionesCanvas}></canvas></div>
 </section>
 
 <section>
   <h2>Contratos vs. Viajes en Transporte Público</h2>
-  {#if cargandoTransporte}<p>Cargando correlación transporte...</p>{/if}
-  <div style="width: 100%; max-width: 800px; height: 400px;"><canvas bind:this={transportCanvas}></canvas></div>
+  {#if cargandoTransporte}
+    <p>Cargando...</p>
+  {/if}
+  <div style="width: 700px; height: 400px;"><canvas bind:this={transporteCanvas}></canvas></div>
 </section>
 
 <style>
-  table { border-collapse: collapse; margin-top: 10px; }
-  th, td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; }
-  ul { list-style-type: none; padding: 0; }
-  li { background: #f4f4f4; margin: 10px 0; padding: 10px; border-radius: 5px; }
   section { margin-bottom: 40px; }
   canvas { width: 100% !important; height: 100% !important; }
+  table {
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  th, td {
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+  }
 </style>
