@@ -17,8 +17,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Response length is 10\", function () {\r",
-									"    pm.expect(pm.response.json()).to.have.length(10);\r",
+									"pm.test(\"Response length is 36\", function () {\r",
+									"    pm.expect(pm.response.json()).to.have.length(36);\r",
 									"});\r",
 									"pm.test('Response is an array', function () {\r",
 									"    pm.expect(pm.response.json()).to.be.an('array');\r",
