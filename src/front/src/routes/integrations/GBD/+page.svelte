@@ -1,8 +1,9 @@
 <script>
+// @ts-nocheck
+
   import { onMount } from 'svelte';
   import Chart from 'chart.js/auto';
 
-  // Estados para APIs
   let cryptoData = [];
   let launches = [];
   let cargandoCrypto = true;
@@ -10,7 +11,6 @@
   let cargandoCountries = true;
   let cargandoMerged = true;
 
-  // Canvases
   let countriesCanvas;
   let countriesChartInstance;
   let mergedCanvas;
@@ -72,19 +72,26 @@
 
     // Comparativa contratos vs sanciones
     try {
-      const contratos = [
-        { prov_name: "Valencia/València", num_contracts: 1820 },
-        { prov_name: "Alicante/Alacant", num_contracts: 510 },
-        { prov_name: "Castellón/Castelló", num_contracts: 140 }
-      ];
-      const sanciones = [
-        { provincia: "Valencia/València", total_sanciones_con_puntos: 650 },
-        { provincia: "Alicante/Alacant", total_sanciones_con_puntos: 470 },
-        { provincia: "Castellón/Castelló", total_sanciones_con_puntos: 220 }
-      ];
+      const resContratos = await fetch('https://sos2425-18.onrender.com/api/v2/contr-mun-stats');
+      const datosContratos = await resContratos.json();
+
+      const resSanciones = await fetch('https://sos2425-19.onrender.com/api/v1/sanctions-and-points-stats');
+      const datosSanciones = await resSanciones.json();
+
       const provincias = ["Valencia/València", "Alicante/Alacant", "Castellón/Castelló"];
-      const datosContratos = provincias.map(p => contratos.find(c => c.prov_name.toLowerCase() === p.toLowerCase())?.num_contracts || 0);
-      const datosSanciones = provincias.map(p => sanciones.find(s => s.provincia.toLowerCase() === p.toLowerCase())?.total_sanciones_con_puntos || 0);
+
+      const datosContratosAgrupados = provincias.map(p => {
+        return datosContratos
+          .filter(c => c.prov_name?.toLowerCase() === p.toLowerCase())
+          .reduce((acc, cur) => acc + (cur.num_contracts || 0), 0);
+      });
+
+      const datosSancionesAgrupados = provincias.map(p => {
+        return datosSanciones
+          .filter(s => s.provincia?.toLowerCase() === p.toLowerCase())
+          .reduce((acc, cur) => acc + (parseFloat(cur["total_sanciones_con_puntos"]) || 0), 0);
+      });
+
       const ctx = mergedCanvas.getContext('2d');
       mergedChartInstance = new Chart(ctx, {
         type: 'bar',
@@ -93,12 +100,12 @@
           datasets: [
             {
               label: 'Contratos',
-              data: datosContratos,
+              data: datosContratosAgrupados,
               backgroundColor: 'rgba(54, 162, 235, 0.6)'
             },
             {
               label: 'Sanciones con puntos',
-              data: datosSanciones,
+              data: datosSancionesAgrupados,
               backgroundColor: 'rgba(255, 99, 132, 0.6)'
             }
           ]
