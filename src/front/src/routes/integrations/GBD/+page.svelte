@@ -47,7 +47,7 @@
       const poblaciones = topCountries.map(c => c.population);
       const ctx = countriesCanvas.getContext('2d');
       countriesChartInstance = new Chart(ctx, {
-        type: 'bar',
+        type: 'doughnut',
         data: {
           labels: nombres,
           datasets: [{
