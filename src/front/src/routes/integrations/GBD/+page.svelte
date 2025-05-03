@@ -8,18 +8,24 @@
   let cargandoSpaceX = true;
   let cargandoCountries = true;
   let cargandoSanciones = true;
-  let cargandoTransporte = true;
+  let cargandoRuta = true;
 
   let countriesCanvas;
   let countriesChartInstance;
   let sancionesCanvas;
   let sancionesChartInstance;
-  let transporteCanvas;
-  let transporteChartInstance;
+  let rutaCanvas;
+  let rutaChartInstance;
 
   const provincias = ["Valencia/València", "Alicante/Alacant", "Castellón/Castelló"];
 
-  const normalize = (str) => str?.normalize?.("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim() || "";
+  const provinciasMap = {
+    "Valencia/València": "Valencia",
+    "Alicante/Alacant": "Alicante",
+    "Castellón/Castelló": "Castellón"
+  };
+
+  const normalize = (str) => str?.normalize?.("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim() || "";
 
   onMount(async () => {
     // CoinGecko
@@ -77,11 +83,10 @@
       cargandoCountries = false;
     }
 
-    // Comparativa: Contratos vs Sanciones
+    // Contratos vs. Sanciones
     try {
       const res1 = await fetch('https://sos2425-18.onrender.com/api/v2/contr-mun-stats');
       const contratos = await res1.json();
-
       const res2 = await fetch('https://sos2425-19.onrender.com/api/v1/sanctions-and-points-stats');
       const sanciones = await res2.json();
 
@@ -92,7 +97,7 @@
 
       const datosSanciones = provincias.map(p =>
         sanciones.filter(s => normalize(s.provincia) === normalize(p))
-                 .reduce((acc, cur) => acc + (Number(cur["total_sanciones_con_puntos"]) || 0), 0)
+                 .reduce((acc, cur) => acc + (Number(s.total_sanciones_con_puntos) || 0), 0)
       );
 
       const ctx = sancionesCanvas.getContext('2d');
@@ -125,47 +130,57 @@
       cargandoSanciones = false;
     }
 
-    // Comparativa: Contratos vs Transporte Público
+    // Contratos vs. Longitud de Ruta
     try {
-      const res1 = await fetch('https://sos2425-18.onrender.com/api/v2/contr-mun-stats');
+      const res1 = await fetch("https://sos2425-18.onrender.com/api/v2/contr-mun-stats");
       const contratos = await res1.json();
 
-      const res2 = await fetch('https://sos2425-21.onrender.com/api/v1/public-transit-stats');
+      const res2 = await fetch("https://sos2425-21.onrender.com/api/v1/public-transit-stats");
       const transporte = await res2.json();
 
       const datosContratos = provincias.map(p =>
-        contratos.filter(c => normalize(c.prov_name) === normalize(p))
+        contratos.filter(c => normalize(c.prov_name) === normalize(p) && c.year === 2024)
                  .reduce((acc, cur) => acc + (cur.num_contracts || 0), 0)
       );
 
-      const datosViajes = provincias.map(p =>
-        transporte.filter(t => normalize(t.provincia) === normalize(p))
-                  .reduce((acc, cur) => acc + (Number(String(cur.total_viajes).replace(",", "")) || 0), 0)
-      );
+      const datosRuta = provincias.map(p => {
+        const provCastellano = provinciasMap[p];
+        return transporte.filter(t => normalize(t.province) === normalize(provCastellano) && t.year === 2024)
+                         .reduce((acc, cur) => acc + (Number(cur.route_length) || 0), 0);
+      });
 
-      const ctx = transporteCanvas.getContext('2d');
-      transporteChartInstance = new Chart(ctx, {
-        type: 'scatter',
+      const ctx = rutaCanvas.getContext("2d");
+      rutaChartInstance = new Chart(ctx, {
+        type: "polarArea",
         data: {
-          datasets: [{
-            label: 'Contratos vs. Viajes (Transporte Público)',
-            data: provincias.map((_, i) => ({ x: datosContratos[i], y: datosViajes[i] })),
-            backgroundColor: 'purple'
-          }]
+          labels: provincias,
+          datasets: [
+            {
+              label: "Contratos",
+              data: datosContratos,
+              backgroundColor: "rgba(54, 162, 235, 0.3)",
+              borderColor: "rgba(54, 162, 235, 1)",
+              borderWidth: 2
+            },
+            {
+              label: "Longitud de Ruta (km)",
+              data: datosRuta,
+              backgroundColor: "rgba(255, 99, 132, 0.3)",
+              borderColor: "rgba(255, 99, 132, 1)",
+              borderWidth: 2
+            }
+          ]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          scales: {
-            x: { title: { display: true, text: 'Contratos' } },
-            y: { title: { display: true, text: 'Viajes en transporte público' } }
-          }
+          scales: { r: { beginAtZero: true } }
         }
       });
     } catch (err) {
-      console.error("Error integración transporte:", err);
+      console.error("Error integración ruta:", err);
     } finally {
-      cargandoTransporte = false;
+      cargandoRuta = false;
     }
   });
 </script>
@@ -174,21 +189,14 @@
 
 <section>
   <h2>Precios de Criptomonedas</h2>
-  {#if cargandoCrypto}
-    <p>Cargando...</p>
-  {:else}
-    <table>
-      <thead><tr><th>Cripto</th><th>Precio (USD)</th></tr></thead>
-      <tbody>{#each cryptoData as c}<tr><td>{c.name}</td><td>${c.current_price}</td></tr>{/each}</tbody>
-    </table>
+  {#if cargandoCrypto}<p>Cargando...</p>{:else}
+    <table><thead><tr><th>Cripto</th><th>Precio (USD)</th></tr></thead><tbody>{#each cryptoData as c}<tr><td>{c.name}</td><td>${c.current_price}</td></tr>{/each}</tbody></table>
   {/if}
 </section>
 
 <section>
   <h2>Últimos Lanzamientos de SpaceX</h2>
-  {#if cargandoSpaceX}
-    <p>Cargando...</p>
-  {:else}
+  {#if cargandoSpaceX}<p>Cargando...</p>{:else}
     <ul>{#each launches as l}<li><strong>{l.name}</strong> – {new Date(l.date_utc).toLocaleDateString()}</li>{/each}</ul>
   {/if}
 </section>
@@ -206,9 +214,9 @@
 </section>
 
 <section>
-  <h2>Contratos vs. Viajes en Transporte Público</h2>
-  {#if cargandoTransporte}<p>Cargando comparativa...</p>{/if}
-  <div style="width: 700px; height: 400px;"><canvas bind:this={transporteCanvas}></canvas></div>
+  <h2>Contratos vs. Longitud de Ruta</h2>
+  {#if cargandoRuta}<p>Cargando comparativa...</p>{/if}
+  <div style="width: 700px; height: 400px;"><canvas bind:this={rutaCanvas}></canvas></div>
 </section>
 
 <style>
