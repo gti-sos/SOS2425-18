@@ -1,4 +1,6 @@
 <script>
+// @ts-nocheck
+
   import { onMount } from 'svelte';
   import Chart from 'chart.js/auto';
 
@@ -16,6 +18,9 @@
   let sancionesChartInstance;
   let transporteCanvas;
   let transporteChartInstance;
+
+  // Función para normalizar nombres de provincias
+  const normalize = (str) => str.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
 
   onMount(async () => {
     // CoinGecko
@@ -83,10 +88,11 @@
 
       const provincias = ["Valencia/València", "Alicante/Alacant", "Castellón/Castelló"];
       const datosContratos = provincias.map(p => contratos
-        .filter(c => c.prov_name === p)
+        .filter(c => normalize(c.prov_name) === normalize(p))
         .reduce((acc, cur) => acc + (cur.num_contracts || 0), 0));
+
       const datosSanciones = provincias.map(p => sanciones
-        .filter(s => s.provincia === p)
+        .filter(s => normalize(s.provincia) === normalize(p))
         .reduce((acc, cur) => acc + Number(cur["total_sanciones_con_puntos"] || 0), 0));
 
       const ctx = sancionesCanvas.getContext('2d');
@@ -129,11 +135,12 @@
 
       const provincias = ["Valencia/València", "Alicante/Alacant", "Castellón/Castelló"];
       const datosContratos = provincias.map(p => contratos
-        .filter(c => c.prov_name === p)
+        .filter(c => normalize(c.prov_name) === normalize(p))
         .reduce((acc, cur) => acc + (cur.num_contracts || 0), 0));
+
       const datosViajes = provincias.map(p => transporte
-        .filter(t => t.provincia === p)
-        .reduce((acc, cur) => acc + Number(String(cur.total_viajes).replace(",", "")), 0));
+        .filter(t => normalize(t.provincia) === normalize(p))
+        .reduce((acc, cur) => acc + Number(String(cur.total_viajes).replace(/,/g, "")), 0));
 
       const ctx = transporteCanvas.getContext('2d');
       transporteChartInstance = new Chart(ctx, {
@@ -141,10 +148,7 @@
         data: {
           datasets: [{
             label: 'Contratos vs. Viajes (Transporte Público)',
-            data: provincias.map((_, i) => ({
-              x: datosContratos[i],
-              y: datosViajes[i]
-            })),
+            data: provincias.map((_, i) => ({ x: datosContratos[i], y: datosViajes[i] })),
             backgroundColor: 'purple'
           }]
         },
@@ -165,62 +169,109 @@
   });
 </script>
 
-<h1>Integración de APIs</h1>
+<!-- HTML igual que antes --><h1>Integración de APIs</h1>
 
+<!-- Criptomonedas -->
 <section>
   <h2>Precios de Criptomonedas</h2>
   {#if cargandoCrypto}
     <p>Cargando...</p>
   {:else}
     <table>
-      <thead><tr><th>Cripto</th><th>Precio (USD)</th></tr></thead>
-      <tbody>{#each cryptoData as c}<tr><td>{c.name}</td><td>${c.current_price}</td></tr>{/each}</tbody>
+      <thead>
+        <tr>
+          <th>Cripto</th>
+          <th>Precio (USD)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {#each cryptoData as c}
+          <tr>
+            <td>{c.name}</td>
+            <td>${c.current_price}</td>
+          </tr>
+        {/each}
+      </tbody>
     </table>
   {/if}
 </section>
 
+<!-- SpaceX -->
 <section>
   <h2>Últimos Lanzamientos de SpaceX</h2>
   {#if cargandoSpaceX}
     <p>Cargando...</p>
   {:else}
-    <ul>{#each launches as l}<li><strong>{l.name}</strong> – {new Date(l.date_utc).toLocaleDateString()}</li>{/each}</ul>
+    <ul>
+      {#each launches as l}
+        <li>
+          <strong>{l.name}</strong> – {new Date(l.date_utc).toLocaleDateString()}
+        </li>
+      {/each}
+    </ul>
   {/if}
 </section>
 
+<!-- Countries (Doughnut) -->
 <section>
   <h2>Países más poblados de Europa</h2>
   {#if cargandoCountries}
     <p>Cargando...</p>
   {/if}
-  <div style="width: 700px; height: 400px;"><canvas bind:this={countriesCanvas}></canvas></div>
+  <div style="width: 700px; height: 400px;">
+    <canvas bind:this={countriesCanvas}></canvas>
+  </div>
 </section>
 
+<!-- Comparativa Contratos vs Sanciones -->
 <section>
   <h2>Comparativa: Contratos vs. Sanciones</h2>
   {#if cargandoSanciones}
     <p>Cargando datos comparativos...</p>
   {/if}
-  <div style="width: 700px; height: 400px;"><canvas bind:this={sancionesCanvas}></canvas></div>
+  <div style="width: 700px; height: 400px;">
+    <canvas bind:this={sancionesCanvas}></canvas>
+  </div>
 </section>
 
+<!-- Contratos vs Viajes -->
 <section>
   <h2>Contratos vs. Viajes en Transporte Público</h2>
   {#if cargandoTransporte}
     <p>Cargando...</p>
   {/if}
-  <div style="width: 700px; height: 400px;"><canvas bind:this={transporteCanvas}></canvas></div>
+  <div style="width: 700px; height: 400px;">
+    <canvas bind:this={transporteCanvas}></canvas>
+  </div>
 </section>
 
 <style>
-  section { margin-bottom: 40px; }
-  canvas { width: 100% !important; height: 100% !important; }
+  section {
+    margin-bottom: 40px;
+  }
+  canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
   table {
     border-collapse: collapse;
     margin-top: 10px;
+    width: 100%;
   }
   th, td {
     border: 1px solid #ccc;
     padding: 8px 12px;
+    text-align: left;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  li {
+    background: #f9f9f9;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 4px;
   }
 </style>
+
