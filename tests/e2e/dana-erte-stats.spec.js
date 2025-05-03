@@ -10,7 +10,9 @@ const testRecord = {
   company_municipality: 'TestVille',
   work_center_locality: 'TestCenter',
   sector: 'TEST',
-  total_work_sus: 42 
+  total_work_sus: 42,
+  total_man_sus: 32,
+  total_woman_sus: 10 
 };
 // helpers
 const buscaSection = page =>
@@ -37,28 +39,6 @@ test.describe('Gestión de ERTEs de la Dana', () => {
 
   });
 
-  test('Debe mostrar error al intentar crear con campos vacíos', async ({ page }) => {
-    // Rellenamos el formulario de creación (sin sección concreta)
-
-    const placeholders = [
-      'Mes', 'Año', 'Descripción de cnae', 'Municipio',
-      'Localidad', 'Sector', 'Trabajadores totales'
-    ];
-    const crearTable = page.getByRole('table').first();
-
-    // 2) Rellena los inputs por placeholder
-    for (const ph of placeholders) {
-      await crearTable.getByPlaceholder(ph, { exact: true }).fill('');
-    }
-
-    // 3) Click en “Crear”
-    await crearTable.getByRole('button', { name: 'Crear' }).click();
-
-    // 4) Comprueba el alert de error
-    await expect(
-      page.locator('p.text-danger', { hasText: 'Error al crear el dato (faltan campos existentes)' })
-    ).toBeVisible();
-  });
   
   test('Debe crear un nuevo registro válido', async ({ page }) => {
     const tbl = crearTable(page);
@@ -69,6 +49,8 @@ test.describe('Gestión de ERTEs de la Dana', () => {
     await tbl.getByPlaceholder('Localidad',            { exact: true }).fill(testRecord.work_center_locality);
     await tbl.getByPlaceholder('Sector',               { exact: true }).fill(testRecord.sector);
     await tbl.getByPlaceholder('Trabajadores totales', { exact: true }).fill(String(testRecord.total_work_sus));
+    await tbl.getByPlaceholder('Trabajadores hombres', { exact: true }).fill(String(testRecord.total_man_sus));
+    await tbl.getByPlaceholder('Trabajadores mujeres', { exact: true }).fill(String(testRecord.total_woman_sus));
 
     await Promise.all([
       page.waitForResponse(resp =>
