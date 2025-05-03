@@ -124,7 +124,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"request_month\": 11,\r\n        \"request_year\": 2024,\r\n        \"cnae_descr\": \"Actividades de las empresas de trabajo temporal\",\r\n        \"company_municipality\": \"Sevilla\",\r\n        \"work_center_locality\": \"Aldaya; Almussafes; Gandía\",\r\n        \"sector\": \"SERVICIOS\",\r\n        \"total_work_sus\": 79\r\n    }",
+					"raw": "{\r\n    \"request_month\": 11,\r\n    \"request_year\": 2024,\r\n    \"cnae_descr\": \"Transporte de mercancías por carretera\",\r\n    \"company_municipality\": \"Sevilla\",\r\n    \"work_center_locality\": \"Moncófar\",\r\n    \"sector\": \"SERVICIOS\",\r\n    \"total_work_sus\": 12,\r\n    \"total_man_sus\": 8,\r\n    \"total_woman_sus\": 4\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -179,7 +179,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"request_month\": 11,\r\n        \"request_year\": 2024,\r\n        \"cnae_descr\": \"Actividades de las empresas de trabajo temporal\",\r\n        \"company_municipality\": \"Sevilla\",\r\n        \"work_center_locality\": \"Gandía\",\r\n        \"sector\": \"SERVICIOS\",\r\n        \"total_work_sus\": 80\r\n    }",
+					"raw": "{\r\n    \"request_month\": 11,\r\n    \"request_year\": 2024,\r\n    \"cnae_descr\": \"Transporte de mercancías por carretera\",\r\n    \"company_municipality\": \"Sevilla\",\r\n    \"work_center_locality\": \"Moncófar\",\r\n    \"sector\": \"INDUSTRIA\",\r\n    \"total_work_sus\": 20,\r\n    \"total_man_sus\": 16,\r\n    \"total_woman_sus\": 4\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -395,7 +395,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"request_date\": \"12/09/2024\",\r\n  \"request_month\": 12,\r\n  \"request_year\": 2024,\r\n  \"cnae_descr\": \"Educación secundaria técnica y profesional\",\r\n  \"company_municipality\": \"Elche\",\r\n  \"company_province\": \"Alicante\",\r\n  \"work_center_locality\": \"Elche\",\r\n  \"sector\": \"SERVICIOS\",\r\n  \"total_work_sus\": 3,\r\n  \"men_work_sus\": 2,\r\n  \"women_work_sus\": 1\r\n}",
+					"raw": "{\r\n  \"request_date\": \"12/09/2024\",\r\n  \"request_month\": 12,\r\n  \"request_year\": 2024,\r\n  \"cnae_descr\": \"Educación secundaria técnica y profesional\",\r\n  \"company_municipality\": \"Elche\",\r\n  \"company_province\": \"Alicante\",\r\n  \"work_center_locality\": \"Elche\",\r\n  \"sector\": \"SERVICIOS\",\r\n  \"total_work_sus\": 3,\r\n  \"total_man_sus\": 2,\r\n  \"total_woman_sus\": 1\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
