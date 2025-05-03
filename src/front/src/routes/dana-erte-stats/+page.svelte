@@ -20,6 +20,8 @@
 	let newWorkCenter;
 	let newSector;
 	let newTotalWorkers;
+	let newTotalMan;     // <-- número de hombres
+    let newTotalWoman;
 	let filtroMonth = '';
 	let filtroYear = '';
 	let filtroMunicipality = '';
@@ -27,6 +29,9 @@
 	let filtroCnaeDescr = '';
 	let filtroWorkCenter = '';
 	let filtroWorkerTot = '';
+	let filtroWorkerMan = '';
+	let filtroWorkerWoman = '';
+
 	let filtroFrom = '';
 	let filtroTo = '';
 	let mensaje = '';
@@ -47,6 +52,8 @@
 			params.push(`work_center_locality=${encodeURIComponent(filtroWorkCenter)}`);
 		if (filtroSector) params.push(`sector=${encodeURIComponent(filtroSector)}`);
 		if (filtroWorkerTot) params.push(`total_work_sus=${filtroWorkerTot}`);
+		if (filtroWorkerMan) params.push(`total_man_sus=${filtroWorkerMan}`);
+		if (filtroWorkerWoman) params.push(`total_woman_sus=${filtroWorkerWoman}`);
 		// NOTA: si tu backend ya admite from/to, mantenlos aquí; sino omítelos
 		if (filtroFrom) params.push(`from=${filtroFrom}`);
 		if (filtroTo) params.push(`to=${filtroTo}`);
@@ -153,7 +160,23 @@
 			) {
 				mensaje = `No existen datos para el numero '${filtroWorkerTot}' de trabajadores.`;
 				tipoMensaje = 'warning';
-			} else {
+			}
+			else if (
+				filtroWorkerMan &&
+				!allData.some((d) => d.total_man_sus === Number(filtroWorkerMan))
+			) {
+				mensaje = `No existen datos para el numero '${filtroWorkerTot}' de trabajadores.`;
+				tipoMensaje = 'warning';
+			}
+			else if (
+				filtroWorkerWoman &&
+				!allData.some((d) => d.total_woman_sus === Number(filtroWorkerWoman))
+			) {
+				mensaje = `No existen datos para el numero '${filtroWorkerTot}' de trabajadores.`;
+				tipoMensaje = 'warning';
+			}
+			
+			else {
 				// si todos los filtros existen en some registro pero no juntos:
 				mensaje = 'No se encontraron registros que cumplan todos los filtros.';
 				tipoMensaje = 'warning';
@@ -218,7 +241,9 @@
 			newMunicipality,
 			newWorkCenter,
 			newSector,
-			newTotalWorkers
+			newTotalWorkers,
+			newTotalMan,
+			newTotalWoman
 		];
 		if (fields.some((v) => v === undefined || v === null || `${v}`.trim() === '')) {
 			resultStatus = 400;
@@ -237,7 +262,9 @@
 					company_municipality: newMunicipality,
 					work_center_locality: newWorkCenter,
 					sector: newSector,
-					total_work_sus: Number(newTotalWorkers)
+					total_work_sus: Number(newTotalWorkers),
+					total_man_sus: Number(newTotalMan),
+          			total_woman_sus: Number(newTotalWoman)
 				})
 			});
 			const status = await res.status;
@@ -265,6 +292,14 @@
 	{#if mensaje}
 		<Alert color={tipoMensaje} class="mb-3">{mensaje}</Alert>
 	{/if}
+	
+	<div>
+		<h1 style="text-align: center;"> Estadísticas del ERTE en la DANA</h1>
+		<a href="dana-erte-stats/graph" class="btn btn-sm btn-primary me-2" style = "float: right">
+			Gráfico
+		</a>
+	</div>
+	
 
 	<h4>Búsqueda avanzada</h4>
 	<div class="d-flex gap-2 align-items-end flex-wrap">
@@ -275,8 +310,11 @@
 		<Input placeholder="Descripción" bind:value={filtroCnaeDescr} />
 		<Input placeholder="Localidad" bind:value={filtroWorkCenter} />
 		<Input type="number" placeholder="Trabajadores" bind:value={filtroWorkerTot} />
+		<Input type="number" placeholder="TrabajadoresH" bind:value={filtroWorkerMan} />
+		<Input type="number" placeholder="TrabajadoresM" bind:value={filtroWorkerWoman} />
 		<Input bind:value={filtroFrom} type="number" placeholder="Desde año" />
 		<Input bind:value={filtroTo} type="number" placeholder="Hasta año" />
+
 
 		<Button color="info" on:click={getData}>Buscar</Button>
 		<Button
@@ -289,6 +327,8 @@
 					filtroCnaeDescr =
 					filtroWorkCenter =
 					filtroWorkerTot =
+					filtroWorkerMan =
+					filtroWorkerWoman =
 					filtroFrom =
 					filtroTo =
 						'';
@@ -312,6 +352,8 @@
 			<th>Localidad</th>
 			<th>Sector</th>
 			<th>Trabajadores totales</th>
+			<th>Trabajadores hombres</th>
+			<th>Trabajadores mujeres</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -323,6 +365,8 @@
 			<td><input placeholder="Localidad" bind:value={newWorkCenter} /></td>
 			<td><input placeholder="Sector" bind:value={newSector} /></td>
 			<td><input placeholder="Trabajadores totales" bind:value={newTotalWorkers} /></td>
+			<td><input placeholder="Trabajadores hombres" bind:value={newTotalMan} /></td>
+			<td><input placeholder="Trabajadores mujeres" bind:value={newTotalWoman} /></td>
 			<td>
 				<Button color="secondary" on:click={createData}>Crear</Button>
 			</td>
@@ -353,6 +397,8 @@
 			<th>Localidad</th>
 			<th>Sector</th>
 			<th>Trabajadores totales</th>
+			<th>Trabajadores hombres</th>
+			<th>Trabajadores mujeres</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -365,6 +411,8 @@
 				<td>{MVRData.work_center_locality}</td>
 				<td>{MVRData.sector}</td>
 				<td>{MVRData.total_work_sus}</td>
+				<td>{MVRData.total_man_sus}</td>
+				<td>{MVRData.total_woman_sus}</td>
 				<td>
 					<Button
 						size="sm"
