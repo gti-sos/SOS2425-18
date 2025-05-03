@@ -60,7 +60,9 @@
               company_municipality: record.company_municipality,
               work_center_locality: record.work_center_locality,
               sector: record.sector,
-              total_work_sus: Number(record.total_work_sus)
+              total_work_sus: Number(record.total_work_sus),
+              total_man_sus: Number(record.total_man_sus),
+              total_woman_sus: Number(record.total_woman_sus)
             })
           }
         );
@@ -115,6 +117,14 @@
     <div class="mb-3">
       <label for="total">Total Trabaj. Susp.</label>
       <Input id="total" type="number" bind:value={record.total_work_sus} />
+    </div>
+    <div class="mb-3">
+      <label for="total">Total Trabaj. Hombres Susp.</label>
+      <Input id="total" type="number" bind:value={record.total_man_sus} />
+    </div>
+    <div class="mb-3">
+      <label for="total">Total Trabaj. Mujeres Susp.</label>
+      <Input id="total" type="number" bind:value={record.total_woman_sus} />
     </div>
   
     <Button color="primary" on:click={guardarCambios}>Guardar cambios</Button>
