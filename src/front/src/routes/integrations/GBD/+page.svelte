@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
   import Chart from 'chart.js/auto';
 
   let cryptoData = [];
@@ -7,13 +7,12 @@
   let cargandoCrypto = true;
   let cargandoSpaceX = true;
   let cargandoCountries = true;
-  let cargandoSanciones = true;
   let cargandoRuta = true;
+  let cargandoSancionesRadar = true;
 
   let countriesCanvas;
   let countriesChartInstance;
   let sancionesCanvas;
-  let sancionesChartInstance;
   let rutaCanvas;
   let rutaChartInstance;
 
@@ -25,7 +24,7 @@
     "Castellón/Castelló": "Castellón"
   };
 
-  const normalize = (str) => str?.normalize?.("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim() || "";
+  const normalize = (str) => str?.normalize?.("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim() || "";
 
   onMount(async () => {
     // CoinGecko
@@ -83,59 +82,6 @@
       cargandoCountries = false;
     }
 
-    // Contratos vs. Sanciones
-    try {
-      const res1 = await fetch('https://sos2425-18.onrender.com/api/v2/contr-mun-stats');
-      const contratos = await res1.json();
-      const res2 = await fetch('https://sos2425-19.onrender.com/api/v1/sanctions-and-points-stats');
-      const sanciones = await res2.json();
-
-      const datosContratos = provincias.map(p =>
-        contratos.filter(c => normalize(c.prov_name) === normalize(p))
-                 .reduce((acc, cur) => acc + (cur.num_contracts || 0), 0)
-      );
-
-      const datosSanciones = provincias.map(p =>
-        sanciones
-          .filter(s => normalize(s.province) === normalize(p) && s.year === 2024)
-          .reduce((acc, cur) => acc + (Number(cur.total_sanctions_with_points) || 0), 0)
-      );
-
-
-      const ctx = sancionesCanvas.getContext('2d');
-      sancionesChartInstance = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: provincias,
-          datasets: [
-            {
-              label: 'Contratos',
-              data: datosContratos,
-              backgroundColor: 'rgba(54, 162, 235, 0.2)',
-              borderColor: 'rgba(54, 162, 235, 1)',
-              borderWidth: 2
-            },
-            {
-              label: 'Sanciones con puntos',
-              data: datosSanciones,
-              backgroundColor: 'rgba(255, 99, 132, 0.2)',
-              borderColor: 'rgba(255, 99, 132, 1)',
-              borderWidth: 2
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: { r: { beginAtZero: true } }
-        }
-      });
-    } catch (err) {
-      console.error("Error integración sanciones:", err);
-    } finally {
-      cargandoSanciones = false;
-    }
-
     // Contratos vs. Longitud de Ruta
     try {
       const res1 = await fetch("https://sos2425-18.onrender.com/api/v2/contr-mun-stats");
@@ -187,6 +133,68 @@
       console.error("Error integración ruta:", err);
     } finally {
       cargandoRuta = false;
+    }
+
+    // Contratos vs. Sanciones (Radar)
+    try {
+      const [resContratos, resSanciones] = await Promise.all([
+        fetch('https://sos2425-18.onrender.com/api/v2/contr-mun-stats'),
+        fetch('https://sos2425-19.onrender.com/api/v1/sanctions-and-points-stats')
+      ]);
+
+      const contratos = await resContratos.json();
+      const sanciones = await resSanciones.json();
+
+      const datosContratos = provincias.map(p =>
+        contratos.filter(c => normalize(c.prov_name) === normalize(p))
+                 .reduce((acc, cur) => acc + (cur.num_contracts || 0), 0)
+      );
+
+      const datosSanciones = provincias.map(p =>
+        sanciones.filter(s => normalize(s.province) === normalize(p))
+                 .reduce((acc, cur) => acc + (Number(cur.total_sanctions_with_points) || 0), 0)
+      );
+
+      await tick();
+
+      if (!sancionesCanvas) {
+        console.warn("Canvas aún no está disponible");
+        return;
+      }
+
+      const ctx = sancionesCanvas.getContext("2d");
+
+      new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: provincias,
+          datasets: [
+            {
+              label: "Contratos",
+              data: datosContratos,
+              backgroundColor: "rgba(54, 162, 235, 0.3)",
+              borderColor: "rgba(54, 162, 235, 1)",
+              borderWidth: 2
+            },
+            {
+              label: "Sanciones con puntos",
+              data: datosSanciones,
+              backgroundColor: "rgba(255, 99, 132, 0.3)",
+              borderColor: "rgba(255, 99, 132, 1)",
+              borderWidth: 2
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: { r: { beginAtZero: true } }
+        }
+      });
+    } catch (err) {
+      console.error("Error en integración contratos vs sanciones:", err);
+    } finally {
+      cargandoSancionesRadar = false;
     }
   });
 </script>
@@ -241,9 +249,11 @@
 </section>
 
 <section>
-  <h2>Comparativa: Contratos vs. Sanciones</h2>
-  {#if cargandoSanciones}<p>Cargando comparativa...</p>{/if}
-  <div style="width: 700px; height: 400px;"><canvas bind:this={sancionesCanvas}></canvas></div>
+  <h2>Contratos vs. Sanciones (Radar)</h2>
+  <p style="margin-bottom: 10px;">{#if cargandoSancionesRadar}Cargando datos...{/if}</p>
+  <div style="width: 700px; height: 400px;">
+    <canvas bind:this={sancionesCanvas} style="display: {cargandoSancionesRadar ? 'none' : 'block'};"></canvas>
+  </div>
 </section>
 
 <section>
