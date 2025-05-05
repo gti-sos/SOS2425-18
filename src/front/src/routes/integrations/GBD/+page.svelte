@@ -96,9 +96,11 @@
       );
 
       const datosSanciones = provincias.map(p =>
-        sanciones.filter(s => normalize(s.provincia) === normalize(p))
-                 .reduce((acc, cur) => acc + (Number(s.total_sanciones_con_puntos) || 0), 0)
+        sanciones
+          .filter(s => normalize(s.province) === normalize(p) && s.year === 2024)
+          .reduce((acc, cur) => acc + (Number(cur.total_sanctions_with_points) || 0), 0)
       );
+
 
       const ctx = sancionesCanvas.getContext('2d');
       sancionesChartInstance = new Chart(ctx, {
@@ -109,19 +111,23 @@
             {
               label: 'Contratos',
               data: datosContratos,
-              backgroundColor: 'rgba(54, 162, 235, 0.6)'
+              backgroundColor: 'rgba(54, 162, 235, 0.2)',
+              borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 2
             },
             {
               label: 'Sanciones con puntos',
               data: datosSanciones,
-              backgroundColor: 'rgba(255, 99, 132, 0.6)'
+              backgroundColor: 'rgba(255, 99, 132, 0.2)',
+              borderColor: 'rgba(255, 99, 132, 1)',
+              borderWidth: 2
             }
           ]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          scales: { y: { beginAtZero: true } }
+          scales: { r: { beginAtZero: true } }
         }
       });
     } catch (err) {
@@ -196,8 +202,35 @@
 
 <section>
   <h2>Últimos Lanzamientos de SpaceX</h2>
-  {#if cargandoSpaceX}<p>Cargando...</p>{:else}
-    <ul>{#each launches as l}<li><strong>{l.name}</strong> – {new Date(l.date_utc).toLocaleDateString()}</li>{/each}</ul>
+  {#if cargandoSpaceX}
+    <p>Cargando...</p>
+  {:else}
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Fecha</th>
+          <th>Éxito</th>
+          <th>Webcast</th>
+        </tr>
+      </thead>
+      <tbody>
+        {#each launches as l}
+          <tr>
+            <td>{l.name}</td>
+            <td>{new Date(l.date_utc).toLocaleDateString()}</td>
+            <td>{l.success === true ? 'Sí' : l.success === false ? 'No' : 'Desconocido'}</td>
+            <td>
+              {#if l.links?.webcast}
+                <a href={l.links.webcast} target="_blank">Ver</a>
+              {:else}
+                —
+              {/if}
+            </td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
   {/if}
 </section>
 

@@ -1,5 +1,7 @@
 import express from "express";
 import cors from "cors";
+import request from "request";
+
 // import request from "request";  // Añadimos request
 import { loadBackendMADC } from "./src/back/index-MADC.js";
 import { loadBackendGBD } from "./src/back/index-GBD.js";
