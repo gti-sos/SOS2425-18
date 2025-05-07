@@ -2,10 +2,11 @@ import express from "express";
 import cors from "cors";
 import request from "request";
 
-// import request from "request";  // Añadimos request
 import { loadBackendMADC } from "./src/back/index-MADC.js";
 import { loadBackendGBD } from "./src/back/index-GBD.js";
 import { loadBackendMVR } from "./src/back/index-MVR.js";
+import { loadBackendMIX } from './src/back/integrations/index-MIX-ALM.js';
+
 import { handler } from './src/front/build/handler.js';
 
 const app = express();
@@ -25,10 +26,24 @@ app.use(proxyPath, function(req, res) {
     req.pipe(request(url)).pipe(res);
 });
 
+// --- Proxy para Open‑Meteo ---------------------------------
+const weatherProxy = '/weather-proxy';                 // lo que usará tu front
+const weatherHost  = 'https://api.open-meteo.com';     // destino real
+
+app.use(weatherProxy, (req, res) => {
+  const url = weatherHost + req.url;      // concatena la query string
+  console.log('[proxy] →', url);
+  req.pipe(request(url)).pipe(res);
+});
+
 // Cargar backends
 loadBackendMADC(app);
 loadBackendGBD(app);
 loadBackendMVR(app);
+loadBackendMIX(app);
+
+// Cargar backend para integración
+
 
 // handler Svelte
 app.use(handler);
