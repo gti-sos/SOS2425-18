@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 
 export default function loadBackendMIX(app) {
     app.get('/api/v2/mix-autonomy-dana', async (req, res) => {
