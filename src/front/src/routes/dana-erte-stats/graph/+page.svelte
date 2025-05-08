@@ -1,5 +1,4 @@
 <script>
-// @ts-nocheck
 
 	import { onMount } from 'svelte';
 	import { dev } from '$app/environment';
@@ -50,6 +49,9 @@
     // 5️ Llamada a Highcharts con 3 líneas
     // @ts-ignore
     Highcharts.chart('container', {
+        chart: {
+        type: 'area'
+    },
       title: {
         text: 'Evolución mensual de trabajadores',
         align: 'left'
