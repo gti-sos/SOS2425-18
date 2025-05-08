@@ -10,8 +10,6 @@
 	let cargandoBubble = true;
 	let bubbleChart;
 	let mixChart;
-	let weatherData = null;
-	let cargandoWeather = true;
 	let canvasTemp;
 	const coords = {
 		Valencia: { lat: 39.4699, lon: -0.3763 },
@@ -52,14 +50,11 @@
 		Catarroja: { lat: 39.4, lon: -0.4167 }
 	};
 	let loading = true;
-	let canvasFX;
 	/* referencias a los canvas ------------------------------------------------ */
 	let canvasPop; // gráfico integración ERTE + Población
 
 	/* banderas de carga ------------------------------------------------------- */
 	let loadingPop = true;
-	let canvasYear; // gráfico Temp ↔ ERTE por año
-	let loadingYear;
 	let containerTemp; // el <div> donde montaremos el chart
 	let cargandoTemp = true;
 	let containerFusion; // sustituye containerUniv+containerErte
@@ -670,6 +665,15 @@
     {/if}
   </div>
 </section>
+
+<section>
+	<h2>G-TempStats – Temperatura media por año y provincia</h2>
+	{#if cargandoTemp}
+		<p>Cargando datos…</p>
+	{/if}
+	<div bind:this={containerTemp} style="max-width:800px;height:500px;margin:auto"></div>
+</section>
+
 <section>
 	<h2>E1 - Integración ERTE + Temperatura actual</h2>
 	<div style="max-width:800px;height:450px;margin:auto">
@@ -697,13 +701,7 @@
 	</div>
 </section>
 
-<section>
-	<h2>G-TempStats – Temperatura media por año y provincia</h2>
-	{#if cargandoTemp}
-		<p>Cargando datos…</p>
-	{/if}
-	<div bind:this={containerTemp} style="max-width:800px;height:500px;margin:auto"></div>
-</section>
+
 
 <style>
 	canvas {
