@@ -110,7 +110,7 @@
 
     if (dev) API = DEVEL_HOST + API;
 
-    async function iniatilizeData(){
+    async function initializeData(){
         try {
             const res = await fetch(`${API}/loadInitialData`);
             if (res.status==500) {
@@ -165,6 +165,7 @@
         
         try {
             const res = await fetch(queryURL);
+            console.log(res);
             if (res.status==404) {
                 showAlert("No se ha encontrado ningún recurso que coincida con los datos especificados", "danger");
                 aids=[];
@@ -363,7 +364,6 @@
     }
 
     onMount(()=>{
-        iniatilizeData();
         getAids();
     });
 </script>
@@ -392,6 +392,7 @@
         align-items: center;
         padding: 0 13.3333dvw;
         justify-content: end;
+        margin-top: 1rem;
     }
     
     .form-section {
@@ -675,6 +676,13 @@
         <div>
             <Button color="outline-primary" id="filtros" on:click={() => showFilterForm = !showFilterForm}>
                 <i class="bi bi-funnel"></i> Filtros
+            </Button>
+
+            <Button color="primary" style="align-self: end;" on:click={goto('/dana-grants-subsidies-stats/graphs')} class="mb-3">
+                Gráficas1
+            </Button>
+            <Button color="primary" style="align-self: end;" on:click={goto('/dana-grants-subsidies-stats/graphs2')} class="mb-3">
+                Gráficas2
             </Button>
         </div>
     </div>
