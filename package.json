@@ -55,9 +55,11 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.52.0",
+<<<<<<< HEAD
     "@rollup/rollup-win32-x64-msvc": "^4.40.0",
+=======
+>>>>>>> d50b4c7ce72c9bbdd5324ac299fa27ffc3073ba3
     "@types/node": "^22.14.1",
-    "rollup": "^4.17.0",
     "start-server-and-test": "^2.0.11",
     "vite": "^6.3.0"
   }

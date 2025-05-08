@@ -28,7 +28,10 @@
 	import query from "express/lib/middleware/query";
     import { page } from '$app/stores';
     import { get } from 'svelte/store';
+<<<<<<< HEAD
 	import { before } from "node:test";
+=======
+>>>>>>> d50b4c7ce72c9bbdd5324ac299fa27ffc3073ba3
 
     const params = get(page).params;
     const munNameParam= params.mun_name;  
@@ -36,7 +39,11 @@
     const benefIDParam = params.benef_id;
 
     let DEVEL_HOST = "http://localhost:3000";
+<<<<<<< HEAD
     let API = "/api/v2/dana-grants-subsidies-stats";
+=======
+    let API = "/api/v1/dana-grants-subsidies-stats";
+>>>>>>> d50b4c7ce72c9bbdd5324ac299fa27ffc3073ba3
     let queryURL="";
 
     let currentAid = null;
@@ -132,10 +139,13 @@
 
 </style>
 
+<<<<<<< HEAD
 <svelte:head>
         <title>Editar {currentAid!==null? currentAid.benef_id: ""}</title>
 </svelte:head>
 
+=======
+>>>>>>> d50b4c7ce72c9bbdd5324ac299fa27ffc3073ba3
 <Container fluid>
     <!-- Alerta para mensajes -->
         {#if alertVisible}
