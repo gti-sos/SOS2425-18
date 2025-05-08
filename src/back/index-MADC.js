@@ -19,7 +19,9 @@ function avgByMunNameRes(){
 }
 
 let objData=[];
-let objData1=[];
+let objDataAll=[];
+let munData=[];
+
 async function readAllDataMADC(ruta) {
     const CAMPOS = {
         "year": "integer", "month": "integer", "grant_date": "string", 'benef_id': "string",
@@ -87,13 +89,15 @@ async function readAllDataMuncipalites(ruta) {
     return data;
 }
 objData= await readAllDataMADC("./datasets/Ejemplo-Ayudas-Subvenciones-DANA-4TR(;).csv");
-objData1= await readAllDataMuncipalites("./datasets/municipios_fixed.csv");
+objDataAll= await readAllDataMADC("./datasets/Ayudas-Subvenciones-DANA-4TR(;).csv");
+munData= await readAllDataMuncipalites("./datasets/municipios_fixed.csv");
 
 let pueblosdistintos= new Set(objData.map(e=> e.mun_name));
 //console.log(pueblosdistintos);
 
 const BASE_API = "/api/v2";
 let db_MADC = new dataStore();
+let db_MADCAll = new dataStore();
 let db_Municip= new dataStore();
 
 function loadBackendMADC(app){
@@ -106,9 +110,15 @@ function loadBackendMADC(app){
         }
     })
 
+    db_MADCAll.find({}, (err, data)=>{
+        if(data.length===0){
+            db_MADCAll.insert(objDataAll);
+        }
+    })
+
     db_Municip.find({}, (err, data)=>{
         if(data.length===0){
-            db_Municip.insert(objData1);
+            db_Municip.insert(munData);
         }
     })
 
@@ -123,15 +133,49 @@ function loadBackendMADC(app){
         })
     });
 
-    app.get(`${BASE_API}/municipalities/loadInitialData`, (request, response) => {
+    app.get(`${BASE_API}/${MADCmainResource}/All/loadInitialData`, (request, response) => {
         let statusCode=201;
-        db_Municip.find({}, (err, data)=>{
+        db_MADCAll.find({}, (err, data)=>{
             if(data.length===0){
-                db_Municip.insert(objData);
+                db_MADCAll.insert(objData);
                 return response.status(statusCode).json({"message": "Inicialización de datos realizada correctamente", "statusCode": statusCode});
             }
             return response.status(statusCode).json({"message": "Inicialización de datos consecutiva realizada correctamente", "statusCode": statusCode});
         })
+    });
+
+    app.get(`${BASE_API}/municipalities/loadInitialData`, (request, response) => {
+        let statusCode=201;
+        db_Municip.find({}, (err, data)=>{
+            if(data.length===0){
+                db_Municip.insert(munData);
+                return response.status(statusCode).json({"message": "Inicialización de datos realizada correctamente", "statusCode": statusCode});
+            }
+            return response.status(statusCode).json({"message": "Inicialización de datos consecutiva realizada correctamente", "statusCode": statusCode});
+        })
+    });
+
+    app.get(`${BASE_API}/${MADCmainResource}/All`, (request, response) => {
+        let statusCode= 200;
+
+        db_MADCAll.find({}, (err, data)=>{
+            if(err){
+                statusCode= 500;
+                return response.status(statusCode).json({"error": "Error interno del servidor", "statusCode": statusCode});
+            }else{
+                if(data.length!==0){
+                    data= data.map(aid=>{
+                        delete aid._id;
+                        return aid;
+                    });
+                    return response.status(statusCode).json(data);
+                }else{
+                    statusCode= 404;
+                    let json404= {"error": `Recurso no encontrado`, "statusCode": statusCode};
+                    return response.status(statusCode).json(json404);
+                }
+            }  
+        });
     });
 
     app.get(`${BASE_API}/municipalities`, (request, response) => {
@@ -205,10 +249,6 @@ function loadBackendMADC(app){
 
         if (request.query.from) q.year.$gte = parseInt(request.query.from);
         if (request.query.to) q.year.$lte = parseInt(request.query.to);
-        /*
-        if (request.query.fromDate) q.grant_date.$gte = request.query.fromDate;
-        if (request.query.toDate) q.grant_date.$lte = request.query.toDate;
-        */
 
         let page=null;
         let limit=null;

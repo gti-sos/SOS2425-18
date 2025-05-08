@@ -28,11 +28,7 @@
 	import query from "express/lib/middleware/query";
 
     let DEVEL_HOST = "http://localhost:3000";
-<<<<<<< HEAD
     let API = "/api/v2/dana-grants-subsidies-stats";
-=======
-    let API = "/api/v1/dana-grants-subsidies-stats";
->>>>>>> d50b4c7ce72c9bbdd5324ac299fa27ffc3073ba3
     let queryURL="";
     let aids = [];
 
@@ -114,7 +110,6 @@
 
     if (dev) API = DEVEL_HOST + API;
 
-<<<<<<< HEAD
     async function initializeData(){
         try {
             const res = await fetch(`${API}/loadInitialData`);
@@ -126,8 +121,6 @@
             showAlert("No se pudo conectar con el servidor", "danger");
         }
     }
-=======
->>>>>>> d50b4c7ce72c9bbdd5324ac299fa27ffc3073ba3
     // Función para obtener las ayudas con filtros opcionales
     async function getAids() {
         let url = API;
@@ -172,10 +165,7 @@
         
         try {
             const res = await fetch(queryURL);
-<<<<<<< HEAD
             console.log(res);
-=======
->>>>>>> d50b4c7ce72c9bbdd5324ac299fa27ffc3073ba3
             if (res.status==404) {
                 showAlert("No se ha encontrado ningún recurso que coincida con los datos especificados", "danger");
                 aids=[];
@@ -373,13 +363,9 @@
         }, 3000);
     }
 
-<<<<<<< HEAD
     onMount(()=>{
         getAids();
     });
-=======
-    onMount(getAids);
->>>>>>> d50b4c7ce72c9bbdd5324ac299fa27ffc3073ba3
 </script>
 
 <style>
@@ -406,10 +392,7 @@
         align-items: center;
         padding: 0 13.3333dvw;
         justify-content: end;
-<<<<<<< HEAD
         margin-top: 1rem;
-=======
->>>>>>> d50b4c7ce72c9bbdd5324ac299fa27ffc3073ba3
     }
     
     .form-section {
@@ -430,12 +413,9 @@
         z-index: 1050;
     }
 </style>
-<<<<<<< HEAD
     <svelte:head>
         <title>Ayudas y Subvenciones</title>
     </svelte:head>
-=======
->>>>>>> d50b4c7ce72c9bbdd5324ac299fa27ffc3073ba3
 
     <Container fluid>
     <!-- Alerta para mensajes -->
@@ -447,11 +427,7 @@
             </div>
         {/if}
     </Container>
-<<<<<<< HEAD
     <h2 class="text-center my-4">Ayudas y subvenciones solicitadas <br>Comunidad Valenciana, 4º Trimestre 2024</h2>
-=======
-    <h1 class="text-center my-4">Ayudas y subvenciones solicitadas <br>Comunidad Valenciana, 4º Trimestre 2024</h1>
->>>>>>> d50b4c7ce72c9bbdd5324ac299fa27ffc3073ba3
 
     <!-- Sección para crear nuevo recurso -->
     <div class="form-section">
@@ -698,7 +674,6 @@
     <!-- Tabla de subvenciones con filtros -->
     <div class="table-header">
         <div>
-<<<<<<< HEAD
             <Button color="outline-primary" id="filtros" on:click={() => showFilterForm = !showFilterForm}>
                 <i class="bi bi-funnel"></i> Filtros
             </Button>
@@ -709,11 +684,6 @@
             <Button color="primary" style="align-self: end;" on:click={goto('/dana-grants-subsidies-stats/graphs2')} class="mb-3">
                 Gráficas2
             </Button>
-=======
-            <Button color="outline-primary" on:click={() => showFilterForm = !showFilterForm}>
-                <i class="bi bi-funnel"></i> Filtros
-            </Button>
->>>>>>> d50b4c7ce72c9bbdd5324ac299fa27ffc3073ba3
         </div>
     </div>
 
@@ -932,15 +902,9 @@
                             filtroTo = "";
                             filtroLimit = "";
                             filtroPage = "";
-<<<<<<< HEAD
                             getAids();
                             goto("/dana-grants-subsidies-stats");
                             
-=======
-                            
-                            goto(window.location.pathname.substring(0, window.location.pathname.indexOf("?")), { replaceState: true });
-                            getAids();
->>>>>>> d50b4c7ce72c9bbdd5324ac299fa27ffc3073ba3
                         }}>Limpiar filtros</Button>
                     </div>
                 </Form>
@@ -1010,11 +974,7 @@
         </ModalHeader>
         <ModalBody>
             {#if currentAid}
-<<<<<<< HEAD
                 <div class="alert alert-danger" id="eliminacion-especifica">
-=======
-                <div class="alert alert-danger">
->>>>>>> d50b4c7ce72c9bbdd5324ac299fa27ffc3073ba3
                     <p>¿Está seguro de que desea eliminar la subvención para <strong>{currentAid.benef_name}</strong>?</p>
                     <p>Esta acción no se puede deshacer.</p>
                 </div>
@@ -1022,11 +982,7 @@
         </ModalBody>
         <ModalFooter>
             <Button color="secondary" on:click={() => deleteModalOpen = false}>Cancelar</Button>
-<<<<<<< HEAD
             <Button color="danger" id="confirmar-eliminacion" on:click={deleteAid}>Eliminar</Button>
-=======
-            <Button color="danger" on:click={deleteAid}>Eliminar</Button>
->>>>>>> d50b4c7ce72c9bbdd5324ac299fa27ffc3073ba3
         </ModalFooter>
     </Modal>
 
@@ -1036,11 +992,7 @@
             Confirmar eliminación
         </ModalHeader>
         <ModalBody>
-<<<<<<< HEAD
             <div class="alert alert-danger" id="eliminacion-masiva">
-=======
-            <div class="alert alert-danger">
->>>>>>> d50b4c7ce72c9bbdd5324ac299fa27ffc3073ba3
                 <p>¿Está seguro de que desea eliminar <strong>todas</strong> las subvenciones?</p>
                 <p>Esta acción eliminará <strong>{aids.length}</strong> registros y no se puede deshacer.</p>
             </div>
