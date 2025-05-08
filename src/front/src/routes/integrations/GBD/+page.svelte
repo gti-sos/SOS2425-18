@@ -1,4 +1,6 @@
 <script>
+// @ts-nocheck
+
   import { onMount, tick } from 'svelte';
   import Chart from 'chart.js/auto';
 
@@ -82,7 +84,7 @@
       cargandoCountries = false;
     }
 
-    // Contratos vs. Longitud de Ruta
+    // Contratos vs Longitud de Ruta
     try {
       const res1 = await fetch("https://sos2425-18.onrender.com/api/v2/contr-mun-stats");
       const contratos = await res1.json();
@@ -203,7 +205,7 @@
 
 <section>
   <h2>Precios de Criptomonedas</h2>
-  {#if cargandoCrypto}<p>Cargando...</p>{:else}
+  {#if cargandoCrypto}<p>Cargando datos...</p>{:else}
     <table><thead><tr><th>Cripto</th><th>Precio (USD)</th></tr></thead><tbody>{#each cryptoData as c}<tr><td>{c.name}</td><td>${c.current_price}</td></tr>{/each}</tbody></table>
   {/if}
 </section>
@@ -211,7 +213,7 @@
 <section>
   <h2>Últimos Lanzamientos de SpaceX</h2>
   {#if cargandoSpaceX}
-    <p>Cargando...</p>
+    <p>Cargando datos...</p>
   {:else}
     <table>
       <thead>
@@ -258,7 +260,7 @@
 
 <section>
   <h2>Contratos vs. Longitud de Ruta</h2>
-  {#if cargandoRuta}<p>Cargando comparativa...</p>{/if}
+  {#if cargandoRuta}<p>Cargando datos...</p>{/if}
   <div style="width: 700px; height: 400px;"><canvas bind:this={rutaCanvas}></canvas></div>
 </section>
 
