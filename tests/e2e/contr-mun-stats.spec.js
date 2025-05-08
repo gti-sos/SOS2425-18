@@ -103,28 +103,22 @@ test.describe('Gestión de Contratos por Municipio', () => {
     await filtros.getByPlaceholder('Descripción sector').nth(0).fill(testContrato.sec_descr);
     await filtros.getByPlaceholder('Contratos').nth(0).fill(String(testContrato.num_contracts));
   
-    // Hacer clic en Buscar
     await filtros.getByRole('button', { name: 'Buscar' }).click();
   
-    // Esperar hasta que aparezca exactamente el contenido que buscamos en la tabla
     const fila = page.locator('table tbody tr').filter({ hasText: testContrato.mun_name });
   
-    // Añadimos retry al expect con tiempo extendido
     await expect(fila).toBeVisible({ timeout: 10000 });
   });  
 
   test('Debe buscar correctamente por rango de años', async ({ page }) => {
-    // Ir al formulario de filtros
+    
     const filtros = page.locator('section', { hasText: 'Buscar contratos' });
   
-    // Rellenar el rango de años
     await filtros.getByPlaceholder('Desde año').fill('2035');
     await filtros.getByPlaceholder('Hasta año').fill('2037');
   
-    // Pulsar el botón de búsqueda
     await filtros.getByRole('button', { name: 'Buscar' }).click();
   
-    // Esperar que el contrato esperado esté visible
     const filaEsperada = page.locator('table tbody tr').filter({ hasText: testContrato.mun_name });
     await expect(filaEsperada).toBeVisible({ timeout: 7000 });
   });  
@@ -169,26 +163,20 @@ test.describe('Gestión de Contratos por Municipio', () => {
     const fila = page.locator('tr', { hasText: testContrato.sec_descr });
     await expect(fila).toBeVisible({ timeout: 7000 });
   
-    // Hacer clic en el botón "Editar"
     await fila.getByRole('button', { name: 'Editar' }).click();
   
-    // Esperar a que cargue la página de edición
     await expect(page.getByRole('heading', { name: 'Editar Contrato' })).toBeVisible();
   
-    // Modificar la descripción
     const nuevaDescripcion = 'EditadoPorTest-' + Math.floor(Math.random() * 1000);
     const campoDescripcion = page.getByLabel('Descripción del sector');
     await expect(campoDescripcion).toBeVisible({ timeout: 7000 });
     await campoDescripcion.fill(nuevaDescripcion);
   
-    // Guardar cambios
     await page.getByRole('button', { name: 'Guardar cambios' }).click();
   
-    // Verificar mensaje de éxito y redirección
     await expect(page.getByText('Contrato actualizado correctamente.')).toBeVisible({ timeout: 7000 });
     await expect(page.getByRole('heading', { name: 'Contrataciones por municipio' })).toBeVisible();
   
-    // Verificar que la nueva descripción aparece en alguna fila de la tabla
     await expect(page.locator('tr', { hasText: nuevaDescripcion })).toBeVisible();
   });  
 
@@ -197,17 +185,13 @@ test.describe('Gestión de Contratos por Municipio', () => {
     const fila = page.locator('tr', { hasText: testContrato.mun_name });
     await fila.getByRole('button', { name: 'Editar' }).click();
   
-    // Esperamos a que aparezca la vista de edición
     await expect(page.getByRole('heading', { name: 'Editar Contrato' })).toBeVisible();
   
-    // Borramos el campo "Nombre provincia"
     const campoProvName = page.getByLabel('Nombre de provincia');
     await campoProvName.fill(''); // lo dejamos vacío
   
-    // Pulsamos en guardar cambios
     await page.getByRole('button', { name: 'Guardar cambios' }).click();
   
-    // Verificamos que aparece el mensaje de error
     await expect(page.locator('div.alert')).toContainText('Todos los campos son obligatorios.');
   });  
 
@@ -216,13 +200,10 @@ test.describe('Gestión de Contratos por Municipio', () => {
     const fila = page.locator('tr', { hasText: testContrato.prov_name });
     await fila.getByRole('button', { name: 'Editar' }).click();
   
-    // Aseguramos que estamos en la vista de edición
     await expect(page.getByRole('heading', { name: 'Editar Contrato' })).toBeVisible();
   
-    // Pulsamos el botón "Cancelar"
     await page.getByRole('button', { name: 'Cancelar' }).click();
   
-    // Verificamos que hemos vuelto al listado
     await expect(page.getByRole('heading', { name: 'Contrataciones por municipio' })).toBeVisible();
   });  
 
