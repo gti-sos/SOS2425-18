@@ -99,6 +99,9 @@ function loadBackendGBD(app) {
         // Filtros dinámicos
         for (let key in query) {
             if (["from", "to", "limit", "offset"].includes(key)) continue;
+             // 5. Para cada otra clave, añadimos una propiedad al objeto dbQuery:
+            //    - Si el valor no es numérico, lo dejamos como string
+            //    - Si puede convertirse a número, lo convertimos
             dbQuery[key] = isNaN(query[key]) ? query[key] : Number(query[key]);
         }
     
