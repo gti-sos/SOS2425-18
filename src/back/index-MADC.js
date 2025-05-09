@@ -19,6 +19,9 @@ function avgByMunNameRes(){
 }
 
 let objData=[];
+let objDataAll=[];
+let munData=[];
+
 async function readAllDataMADC(ruta) {
     const CAMPOS = {
         "year": "integer", "month": "integer", "grant_date": "string", 'benef_id': "string",
@@ -55,11 +58,47 @@ async function readAllDataMADC(ruta) {
     }).filter(aid => aid.benef_id !== null);
     return data;
 }
+
+async function readAllDataMuncipalites(ruta) {
+    const CAMPOS = {
+        "prov_name": "string", "mun_name": "string",
+        "lat_etrs89": "float", "long_etrs89": "float"
+    };
+
+    let data = await fs.promises.readFile(ruta, 'utf8');
+
+    data = data.split(`\n`).map(line => {
+        line = line.split(`;`);
+        let obj = {};
+        Object.keys(CAMPOS).forEach((key, i) => {
+            let elem = line[i] ? line[i].trim().replace(/"/g, '') : null;
+
+            if (elem !== null) {
+                if (CAMPOS[key] === "float") {
+                    elem = parseFloat(elem.replace(',', '.'));
+                } else{
+                    if (elem.includes("/") && elem.split("/").length < 3) {
+                        elem = (key === "mun_name") ? elem.split("/")[1] : elem.split("/")[0];
+                    }
+                }
+            }
+            obj[key] = (elem === '' || elem === null) ? null : elem;
+        });
+        return obj;
+    }).filter(mun => mun.mun_name !== null);
+    return data;
+}
 objData= await readAllDataMADC("./datasets/Ejemplo-Ayudas-Subvenciones-DANA-4TR(;).csv");
-let pueblosdistintos= new Set(objData.map(e=> e.reg_base));
+objDataAll= await readAllDataMADC("./datasets/Ayudas-Subvenciones-DANA-4TR(;).csv");
+munData= await readAllDataMuncipalites("./datasets/municipios_fixed.csv");
+
+let pueblosdistintos= new Set(objData.map(e=> e.mun_name));
+//console.log(pueblosdistintos);
 
 const BASE_API = "/api/v2";
 let db_MADC = new dataStore();
+let db_MADCAll = new dataStore();
+let db_Municip= new dataStore();
 
 function loadBackendMADC(app){
 
@@ -68,6 +107,18 @@ function loadBackendMADC(app){
     db_MADC.find({}, (err, data)=>{
         if(data.length===0){
             db_MADC.insert(objData);
+        }
+    })
+
+    db_MADCAll.find({}, (err, data)=>{
+        if(data.length===0){
+            db_MADCAll.insert(objDataAll);
+        }
+    })
+
+    db_Municip.find({}, (err, data)=>{
+        if(data.length===0){
+            db_Municip.insert(munData);
         }
     })
 
@@ -80,6 +131,74 @@ function loadBackendMADC(app){
             }
             return response.status(statusCode).json({"message": "Inicialización de datos consecutiva realizada correctamente", "statusCode": statusCode});
         })
+    });
+
+    app.get(`${BASE_API}/${MADCmainResource}/All/loadInitialData`, (request, response) => {
+        let statusCode=201;
+        db_MADCAll.find({}, (err, data)=>{
+            if(data.length===0){
+                db_MADCAll.insert(objData);
+                return response.status(statusCode).json({"message": "Inicialización de datos realizada correctamente", "statusCode": statusCode});
+            }
+            return response.status(statusCode).json({"message": "Inicialización de datos consecutiva realizada correctamente", "statusCode": statusCode});
+        })
+    });
+
+    app.get(`${BASE_API}/municipalities/loadInitialData`, (request, response) => {
+        let statusCode=201;
+        db_Municip.find({}, (err, data)=>{
+            if(data.length===0){
+                db_Municip.insert(munData);
+                return response.status(statusCode).json({"message": "Inicialización de datos realizada correctamente", "statusCode": statusCode});
+            }
+            return response.status(statusCode).json({"message": "Inicialización de datos consecutiva realizada correctamente", "statusCode": statusCode});
+        })
+    });
+
+    app.get(`${BASE_API}/${MADCmainResource}/All`, (request, response) => {
+        let statusCode= 200;
+
+        db_MADCAll.find({}, (err, data)=>{
+            if(err){
+                statusCode= 500;
+                return response.status(statusCode).json({"error": "Error interno del servidor", "statusCode": statusCode});
+            }else{
+                if(data.length!==0){
+                    data= data.map(aid=>{
+                        delete aid._id;
+                        return aid;
+                    });
+                    return response.status(statusCode).json(data);
+                }else{
+                    statusCode= 404;
+                    let json404= {"error": `Recurso no encontrado`, "statusCode": statusCode};
+                    return response.status(statusCode).json(json404);
+                }
+            }  
+        });
+    });
+
+    app.get(`${BASE_API}/municipalities`, (request, response) => {
+        let statusCode= 200;
+
+        db_Municip.find({}, (err, data)=>{
+            if(err){
+                statusCode= 500;
+                return response.status(statusCode).json({"error": "Error interno del servidor", "statusCode": statusCode});
+            }else{
+                if(data.length!==0){
+                    data= data.map(mun=>{
+                        delete mun._id;
+                        return mun;
+                    });
+                    return response.status(statusCode).json(data);
+                }else{
+                    statusCode= 404;
+                    let json404= {"error": `Recurso no encontrado`, "statusCode": statusCode};
+                    return response.status(statusCode).json(json404);
+                }
+            }  
+        });
     });
     
     app.get(`${BASE_API}/${MADCmainResource}`, (request, response) => {
@@ -130,10 +249,6 @@ function loadBackendMADC(app){
 
         if (request.query.from) q.year.$gte = parseInt(request.query.from);
         if (request.query.to) q.year.$lte = parseInt(request.query.to);
-        /*
-        if (request.query.fromDate) q.grant_date.$gte = request.query.fromDate;
-        if (request.query.toDate) q.grant_date.$lte = request.query.toDate;
-        */
 
         let page=null;
         let limit=null;
