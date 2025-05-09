@@ -1,44 +1,55 @@
 // Inicialización del array con los datos de ejemplo (cada registro en una sola línea)
-import dataStore from "nedb";
+// src/back/index-MVR.js
+import { fileURLToPath } from 'url';
+import path from 'path';
+import fs from 'fs';
+import dataStore from 'nedb';
+import { parse } from 'csv-parse/sync';
 
 const BASE_API = "/api/v2";
 
 let db = new dataStore();
 
-let inicialData = [
-    { request_month: 11, request_year: 2024, cnae_descr: 'Transporte de mercancías por carretera', company_municipality: 'Alicante', work_center_locality: 'Alicante', sector: 'SERVICIOS', total_work_sus: 1, total_man_sus: 1, total_woman_sus: 0 },
-    { request_month: 12, request_year: 2024, cnae_descr: 'Educación secundaria técnica y profesional', company_municipality: 'Elche', work_center_locality: 'Elche', sector: 'SERVICIOS', total_work_sus: 3, total_man_sus: 2, total_woman_sus: 1 },
-    { request_month: 11, request_year: 2024, cnae_descr: 'Fabricación de muebles de oficina y de establecimientos comerciales', company_municipality: 'Benicarló', work_center_locality: 'Benicarló', sector: 'INDUSTRIA', total_work_sus: 63, total_man_sus: 52, total_woman_sus: 11 },
-    { request_month: 11, request_year: 2024, cnae_descr: 'Fabricación de carrocerías para vehículos de motor, fabricación de remolques y semirremolques', company_municipality: 'Peñíscola', work_center_locality: 'Peñíscola', sector: 'INDUSTRIA', total_work_sus: 87, total_man_sus: 55, total_woman_sus: 32 },
-    { request_month: 11, request_year: 2024, cnae_descr: 'Transporte por taxi', company_municipality: 'Castellón de la Plana', work_center_locality: 'Castellón De La Plana', sector: 'SERVICIOS', total_work_sus: 1, total_man_sus: 1, total_woman_sus: 0 },
-    { request_month: 11, request_year: 2024, cnae_descr: 'Transporte de mercancías por carretera', company_municipality: 'Moncófar', work_center_locality: 'Moncófar', sector: 'SERVICIOS', total_work_sus: 2, total_man_sus: 2, total_woman_sus: 0 },
-    { request_month: 12, request_year: 2024, cnae_descr: 'Transporte de mercancías por carretera', company_municipality: 'Moncófar', work_center_locality: 'Moncófar', sector: 'SERVICIOS', total_work_sus: 2, total_man_sus: 2, total_woman_sus: 0 },
-    { request_month: 10, request_year: 2024, cnae_descr: 'Servicios integrales a edificios e instalaciones', company_municipality: 'Cuart de Poblet', work_center_locality: 'Aldaya', sector: 'SERVICIOS', total_work_sus: 0, total_man_sus: 0, total_woman_sus: 0 },
-    { request_month: 11, request_year: 2024, cnae_descr: 'Fabricación de otros componentes, piezas y accesorios para vehículos de motor', company_municipality: 'Ribarroja del Turia', work_center_locality: 'Riba-Roja De Túria', sector: 'INDUSTRIA', total_work_sus: 86, total_man_sus: 53, total_woman_sus: 33 },
-    { request_month: 11, request_year: 2024, cnae_descr: 'Actividades de las empresas de trabajo temporal', company_municipality: 'Madrid', work_center_locality: 'Aldaya; Almussafes; Gandía', sector: 'SERVICIOS', total_work_sus: 79, total_man_sus: 60, total_woman_sus: 19 },
-    { request_month: 11, request_year: 2024, cnae_descr: 'Comercio al por menor de prendas de vestir en establecimientos especializados', company_municipality: 'Málaga', work_center_locality: 'Aldaya', sector: 'SERVICIOS', total_work_sus: 4, total_man_sus: 0, total_woman_sus: 4 },
-    { request_month: 11, request_year: 2024, cnae_descr: 'Fabricación de otros muebles', company_municipality: 'Cuart de Poblet', work_center_locality: 'Quart De Poblet', sector: 'INDUSTRIA', total_work_sus: 345, total_man_sus: 0, total_woman_sus: 0 },
-    { request_month: 11, request_year: 2024, cnae_descr: 'Fabricación de otros componentes, piezas y accesorios para vehículos de motor', company_municipality: 'Almussafes', work_center_locality: 'Almazora; Almussafes; Bétera; Ibi; Meliana; Museros; Náquera; Paterna; Riba-Roja De Túria', sector: 'INDUSTRIA', total_work_sus: 464, total_man_sus: 345, total_woman_sus: 119 },
-    { request_month: 11, request_year: 2024, cnae_descr: 'Otras actividades de apoyo a las empresas n.c.o.p.', company_municipality: 'Paterna', work_center_locality: 'Massanassa', sector: 'SERVICIOS', total_work_sus: 6, total_man_sus: 0, total_woman_sus: 6 },
-    { request_month: 11, request_year: 2024, cnae_descr: 'Restaurantes y puestos de comidas', company_municipality: 'Aldaya', work_center_locality: 'Aldaya', sector: 'SERVICIOS', total_work_sus: 25, total_man_sus: 7, total_woman_sus: 18 },
-    { request_month: 11, request_year: 2024, cnae_descr: 'Restaurantes y puestos de comidas', company_municipality: 'Sant Cugat del Vallès', work_center_locality: 'Aldaya', sector: 'SERVICIOS', total_work_sus: 24, total_man_sus: 10, total_woman_sus: 14 },
-    { request_month: 11, request_year: 2024, cnae_descr: 'Otras actividades de apoyo a las empresas n.c.o.p.', company_municipality: 'Valencia', work_center_locality: 'Almussafes; Picassent; Valencia', sector: 'SERVICIOS', total_work_sus: 48, total_man_sus: 46, total_woman_sus: 2 },
-    { request_month: 11, request_year: 2024, cnae_descr: 'Elaboración de otros productos alimenticios n.c.o.p.', company_municipality: 'Redondela', work_center_locality: 'Catarroja', sector: 'INDUSTRIA', total_work_sus: 45, total_man_sus: 16, total_woman_sus: 29 },
-    { request_month: 11, request_year: 2024, cnae_descr: 'Otros servicios personales n.c.o.p.', company_municipality: 'Cabanillas del Campo', work_center_locality: 'Almussafes', sector: 'SERVICIOS', total_work_sus: 771, total_man_sus: 566, total_woman_sus: 205 },
-    { request_month: 11, request_year: 2024, cnae_descr: 'Elaboración de productos cárnicos y de volatería', company_municipality: 'Torrent', work_center_locality: 'Torrent', sector: 'INDUSTRIA', total_work_sus: 297, total_man_sus: 211, total_woman_sus: 86 },
-    { request_month: 11, request_year: 2024, cnae_descr: 'Comercio al por menor de prendas de vestir en establecimientos especializados', company_municipality: 'Zaragoza', work_center_locality: 'Aldaya', sector: 'SERVICIOS', total_work_sus: 44, total_man_sus: 18, total_woman_sus: 26 },
-    { request_month: 11, request_year: 2024, cnae_descr: 'Limpieza general de edificios', company_municipality: 'Barcelona', work_center_locality: 'Almussafes', sector: 'SERVICIOS', total_work_sus: 268, total_man_sus: 221, total_woman_sus: 47 },
-    { request_month: 11, request_year: 2024, cnae_descr: 'Fabricación de maquinaria para las industrias del plástico y del caucho', company_municipality: 'Albal', work_center_locality: 'Albal', sector: 'INDUSTRIA', total_work_sus: 305, total_man_sus: 182, total_woman_sus: 123 },
-    { request_month: 11, request_year: 2024, cnae_descr: 'Comercio al por mayor de prendas de vestir y calzado', company_municipality: 'Sant Feliu de Llobregat', work_center_locality: 'Aldaya', sector: 'SERVICIOS', total_work_sus: 9, total_man_sus: 0, total_woman_sus: 9 },
-    { request_month: 11, request_year: 2024, cnae_descr: 'Otros servicios de comidas', company_municipality: 'Leganés', work_center_locality: 'Algemesí; Paiporta; Paterna; Valencia', sector: 'SERVICIOS', total_work_sus: 45, total_man_sus: 3, total_woman_sus: 42 },
-    { request_month: 11, request_year: 2024, cnae_descr: 'Comercio al por mayor de frutas y hortalizas', company_municipality: 'Algemesí', work_center_locality: 'Algemesí', sector: 'SERVICIOS', total_work_sus: 368, total_man_sus: 0, total_woman_sus: 0 },
-    { request_month: 11, request_year: 2024, cnae_descr: 'Otros servicios de comidas', company_municipality: 'Castelldefels', work_center_locality: 'Torrent', sector: 'SERVICIOS', total_work_sus: 289, total_man_sus: 31, total_woman_sus: 258 },
-    { request_month: 11, request_year: 2024, cnae_descr: 'Otras actividades de apoyo a las empresas n.c.o.p.', company_municipality: 'Pozuelo de Alarcón', work_center_locality: 'Aldaya', sector: 'SERVICIOS', total_work_sus: 19, total_man_sus: 11, total_woman_sus: 8 },
-    { request_month: 11, request_year: 2024, cnae_descr: 'Comercio al por menor de muebles, aparatos de iluminación y otros artículos de uso doméstico en establecimientos especializados', company_municipality: 'Prat de Llobregat, El', work_center_locality: 'Alfafar', sector: 'SERVICIOS', total_work_sus: 33, total_man_sus: 10, total_woman_sus: 23 },
-    { request_month: 1, request_year: 2025, cnae_descr: 'Actividades de programación informática', company_municipality: 'Almussafes', work_center_locality: 'Almussafes', sector: 'SERVICIOS', total_work_sus: 91, total_man_sus: 69, total_woman_sus: 22 }
-];
+// recreamos __filename y __dirname en ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname  = path.dirname(__filename);
 
-
+// 1) Construye la ruta al CSV (subimos dos niveles desde src/back hasta la raíz)
+const csvFilePath = path.resolve(
+    __dirname,
+    '../../datasets/expedientes_erte_modificado_final_solo_español.csv'
+  );
+  
+  // 2) Lee y parsea el CSV
+  const raw = fs.readFileSync(csvFilePath, 'latin1');   // ISO-8859-1 para los acentos
+  const records = parse(raw, {
+    delimiter: ';',         // tu separador es ;
+    columns: true,          // toma la primera línea como cabeceras
+    skip_empty_lines: true
+  });
+  
+  // 3) Mapea a la estructura que necesitas
+  const inicialData = records.map(r => ({
+    request_month:      Number(r['mes_sol']),
+    request_year:       Number(r['año_sol']),
+    cnae_descr:         r['desc_cnae'],
+    company_municipality: r['empresa_municipio'],
+    work_center_locality: r['localidades_centro_trab'],
+    sector:             r['desc_sector'],
+    total_work_sus:     Number(r['total_trab_sus']),
+    total_man_sus:      Number(r['trab_hombres_sus']),
+    total_woman_sus:    Number(r['trab_mujeres_sus'])
+  }));
+  
+  // 4) Sembrado en NeDB si está vacío
+  db.find({}, (err, docs) => {
+    if (!err && docs.length === 0) {
+      db.insert(inicialData, (e, newDocs) => {
+        console.log(`Sembrados ${newDocs.length} registros desde CSV.`);
+      });
+    }
+  });
+  
 
 // Ejemplo de la carpeta "samples" ----------------------------------------------------------------
 // Valor geográfico por el cual se filtrarán las filas (puede modificarse según se necesite)
@@ -62,23 +73,6 @@ function avgByPrueb(selectedProvince) {
 avgByPrueb(selectedProvince);
 
 // L06 --------------------------------------------------------------------------------------------
-
-
-db.find({}, (err, docs) => {
-    if (err) {
-      console.error("Error al leer DB en startup:", err);
-    } else if (docs.length === 0) {
-      db.insert(inicialData, (err2, newDocs) => {
-        if (err2) {
-          console.error("Error insertando datos iniciales:", err2);
-        } else {
-          console.log(`Sembrados ${newDocs.length} registros en MVR.`);
-        }
-      });
-    } else {
-      console.log("MVR ya tenía datos, no se resembran.");
-    }
-  });
 
 function loadBackendMVR(app) {
     // F05-MVR

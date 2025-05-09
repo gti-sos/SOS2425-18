@@ -59,6 +59,7 @@
 	let cargandoTemp = true;
 	let containerFusion; // sustituye containerUniv+containerErte
 	let cargandoFusion = true;
+  
 
 	onMount(async () => {
 		/* ---------- G11 + Dana (Chart.js) ---------- */
