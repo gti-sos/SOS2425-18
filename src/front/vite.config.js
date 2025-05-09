@@ -10,8 +10,8 @@ export default defineConfig({
 		port: Number(process.env.PORT) || 3000, // Usa el puerto dinámico asignado por Render
 		fs: {
 			allow: [
-				'..',
-				'../../'
+				path.resolve(__dirname, '.'),
+				path.resolve(__dirname, '../..')
 			]
 		},
 		proxy: {
