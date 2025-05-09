@@ -1,6 +1,3 @@
-<svelte:head>
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
-</svelte:head>
 <!-- svelte-ignore css_unused_selector -->
 <style>
     .echarts-figure,
@@ -63,6 +60,8 @@
     import { onMount } from "svelte";
     import { Alert } from "@sveltestrap/sveltestrap";
     import { dev } from "$app/environment";
+    import * as echarts from 'echarts';
+
     // @ts-ignore
     let alertMessage = "";
     let alertType = "success";

@@ -1,3 +1,9 @@
+<svelte:head>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+</svelte:head>
+
 <!-- svelte-ignore css_unused_selector -->
 <style>
     .highcharts-figure,
@@ -59,14 +65,7 @@
     import { onMount } from "svelte";
     import { Alert } from "@sveltestrap/sveltestrap";
     import { dev } from "$app/environment";
-    import Highcharts from "highcharts";
-    import Exporting from 'highcharts/modules/exporting';
-    import ExportData from 'highcharts/modules/export-data';
-    import Accessibility from 'highcharts/modules/accessibility';
-
-    Exporting(Highcharts);
-    ExportData(Highcharts);
-    Accessibility(Highcharts);
+    
     // @ts-ignore
     let alertMessage = "";
     let alertType = "success";

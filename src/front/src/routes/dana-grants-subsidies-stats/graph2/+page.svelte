@@ -1,6 +1,7 @@
 <svelte:head>
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 </svelte:head>
+
 <!-- svelte-ignore css_unused_selector -->
 <style>
     .echarts-figure,
@@ -63,6 +64,7 @@
     import { onMount } from "svelte";
     import { Alert } from "@sveltestrap/sveltestrap";
     import { dev } from "$app/environment";
+    
     // @ts-ignore
     let alertMessage = "";
     let alertType = "success";
@@ -79,6 +81,7 @@
         try{
             let data = await fetch(API);
             let res = await data.json();
+            console.log(res);
 
             res.filter(obj=> obj.benef_type!==null).forEach(obj =>{
                 if (!aids[obj.benef_type]) {
