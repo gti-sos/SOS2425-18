@@ -25,10 +25,8 @@
     } from '@sveltestrap/sveltestrap';
     import { fade, slide } from "svelte/transition";
     import { goto, replaceState } from '$app/navigation';
-	import query from "express/lib/middleware/query";
     import { page } from '$app/stores';
     import { get } from 'svelte/store';
-	import { before } from "node:test";
 
     const params = get(page).params;
     const munNameParam= params.mun_name;  
