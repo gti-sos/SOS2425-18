@@ -25,8 +25,7 @@
     } from '@sveltestrap/sveltestrap';
     import { fade, slide } from "svelte/transition";
     import { goto, replaceState } from '$app/navigation';
-	import query from "express/lib/middleware/query";
-
+    
     let DEVEL_HOST = "http://localhost:3000";
     let API = "/api/v2/dana-grants-subsidies-stats";
     let queryURL="";
@@ -674,15 +673,14 @@
     <!-- Tabla de subvenciones con filtros -->
     <div class="table-header">
         <div>
+            <Button color="primary" style="align-self: end;" on:click={goto('/dana-grants-subsidies-stats/graph1')}>
+                <i class="bi bi-bar-chart-fill me-2"></i>Gráfico Barras
+            </Button>
+            <Button color="primary" style="align-self: end;" on:click={goto('/dana-grants-subsidies-stats/graph2')}>
+                <i class="bi bi-pie-chart-fill me-2"></i>Gráfico Donught
+            </Button>
             <Button color="outline-primary" id="filtros" on:click={() => showFilterForm = !showFilterForm}>
                 <i class="bi bi-funnel"></i> Filtros
-            </Button>
-
-            <Button color="primary" style="align-self: end;" on:click={goto('/dana-grants-subsidies-stats/graphs')} class="mb-3">
-                Gráficas1
-            </Button>
-            <Button color="primary" style="align-self: end;" on:click={goto('/dana-grants-subsidies-stats/graphs2')} class="mb-3">
-                Gráficas2
             </Button>
         </div>
     </div>
