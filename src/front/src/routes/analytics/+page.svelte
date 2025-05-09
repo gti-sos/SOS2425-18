@@ -10,7 +10,7 @@
         const [contractsRaw, erteRaw, grantsRaw] = await Promise.all([
           fetch('/api/v2/contr-mun-stats').then(r => r.json()),
           fetch('/api/v2/dana-erte-stats/loadInitialData').then(r => r.json()),
-          fetch('/api/v2/dana-grants-subsidies-stats/All').then(r => r.json())
+          fetch('/api/v2/dana-grants-subsidies-stats').then(r => r.json())
         ]);
   
         // 2. Agrupación por año-mes
