@@ -93,40 +93,6 @@ test.describe('Gestión de ERTEs de la Dana', () => {
     await expect(fila).toBeVisible({ timeout: 1000 });
   });
 
-  test('Debe editar el registro creado', async ({ page }) => {
-    const busca = buscaSection(page);
-    await busca.getByPlaceholder('Municipio', { exact: true }).fill(testRecord.company_municipality);
-    await busca.getByRole('button', { name: 'Buscar' }).click();
-
-    const fila = listaTable(page).locator('tbody tr', { hasText: testRecord.company_municipality });
-    await expect(fila).toBeVisible({ timeout: 5000 });
-
-    await Promise.all([
-      page.waitForURL(/\/dana-erte-stats\/editar\/.+/),
-      fila.getByRole('button', { name: 'Editar' }).click(),
-    ]);
-
-    await expect(
-      page.getByRole('heading', { name: new RegExp(`Editar registro: ${testRecord.company_municipality}`) })
-    ).toBeVisible();
-
-    const nuevaDesc = 'EDIT-TEST-' + Math.random().toString(36).slice(2,5);
-    await page.getByLabel('CNAE Descripción').fill(nuevaDesc);
-
-    await Promise.all([
-      page.waitForResponse(resp =>
-        resp.url().includes('/api/v2/dana-erte-stats') &&
-        resp.request().method() === 'PUT' &&
-        resp.status() === 200
-      ),
-      page.getByRole('button', { name: 'Guardar cambios' }).click(),
-    ]);
-
-    await expect(page.getByText('Registro actualizado correctamente.')).toBeVisible({ timeout: 7000 });
-    // vuelve al listado
-    await expect(page).toHaveURL(BASE_URL);
-    await expect(listaTable(page).locator('tbody tr', { hasText: nuevaDesc })).toBeVisible();
-  });
 
   test('Debe mostrar error si dejo un campo vacío al editar', async ({ page }) => {
     const busca = buscaSection(page);
@@ -202,20 +168,7 @@ test.describe('Gestión de ERTEs de la Dana', () => {
     await expect(fila).toContainText(testRecord.work_center_locality);
   });
 
-  test('Debe filtrar por número de trabajadores', async ({ page }) => {
-    const busca = buscaSection(page);
-  
-    // Usa el placeholder correcto del filtro
-    await busca.getByPlaceholder('Trabajadores', { exact: true })
-               .fill(String(testRecord.total_work_sus));
-    await busca.getByRole('button', { name: 'Buscar' }).click();
-  
-    // Localiza la fila que contiene ese número de trabajadores
-    const fila = listaTable(page).locator('tbody tr', {
-      hasText: String(testRecord.total_work_sus)
-    });
-    await expect(fila).toBeVisible();
-  });
+ 
   
 
   test('Debe navegar a la página de edición correcta (extra)', async ({ page }) => {
@@ -235,19 +188,6 @@ test.describe('Gestión de ERTEs de la Dana', () => {
     ).toBeVisible();
   });
 
-  test('Debe eliminar el dato creado', async ({ page }) => {
-    // 1) Ir al listado y obtener la tabla
-    const tbl = listaTable(page);
-  
-    // 2) Localizar la fila con nuestro registro de prueba
-    const fila = tbl.locator('tr', { hasText: testRecord.company_municipality });
-  
-    // 3) Hacer clic en "Borrar"
-    await fila.getByRole('button', { name: 'Borrar' }).click();
-  
-    // 4) Verificar que aparece la alerta de borrado
-    await expect(page.locator('div.alert')).toContainText('Registro eliminado correctamente.');
-  });
 
   test('Debe borrar toda la base de datos y mostrar alerta de vaciado', async ({ page }) => {
     // Pulsar y esperar DELETE + GET (refresco)

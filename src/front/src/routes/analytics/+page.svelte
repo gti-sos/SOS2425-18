@@ -9,7 +9,7 @@
         // 1. Descarga paralela de las tres APIs
         const [contractsRaw, erteRaw, grantsRaw] = await Promise.all([
           fetch('/api/v2/contr-mun-stats').then(r => r.json()),
-          fetch('/api/v2/dana-erte-stats').then(r => r.json()),
+          fetch('/api/v2/dana-erte-stats/loadInitialData').then(r => r.json()),
           fetch('/api/v2/dana-grants-subsidies-stats/All').then(r => r.json())
         ]);
   
