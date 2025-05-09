@@ -20,7 +20,7 @@ function avgByMunNameRes(){
 
 let objData=[];
 let objDataAll=[];
-let munData=[];
+//let munData=[];
 
 async function readAllDataMADC(ruta) {
     const CAMPOS = {
@@ -90,9 +90,9 @@ async function readAllDataMuncipalites(ruta) {
 }
 objData= await readAllDataMADC("./datasets/Ejemplo-Ayudas-Subvenciones-DANA-4TR(;).csv");
 objDataAll= await readAllDataMADC("./datasets/Ayudas-Subvenciones-DANA-4TR(;).csv");
-munData= await readAllDataMuncipalites("./datasets/municipios_fixed.csv");
+//munData= await readAllDataMuncipalites("./datasets/municipios_fixed.csv");
 
-let pueblosdistintos= new Set(objData.map(e=> e.mun_name));
+//let pueblosdistintos= new Set(objData.map(e=> e.mun_name));
 //console.log(pueblosdistintos);
 
 const BASE_API = "/api/v2";
@@ -456,4 +456,4 @@ function loadBackendMADC(app){
         return res;
     }      
 }
-export {readAllDataMADC, objData, pueblosdistintos, loadBackendMADC};
+export {readAllDataMADC, objData, loadBackendMADC};
