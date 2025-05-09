@@ -116,11 +116,11 @@ function loadBackendMADC(app){
         }
     })
 
-    db_Municip.find({}, (err, data)=>{
+    /*db_Municip.find({}, (err, data)=>{
         if(data.length===0){
             db_Municip.insert(munData);
         }
-    })
+    })*/
 
     app.get(`${BASE_API}/${MADCmainResource}/loadInitialData`, (request, response) => {
         let statusCode=201;
