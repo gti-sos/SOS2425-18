@@ -57,7 +57,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.52.0",
-    "@rollup/rollup-win32-x64-msvc": "^4.40.0",
+    "@rollup/rollup-linux-x64-gnu": "^4.40.0",
     "@types/node": "^22.14.1",
     "rollup": "^4.17.0",
     "start-server-and-test": "^2.0.11",
