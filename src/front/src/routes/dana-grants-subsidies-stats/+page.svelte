@@ -25,8 +25,7 @@
     } from '@sveltestrap/sveltestrap';
     import { fade, slide } from "svelte/transition";
     import { goto, replaceState } from '$app/navigation';
-	import query from "express/lib/middleware/query";
-
+    
     let DEVEL_HOST = "http://localhost:3000";
     let API = "/api/v2/dana-grants-subsidies-stats";
     let queryURL="";
@@ -110,7 +109,7 @@
 
     if (dev) API = DEVEL_HOST + API;
 
-    async function iniatilizeData(){
+    async function initializeData(){
         try {
             const res = await fetch(`${API}/loadInitialData`);
             if (res.status==500) {
@@ -165,6 +164,7 @@
         
         try {
             const res = await fetch(queryURL);
+            console.log(res);
             if (res.status==404) {
                 showAlert("No se ha encontrado ningún recurso que coincida con los datos especificados", "danger");
                 aids=[];
@@ -363,7 +363,6 @@
     }
 
     onMount(()=>{
-        iniatilizeData();
         getAids();
     });
 </script>
@@ -392,6 +391,7 @@
         align-items: center;
         padding: 0 13.3333dvw;
         justify-content: end;
+        margin-top: 1rem;
     }
     
     .form-section {
@@ -673,6 +673,12 @@
     <!-- Tabla de subvenciones con filtros -->
     <div class="table-header">
         <div>
+            <Button color="primary" style="align-self: end;" on:click={goto('/dana-grants-subsidies-stats/graph1')}>
+                <i class="bi bi-bar-chart-fill me-2"></i>Gráfico Barras
+            </Button>
+            <Button color="primary" style="align-self: end;" on:click={goto('/dana-grants-subsidies-stats/graph2')}>
+                <i class="bi bi-pie-chart-fill me-2"></i>Gráfico Donught
+            </Button>
             <Button color="outline-primary" id="filtros" on:click={() => showFilterForm = !showFilterForm}>
                 <i class="bi bi-funnel"></i> Filtros
             </Button>
