@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "65ce8e44-a6b2-47d9-af40-330a8d80269b",
+		"_postman_id": "2c0c3da4-3d53-4385-8d86-206df2ae8c89",
 		"name": "F07",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "42354753"
+		"_exporter_id": "42354753",
+		"_collection_link": "https://yop666.postman.co/workspace/yop-Workspace~c1769c43-9ec4-48a8-90d6-50ad8bac357a/collection/42354753-2c0c3da4-3d53-4385-8d86-206df2ae8c89?action=share&source=collection_link&creator=42354753"
 	},
 	"item": [
 		{
@@ -124,7 +125,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"request_month\": 11,\r\n    \"request_year\": 2024,\r\n    \"cnae_descr\": \"Transporte de mercancías por carretera\",\r\n    \"company_municipality\": \"Sevilla\",\r\n    \"work_center_locality\": \"Moncófar\",\r\n    \"sector\": \"SERVICIOS\",\r\n    \"total_work_sus\": 12,\r\n    \"total_man_sus\": 8,\r\n    \"total_woman_sus\": 4\r\n}",
+					"raw": "{\r\n    \"request_month\": 11,\r\n    \"request_year\": 2024,\r\n    \"cnae_descr\": \"Transporte de mercancías por carretera\",\r\n    \"company_municipality\": \"Galicia\",\r\n    \"work_center_locality\": \"Moncófar\",\r\n    \"sector\": \"SERVICIOS\",\r\n    \"total_work_sus\": 12,\r\n    \"total_man_sus\": 8,\r\n    \"total_woman_sus\": 4\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -179,7 +180,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"request_month\": 11,\r\n    \"request_year\": 2024,\r\n    \"cnae_descr\": \"Transporte de mercancías por carretera\",\r\n    \"company_municipality\": \"Sevilla\",\r\n    \"work_center_locality\": \"Moncófar\",\r\n    \"sector\": \"INDUSTRIA\",\r\n    \"total_work_sus\": 20,\r\n    \"total_man_sus\": 16,\r\n    \"total_woman_sus\": 4\r\n}",
+					"raw": "{\r\n    \"request_month\": 11,\r\n    \"request_year\": 2024,\r\n    \"cnae_descr\": \"Transporte de mercancías por carretera\",\r\n    \"company_municipality\": \"Galicia\",\r\n    \"work_center_locality\": \"Moncófar\",\r\n    \"sector\": \"INDUSTRIA\",\r\n    \"total_work_sus\": 20,\r\n    \"total_man_sus\": 16,\r\n    \"total_woman_sus\": 4\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -187,7 +188,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/api/v2/dana-erte-stats/Sevilla/2024/11",
+					"raw": "{{BASE_URL}}/api/v2/dana-erte-stats/Galicia/2024/11",
 					"host": [
 						"{{BASE_URL}}"
 					],
@@ -195,7 +196,7 @@
 						"api",
 						"v2",
 						"dana-erte-stats",
-						"Sevilla",
+						"Galicia",
 						"2024",
 						"11"
 					]
@@ -245,7 +246,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/api/v2/dana-erte-stats/Sevilla/2024/11",
+					"raw": "{{BASE_URL}}/api/v2/dana-erte-stats/Galicia/2024/11",
 					"host": [
 						"{{BASE_URL}}"
 					],
@@ -253,7 +254,7 @@
 						"api",
 						"v2",
 						"dana-erte-stats",
-						"Sevilla",
+						"Galicia",
 						"2024",
 						"11"
 					]
