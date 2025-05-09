@@ -19,7 +19,7 @@ function avgByMunNameRes(){
 }
 
 let objData=[];
-let objDataAll=[];
+//let objDataAll=[];
 //let munData=[];
 
 async function readAllDataMADC(ruta) {
@@ -89,7 +89,7 @@ async function readAllDataMuncipalites(ruta) {
     return data;
 }
 objData= await readAllDataMADC("./datasets/Ejemplo-Ayudas-Subvenciones-DANA-4TR(;).csv");
-objDataAll= await readAllDataMADC("./datasets/Ayudas-Subvenciones-DANA-4TR(;).csv");
+//objDataAll= await readAllDataMADC("./datasets/Ayudas-Subvenciones-DANA-4TR(;).csv");
 //munData= await readAllDataMuncipalites("./datasets/municipios_fixed.csv");
 
 //let pueblosdistintos= new Set(objData.map(e=> e.mun_name));
@@ -97,8 +97,8 @@ objDataAll= await readAllDataMADC("./datasets/Ayudas-Subvenciones-DANA-4TR(;).cs
 
 const BASE_API = "/api/v2";
 let db_MADC = new dataStore();
-let db_MADCAll = new dataStore();
-let db_Municip= new dataStore();
+//let db_MADCAll = new dataStore();
+//let db_Municip= new dataStore();
 
 function loadBackendMADC(app){
 
@@ -110,11 +110,11 @@ function loadBackendMADC(app){
         }
     })
 
-    db_MADCAll.find({}, (err, data)=>{
+    /*db_MADCAll.find({}, (err, data)=>{
         if(data.length===0){
             db_MADCAll.insert(objDataAll);
         }
-    })
+    })*/
 
     /*db_Municip.find({}, (err, data)=>{
         if(data.length===0){
@@ -133,7 +133,7 @@ function loadBackendMADC(app){
         })
     });
 
-    app.get(`${BASE_API}/${MADCmainResource}/All/loadInitialData`, (request, response) => {
+    /*app.get(`${BASE_API}/${MADCmainResource}/All/loadInitialData`, (request, response) => {
         let statusCode=201;
         db_MADCAll.find({}, (err, data)=>{
             if(data.length===0){
@@ -142,7 +142,7 @@ function loadBackendMADC(app){
             }
             return response.status(statusCode).json({"message": "Inicialización de datos consecutiva realizada correctamente", "statusCode": statusCode});
         })
-    });
+    });*/
 
     app.get(`${BASE_API}/municipalities/loadInitialData`, (request, response) => {
         let statusCode=201;
@@ -155,7 +155,7 @@ function loadBackendMADC(app){
         })
     });
 
-    app.get(`${BASE_API}/${MADCmainResource}/All`, (request, response) => {
+    /*app.get(`${BASE_API}/${MADCmainResource}/All`, (request, response) => {
         let statusCode= 200;
 
         db_MADCAll.find({}, (err, data)=>{
@@ -176,7 +176,7 @@ function loadBackendMADC(app){
                 }
             }  
         });
-    });
+    });*/
 
     app.get(`${BASE_API}/municipalities`, (request, response) => {
         let statusCode= 200;
