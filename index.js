@@ -26,7 +26,7 @@ app.use(proxyPath, function(req, res) {
     req.pipe(request(url)).pipe(res);
 });
 
-// --- Proxy para Open‑Meteo ---------------------------------
+// --- Proxy para Open-Meteo ---------------------------------
 const weatherProxy = '/weather-proxy';                 // lo que usará tu front
 const weatherHost  = 'https://api.open-meteo.com';     // destino real
 

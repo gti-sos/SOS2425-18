@@ -94,6 +94,14 @@
     <li><a href="/api/v2/dana-erte-stats">/api/v2/dana-erte-stats</a> (Miguel Vázquez de la Rubia)</li>
     <li><a href="/api/v2/dana-grants-subsidies-stats">/api/v2/dana-grants-subsidies-stats</a> (Miguel Ángel Domínguez Ciero)</li>
   </ul>
+
+  <h2>API Base URLs</h2>
+  <ul>
+    <li><a href="/integrations/GBD">/integrations/GBD</a> (Guillermo Blanco Díaz)</li>
+    <li><a href="/integrations/MVR">/integrations/MVR</a> (Miguel Vázquez de la Rubia)</li>
+    <li><a href="/integrations/MAD">/integrations/MAD</a> (Miguel Ángel Dominguez )</li>
+
+  </ul>
   
   <h2>API Documentation</h2>
   <ul>
