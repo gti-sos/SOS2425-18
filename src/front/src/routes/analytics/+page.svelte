@@ -81,7 +81,7 @@
               data: erteData
             },
             {
-              type: 'line',
+              type: 'column',
               name: 'Solicitudes subvención',
               data: grantsData,
               marker: {
