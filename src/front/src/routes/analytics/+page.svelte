@@ -41,7 +41,7 @@
         });
   
         // 3. Define el rango fijo de meses
-        const months = ["10","11","12","01"];
+        const months = ["2024-10","2024-11","2024-12","2025-01"];
         // 4. Filtra solo los meses con al menos un dato
         const categories = months.filter(key =>
           (byContracts[key] || 0) > 0 ||
@@ -56,7 +56,7 @@
   
         // 6. Renderiza el gráfico
         Highcharts.chart(containerChart, {
-          title: { text: 'Contratos vs ERTEs vs Solicitudes de Subvención' },
+          title: { text: 'E4 – Contratos vs ERTEs vs Solicitudes de Subvención' },
           xAxis: {
             categories,
             title: { text: 'Periodo (YYYY-MM)' }
