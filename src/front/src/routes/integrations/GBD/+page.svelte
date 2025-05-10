@@ -112,15 +112,15 @@
             {
               label: "Contratos",
               data: datosContratos,
-              backgroundColor: "rgba(54, 162, 235, 0.3)",
-              borderColor: "rgba(54, 162, 235, 1)",
+              backgroundColor: "rgba(75, 192, 192, 0.3)",
+              borderColor: "rgba(75, 192, 192, 1)",
               borderWidth: 2
             },
             {
               label: "Longitud de Ruta (km)",
               data: datosRuta,
-              backgroundColor: "rgba(255, 99, 132, 0.3)",
-              borderColor: "rgba(255, 99, 132, 1)",
+              backgroundColor: "rgba(255, 206, 86, 0.3)",
+              borderColor: "rgba(255, 206, 86, 1)",
               borderWidth: 2
             }
           ]
@@ -167,22 +167,22 @@
       const ctx = sancionesCanvas.getContext("2d");
 
       new Chart(ctx, {
-        type: "bar",
+        type: "radar",
         data: {
           labels: provincias,
           datasets: [
             {
               label: "Contratos",
               data: datosContratos,
-              backgroundColor: "rgba(54, 162, 235, 0.3)",
-              borderColor: "rgba(54, 162, 235, 1)",
+              backgroundColor: "rgba(153, 102, 255, 0.3)",
+              borderColor: "rgba(153, 102, 255, 1)",
               borderWidth: 2
             },
             {
               label: "Sanciones con puntos",
               data: datosSanciones,
-              backgroundColor: "rgba(255, 99, 132, 0.3)",
-              borderColor: "rgba(255, 99, 132, 1)",
+              backgroundColor: "rgba(255, 159, 64, 0.3)",
+              borderColor: "rgba(255, 159, 64, 1)",
               borderWidth: 2
             }
           ]
@@ -251,7 +251,7 @@
 </section>
 
 <section>
-  <h2>Contratos vs. Sanciones (Radar)</h2>
+  <h2>Contratos vs Sanciones</h2>
   <p style="margin-bottom: 10px;">{#if cargandoSancionesRadar}Cargando datos...{/if}</p>
   <div style="width: 700px; height: 400px;">
     <canvas bind:this={sancionesCanvas} style="display: {cargandoSancionesRadar ? 'none' : 'block'};"></canvas>
@@ -259,7 +259,7 @@
 </section>
 
 <section>
-  <h2>Contratos vs. Longitud de Ruta</h2>
+  <h2>Contratos vs Longitud de Ruta</h2>
   {#if cargandoRuta}<p>Cargando datos...</p>{/if}
   <div style="width: 700px; height: 400px;"><canvas bind:this={rutaCanvas}></canvas></div>
 </section>
