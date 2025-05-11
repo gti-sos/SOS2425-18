@@ -87,6 +87,11 @@
     <h2>Project Deployment</h2>
     <p><a href="https://sos2425-18.onrender.com" target="_blank">https://sos2425-18.onrender.com</a></p>
 
+    <h2>Videos</h2>
+    <ul>
+    <li><a href="https://youtu.be/KARd9r1CZv0">Video GBD</a> (Guillermo Blanco Díaz)</li>
+    </ul>
+
     <h2>API Documentation</h2>
     <ul>
       <li>
