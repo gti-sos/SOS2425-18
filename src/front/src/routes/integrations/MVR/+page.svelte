@@ -1,4 +1,6 @@
 <script>
+	// @ts-nocheck
+
 	import { onMount, tick } from 'svelte';
 	import Chart from 'chart.js/auto';
 
@@ -6,7 +8,7 @@
 	let container;
 	let cargandoMix = true;
 	let canvasBubble;
-  let cargando = true;
+	let cargando = true;
 	let cargandoBubble = true;
 	let bubbleChart;
 	let mixChart;
@@ -59,12 +61,12 @@
 	let cargandoTemp = true;
 	let containerFusion; // sustituye containerUniv+containerErte
 	let cargandoFusion = true;
-  
 
 	onMount(async () => {
 		/* ---------- G11 + Dana (Chart.js) ---------- */
 		try {
 			const data = await fetch('/api/v2/mix-autonomy-dana').then((r) => r.json());
+			console.log('payload mix-autonomy-dana:', data);
 			await tick(); // canvas montado
 			const ctx = canvasMix.getContext('2d');
 
@@ -106,11 +108,16 @@
 			]);
 
 			// 2) Limpiamos
-			const grads = univRaw.map((r) => ({
-				loc: r.location,
-				year: +r.academicYear,
-				value: Number(r.graduated) || 0
-			}));
+			const grads = univRaw.map((r) => {
+				// Puedes escoger [0] para el año inicial o [1] para el año final:
+				const [startYear, endYear] = r.academicYear.split('-');
+				const year = Number(endYear); // usa endYear (por ejemplo "2017") para emparejar con ERTEs
+				return {
+					loc: r.location,
+					year,
+					value: Number(r.graduated) || 0
+				};
+			});
 			const ertes = erteRaw.map((r) => ({
 				loc: r.company_municipality,
 				year: +r.request_year,
@@ -118,26 +125,42 @@
 			}));
 
 			// 3) Categorías (limita top 10 municipios si quieres)
-			const totByLoc = {};
-			ertes.forEach((d) => (totByLoc[d.loc] = (totByLoc[d.loc] || 0) + d.value));
-			const locs = Object.entries(totByLoc)
-				.sort((a, b) => b[1] - a[1])
-				.slice(0, 10)
-				.map(([loc]) => loc);
+			const locs = [
+				'CÁCERES',
+				'PLASENCIA',
+				'ALMENDRALEJO',
+				'MÉRIDA',
+				'BADAJOZ',
+				'Albal',
+				'Valencia'
+			];
 
-			const years = [...new Set([...grads, ...ertes].map((d) => d.year))].sort();
+			// 3.b) Años fijos de 2017 a 2024
+			const years = [];
+			for (let y = 2017; y <= 2024; y++) {
+				years.push(y);
+			}
 
-			// 4) Montamos data[]
+			// 4) Montamos data[] con bucle anidado para todo loc x año
 			const gradMap = {};
-			grads.forEach((d) => (gradMap[`${d.loc}::${d.year}`] = d.value));
+			grads.forEach((d) => {
+				gradMap[`${d.loc}::${d.year}`] = d.value;
+			});
+
+			const erteMap = {};
+			ertes.forEach((d) => {
+				erteMap[`${d.loc}::${d.year}`] = d.value;
+			});
 
 			const data = [];
-			ertes.forEach((d) => {
-				if (!locs.includes(d.loc)) return;
-				const x = locs.indexOf(d.loc);
-				const y = years.indexOf(d.year);
-				const g = gradMap[`${d.loc}::${d.year}`] || 0;
-				data.push({ x, y, z: d.value, value: g, loc: d.loc, year: d.year });
+			locs.forEach((loc, x) => {
+				years.forEach((year, y) => {
+					const z = erteMap[`${loc}::${year}`] || 0; // ERTEs
+					const g = gradMap[`${loc}::${year}`] || 0; // Graduados
+					// Si quieres ocultar completamente los 0|0, puedes filtrar aquí:
+					// if (z === 0 && g === 0) return;
+					data.push({ x, y, z, value: g, loc, year });
+				});
 			});
 
 			// 5) Pintamos el bubble+colorAxis
@@ -623,10 +646,8 @@
 	<!-- para polar/area -->
 </svelte:head>
 
-<p>Comprobando si esta página se carga…</p>
-
 <section>
-	<h2>Gráfica integrada G11 + Dana</h2>
+	<h2>Gráfica integrada G11 + Dana(Integración)</h2>
 	{#if cargandoMix}<p>Cargando…</p>{/if}
 	<div style="max-width:800px;height:400px;margin:auto">
 		<canvas bind:this={canvasMix}></canvas>
@@ -634,7 +655,7 @@
 </section>
 
 <section>
-	<h2>Graduados vs ERTEs por municipio y año</h2>
+	<h2>G17 - Graduados vs ERTEs por municipio y año(Integración)</h2>
 	{#if cargandoFusion}
 		<p>Cargando datos…</p>
 	{/if}
@@ -642,33 +663,33 @@
 </section>
 
 <section>
-  <h2>G20 – Accidentes (Bubble)</h2>
-  <div style="max-width:850px;height:500px;margin:auto">
-    <!-- 1. El canvas SIEMPRE existe -->
-    <canvas bind:this={canvasBubble}></canvas>
-    <!-- 2. Solo mostramos el texto de carga mientras cargamos -->
-    {#if cargandoBubble}
-      <p style="position:absolute;top:50%;left:50%;transform:translate(-50%, -50%)">
-        Cargando datos…
-      </p>
-    {/if}
-  </div>
+	<h2>G20 – Accidentes (Bubble)</h2>
+	<div style="max-width:850px;height:500px;margin:auto">
+		<!-- 1. El canvas SIEMPRE existe -->
+		<canvas bind:this={canvasBubble}></canvas>
+		<!-- 2. Solo mostramos el texto de carga mientras cargamos -->
+		{#if cargandoBubble}
+			<p style="position:absolute;top:50%;left:50%;transform:translate(-50%, -50%)">
+				Cargando datos…
+			</p>
+		{/if}
+	</div>
 </section>
 
 <section>
-  <h2>G12 – Annual Evolutions</h2>
-  <div style="max-width:750px;height:500px;margin:auto;position:relative">
-    <div bind:this={container} style="width:100%;height:100%"></div>
-    {#if cargando}
-      <p style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">
-        Cargando datos…
-      </p>
-    {/if}
-  </div>
+	<h2>G12 – Annual Evolutions</h2>
+	<div style="max-width:750px;height:500px;margin:auto;position:relative">
+		<div bind:this={container} style="width:100%;height:100%"></div>
+		{#if cargando}
+			<p style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">
+				Cargando datos…
+			</p>
+		{/if}
+	</div>
 </section>
 
 <section>
-	<h2>G-TempStats – Temperatura media por año y provincia</h2>
+	<h2>G15 - TempStats – Temperatura media por año y provincia</h2>
 	{#if cargandoTemp}
 		<p>Cargando datos…</p>
 	{/if}
@@ -676,7 +697,7 @@
 </section>
 
 <section>
-	<h2>E1 - Integración ERTE + Temperatura actual</h2>
+	<h2>E1 - Integración ERTE + Temperatura actual(proxy)</h2>
 	<div style="max-width:800px;height:450px;margin:auto">
 		<canvas bind:this={canvasTemp}></canvas>
 	</div>
@@ -701,8 +722,6 @@
 		<canvas bind:this={canvasPop}></canvas>
 	</div>
 </section>
-
-
 
 <style>
 	canvas {
