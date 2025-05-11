@@ -103,6 +103,11 @@
     <li><a href="/analytics">/analytics</a>(Integración total del grupo)</li>
 
   </ul>
+
+  <h2>Videos</h2>
+  <ul>
+    <li><a href="https://youtu.be/KARd9r1CZv0">Video GBD</a> (Guillermo Blanco Díaz)</li>
+  </ul>
   
   <h2>API Documentation</h2>
   <ul>
